@@ -475,7 +475,7 @@ paths:
        '200':
           description: OK
           content:
-            text/plain:
+            application/json:
               schema:
                 type: string
               example: "{\r\n    \"credits\": \"987\"\r\n}"
