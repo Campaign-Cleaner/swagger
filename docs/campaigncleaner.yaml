@@ -60,7 +60,7 @@ paths:
 
         - **status**: The will be either _processing_, _completed_, or _paused_
 
-        - **date_added**: The date and time your campaign was saved of submitted
+        - **date_added**: The date and time your campaign was saved or submitted
         to [Campaign Cleaner](https://campaigncleaner.com).
             
 
@@ -123,9 +123,9 @@ paths:
 
         - **campaign_name**: The name of the campaign.
 
-        - **status**: The will be either _processing_, _completed_, or _paused_
+        - **status**: The status will be either _processing_, _completed_, or _paused_
 
-        - **date_added**: The date and time your campaign was saved of submitted
+        - **date_added**: The date and time your campaign was saved or submitted
         to Campaign Cleaner.
             
 
