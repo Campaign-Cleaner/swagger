@@ -192,7 +192,7 @@ paths:
 
 
         - **adjust_font_colors**: (true/false), If true, certain bright colors
-        are spam triggers, like "**red**" or "**#FF0000**", were adjusted to a
+        are spam triggers, like "**red**" or "**#FF0000**", was adjusted to a
         slightly different color like "**#FF0101"**, it will look the same, but
         won't trigger some spam filters.
 
@@ -257,7 +257,7 @@ paths:
             - **apply_count**: (true/false) If True, the count column apples to the message as the number of occurrences found. If false, the count will be zero, and the message is a statement of what happened.
             - **count**: (integer) The total occurrences that was found or corrected.
             - **html_changed**: (true/false) Indicates if the Campaign HTML was changed to correct the issue.
-            - **message**: (string) The change or analysis that took place that indicating something change or something should be looked into futher.
+            - **message**: (string) The change or analysis that took place that indicating something change or something should be looked into further.
         - **convert_h_to_p_tags**: (true/false) If true, this will change all
         the H tags to P tags and set the correct font-size.
 
@@ -341,7 +341,7 @@ paths:
         ID attributes after CSS Inlining was removed.
 
         - **remove_comments**: (_true_/false) If true, comments were stripped
-        from both CSS and HTML. Coments are invisble in html and can trigger
+        from both CSS and HTML. Comments are invisble in HTML and can trigger
         spam filters.
 
         - **remove_control_non_printable:** (true/false) If True, call
@@ -406,8 +406,8 @@ paths:
         - **total_word_count**: (integer) The total number of words found in
         your campaign.
 
-        - **treat_as_fragment**: (true/false), if true, all information before
-        the out of and including the tag were removed.
+        - **treat_as_fragment**: (true/false), if true, all information outside
+        outside of and including the tag was removed.
             
 
         #### <u><b>Additional Information:</b></u>
@@ -2660,7 +2660,7 @@ paths:
         of images and links it can take longer to check those links for
         blacklists, redirects. image sizes and more. Depending on the server
         where those links resources are located it can take longer. The send
-        campaign, will return a campaign ID once we recieved it, you can use
+        campaign, will return a campaign ID once we received it, you can use
         that campaign ID to check on the status, and retrieve your campaign when
         it's finished processing or you can supply us a webhook URL and we will
         send the results to you automatically.
