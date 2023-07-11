@@ -2634,7 +2634,7 @@ paths:
         be processed and analyzed by [Campaign
         Cleaner](https://campaigncleaner.com). Below is the list of settings
         that can be set, all optional settings, if not specified will default
-        the the bold/italicized setting.
+        to the bold/italicized setting.
 
 
         All submitted campaigns will be sanitized and CSS inlined.
@@ -2660,8 +2660,8 @@ paths:
         of images and links it can take longer to check those links for
         blacklists, redirects. image sizes and more. Depending on the server
         where those links resources are located it can take longer. The send
-        campaign, will return a campaign ID that we recieved it, you can use
-        that campaign ID to check on the status, and retreive your campaign when
+        campaign, will return a campaign ID once we recieved it, you can use
+        that campaign ID to check on the status, and retrieve your campaign when
         it's finished processing or you can supply us a webhook URL and we will
         send the results to you automatically.
 
@@ -2776,7 +2776,7 @@ paths:
 
 
         - **id**: The campaign id that will be used to retrieve your campaign
-        using the Get Campaign API.
+        using the get_campaign API.
       requestBody:
         content:
           application/json:
