@@ -33,12 +33,11 @@ paths:
         - default
       summary: Get Campaign Status
       description: >-
-        After the submitting a campaign to be corrected and analyzed it can take
+        After submitting a campaign to be corrected and analyzed it can take
         up to a minute to finalize the results. You can check the status of your
         campaign with the **check_campaign_status** API. When you see a
-        completed status. When that happens, you can call the **get_campaign**
-        API to retrieve them.
-
+        'completed' status, you can call the **get_campaign** API to retrieve the results.
+        
 
         #### <u>Request Body:</u>
 
