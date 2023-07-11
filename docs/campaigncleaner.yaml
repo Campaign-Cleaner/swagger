@@ -255,8 +255,8 @@ paths:
 
         - **campaign_summary**: (list of messages) A quick summary of some of
         the changes that were applied and some analysis highlights.
-            - **apply_count**: (true/false) If True, the count column apples to the message as the number of occurances found. If false, the count will be zero, and the message is a statement of what happened.
-            - **count**: (integer) The total occurances that was found or corrected.
+            - **apply_count**: (true/false) If True, the count column apples to the message as the number of occurrences found. If false, the count will be zero, and the message is a statement of what happened.
+            - **count**: (integer) The total occurrences that was found or corrected.
             - **html_changed**: (true/false) Indicates if the Campaign HTML was changed to correct the issue.
             - **message**: (string) The change or analysis that took place that indicating something change or something should be looked into futher.
         - **convert_h_to_p_tags**: (true/false) If true, this will change all
@@ -284,7 +284,7 @@ paths:
         images in pixels.
 
         - i**mages_missing_alt_attribute:** (integer) The number of images
-        missing or have an empty **"alt"** attriribute.
+        missing or have an empty **"alt"** attribute.
 
         - **image_list**: (list of images) A list of all images found and their
         properties.
@@ -320,7 +320,7 @@ paths:
         found, known to cause adverse delivery issues.
 
         - **pd_cdns_link_count**: (integer) The total number of links pointed to
-        content delievery networks know to cause adverse delivery issues.
+        content delivery networks know to cause adverse delivery issues.
 
         - **relative_links_base_url**: If set this needs to be a full base URL
         like "[https://campaigncleaner.com/"](https://campaigncleaner.com/), if
