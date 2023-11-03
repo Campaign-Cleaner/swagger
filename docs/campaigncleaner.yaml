@@ -2,7 +2,6 @@ openapi: 3.0.0
 info:
   title: API DOCUMENTATION
   description: >-
-    <img src="https://campaigncleaner.com/assets/images/cclogorefresh50.png">
 
 
     [Campaign Cleaner](https://campaincleaner.com) is the leader in ensuring
@@ -14,7 +13,7 @@ info:
     every email client.
 
 
-    We offers a robust collection of API's to allow you to integrate its
+    We offer a robust collection of API's to allow you to integrate its
     functionality into your email marketing software and tools.
 
 
@@ -25,7 +24,7 @@ info:
     Use the navigation on the left to access the different API Endpoints.
   version: 1.0.0
 servers:
-  - url: https://api.campaigncleaner.com
+  - url: http://{{baseurl}}
 paths:
   /v1/get_campaign_status:
     post:
@@ -33,22 +32,23 @@ paths:
         - default
       summary: Get Campaign Status
       description: >-
-        After submitting a campaign to be corrected and analyzed it can take
-        up to a minute to finalize the results. You can check the status of your
+        After submitting a campaign to be corrected and analyzed it can take up
+        to a minute to finalize the results. You can check the status of your
         campaign with the **check_campaign_status** API. When you see a
-        'completed' status, you can call the **get_campaign** API to retrieve the results.
-        
+        'completed' status, you can call the **get_campaign** API to retrieve
+        the results.
 
-        #### <u>Request Body:</u>
+
+        #### Request Body:
 
 
         **campaign**:
 
 
         - **id**: The campaign id that will be used in other API calls.
-            
+         
 
-        #### <u>Response:</u>
+        #### Response:
 
 
         **campaign_list**:
@@ -58,11 +58,12 @@ paths:
 
         - **campaign_name**: The name of the campaign.
 
-        - **status**: The will be either _processing_, _completed_, or _paused_
+        - **status**: The status will be either _processing_, _completed_, or
+        _paused_
 
         - **date_added**: The date and time your campaign was saved or submitted
         to [Campaign Cleaner](https://campaigncleaner.com).
-            
+         
 
         If the **status** is _completed_, you will be able to retrieve the
         campaign via the **get_campaign** API
@@ -113,7 +114,7 @@ paths:
         Cleaner](https://campaigncleaner.com).
 
 
-        #### <u>Response:</u>
+        #### Response:
 
 
         **campaign_list**:
@@ -123,11 +124,12 @@ paths:
 
         - **campaign_name**: The name of the campaign.
 
-        - **status**: The status will be either _processing_, _completed_, or _paused_
+        - **status**: The status will be either _processing_, _completed_, or
+        _paused_
 
         - **date_added**: The date and time your campaign was saved or submitted
         to Campaign Cleaner.
-            
+         
 
         If the **status** is _completed_, you will be able to retrieve the
         campaign via the **get_campaign** API
@@ -176,16 +178,16 @@ paths:
         size and a couple of broken links.
 
 
-        #### <u>Request Body:</u>
+        #### Request Body:
 
 
         **campaign**:
 
 
         - **id**: The campaign id that will be used in other API calls.
-            
+         
 
-        #### <u>Response:</u>
+        #### Response:
 
 
         **campaign:**
@@ -212,39 +214,48 @@ paths:
 
         - **all_link_list:** (list of links) All the links found in the campaign
         (images, text, etc.)
-            - **link_url**: (string) The URL or location of the broken link.
-            - **link_status**: (string) The status code of the link, please view the status guide below.
-            - **link_redirected_url**: (string) The location of where the link was redirected to, empty string, if it wasn't redirected.
-            - **link_is_image**: (true/false) True, if the link is used as an image.
-            - **link_is_broken**: (true/false) True, if the link was non-functional at the time of the scan.
-            - **link_initial**: (true/false) True, if the link was the initial link in the campaign, not an intemediate or final link, if redirected.
+         - **link_url**: (string) The URL or location of the broken link.
+         - **link_status**: (string) The status code of the link, please view the status guide below.
+         - **link_redirected_url**: (string) The location of where the link was redirected to, empty string, if it wasn't redirected.
+         - **link_is_image**: (true/false) True, if the link is used as an image.
+         - **link_is_broken**: (true/false) True, if the link was non-functional at the time of the scan.
+         - **link_initial**: (true/false) True, if the link was the initial link in the campaign, not an intermediate or final link, if redirected.
+         - **link_count**: (integer) The number of times this link was found.
+         - **link_secure:** (true/false) true, if the link is HTTPS.
+         - **link_tel:** (true/false) true, if the link is tel:
+         - **link_mailto:** (true/false) tru, if the link is mailto:
         - **bg_images_found**: (integer) The number of background images found,
         some major email clients don't support background images.
 
         - **bg_image_list**: (List of images) All the background images found
-            - **image_url**: (string) The URL of where the image is located.
-            - **image_size** (long) The size of the image in Kilobytes (KB)
-            - **image_width**: (integer) The width of the image.
-            - **image_height**: (integer) The height of the image.
-            - **image_background**: (true/false) Will always be true, since this is a background image.
+         - **image_url**: (string) The URL of where the image is located.
+         - **image_size** (long) The size of the image in Kilobytes (KB)
+         - **image_width**: (integer) The width of the image.
+         - **image_height**: (integer) The height of the image.
+         - **image_rendered_width**: (integer) The rendered width of the image.
+         - **image_rendered_height**: (integer) The rendered height of the image.
+         - **image_background**: (true/false) Will always be true, since this is a background image.
+         - **image_type**: (Integer) 1=png, 2=jpeg, 3=gif, 4=bmp, 5=svg, 6=avif, 7=tif, 8=webp, 9=apng, 10=heic, 11=icon, 12=base64, -1=Unknown
         - **blacklisted_links**: (list of blacklisted links) Links that are on
         blacklists and their properties.
-            - **bl_url**: (string) The web address where the blacklist is located.
-            - **bl_name**: (string) The name of the blacklist
-            - **link_url**: (string) The link in the campaign that is on a blacklist, can be a redirected link.
+         - **bl_url**: (string) The web address where the blacklist is located.
+         - **bl_name**: (string) The name of the blacklist
+         - **link_url**: (string) The link in the campaign that is on a blacklist, can be a redirected link.
         - **blacklisted_links_found**: (integer) The total number of blacklisted
         links found.
 
         - **broken_links**: (list of links) All the broken links found in the
         campaign.
-            - **link_url**: (string) The URL or location of the broken link.
-            - **link_status**: (string) The reason why the link was considered broken, please view the status guide below.
-            - **link_redirected_url**: (string) The location of where the link was redirected to, empty string, if it wasn't redirected.
-            - **link_is_image**: (true/false) True, if the link is used as an image.
-            - **link_is_broken**: (true/false) True, if the link was non-functional at the time of the scan.
-            - **link_initial**: (true/false) True, if the link was the initial link in the campaign, not an intermediate or final link, if redirected.
-            - **link_count**: (integer) The number of times this link was found.
-            - **link_secure:** (true/false) True, if the link is HTTPS.
+         - **link_url**: (string) The URL or location of the broken link.
+         - **link_status**: (string) The reason why the link was considered broken, please view the status guide below.
+         - **link_redirected_url**: (string) The location of where the link was redirected to, empty string, if it wasn't redirected.
+         - **link_is_image**: (true/false) true, if the link is used as an image.
+         - **link_is_broken**: (true/false) true, if the link was non-functional at the time of the scan.
+         - **link_initial**: (true/false) true, if the link was the initial link in the campaign, not an intermediate or final link, if redirected.
+         - **link_count**: (integer) The number of times this link was found.
+         - **link_secure:** (true/false) true, if the link is HTTPS.
+         - **link_tel:** (true/false) true, if the link is tel:
+         - **link_mailto:** (true/false) tru, if the link is mailto:
         - **campaign_id**: The campaign id that will be used in other API calls.
 
         - **campaign_html:** (string) The adjusted HTML of the campaign, with
@@ -254,10 +265,10 @@ paths:
 
         - **campaign_summary**: (list of messages) A quick summary of some of
         the changes that were applied and some analysis highlights.
-            - **apply_count**: (true/false) If True, the count column apples to the message as the number of occurrences found. If false, the count will be zero, and the message is a statement of what happened.
-            - **count**: (integer) The total occurrences that was found or corrected.
-            - **html_changed**: (true/false) Indicates if the Campaign HTML was changed to correct the issue.
-            - **message**: (string) The change or analysis that took place that indicating something change or something should be looked into further.
+         - **apply_count**: (true/false) If true, the count column apples to the message as the number of occurrences found. If false, the count will be zero, and the message is a statement of what happened.
+         - **count**: (integer) The total occurrences that was found or corrected.
+         - **html_changed**: (true/false) Indicates if the Campaign HTML was changed to correct the issue.
+         - **message**: (string) The change or analysis that took place that indicating something change or something should be looked into further.
         - **convert_h_to_p_tags**: (true/false) If true, this will change all
         the H tags to P tags and set the correct font-size.
 
@@ -276,6 +287,11 @@ paths:
         the campaign, header tags displays are not consistent across email
         clients, use "**div**" or "**p**" tags styled correctly instead.
 
+        - **host_extensionless_images:** (true/**false**) If true, images
+        without extensions will be hosted on our CDN when the
+        **resize_and_host** parameter is set to true. Typically, dynamically
+        generated images lack extensions, though there are exceptions.
+
         - **image_count**: (integer) The total number of images found in your
         campaign including background images.
 
@@ -287,7 +303,14 @@ paths:
 
         - **image_list**: (list of images) A list of all images found and their
         properties.
-
+         - **image_url**: (string) The URL of where the image is located.
+         - **image_size** (long) The size of the image in Kilobytes (KB)
+         - **image_width**: (integer) The width of the image.
+         - **image_height**: (integer) The height of the image.
+         - **image_background**: (true/false) True, if this is a background image, otherwise
+         - **image_type**: (Integer) 1=png, 2=jpeg, 3=gif, 4=bmp, 5=svg, 6=avif, 7=tif, 8=webp, 9=apng, 10=heic, 11=icon, 12=base64, -1=Unknown
+         - **image_rendered_width**: (integer) The rendered width of the image.
+         - **image_rendered_height**: (integer) The rendered height of the image.
         - **links_missing_title_attribute** : (integer) The number of links
         missing the **"title"** attribute.
 
@@ -299,8 +322,8 @@ paths:
 
         - **pd_cdn_list**: (List of links on Poor delivery CDNs) Links that
         point to CDNs that are known to affect delivery.
-            - **pd_cdn_name**: (string) The name of the CDN that can affect delivery.
-            - **pd_cdn_url**: (string) The URL or Location the CDN uses to host content.
+         - **pd_cdn_name**: (string) The name of the CDN that can affect delivery.
+         - **pd_cdn_url**: (string) The URL or Location the CDN uses to host content.
         - **min_font_size_allowed**: (A positive Integer, under 100) in pixels.
 
         - **max_font_size_allowed**: (A positive Integer under 100) in pixels.
@@ -310,11 +333,14 @@ paths:
 
         - **os_image_list**:(list of images) All the oversized images in the
         campaign
-            - **image_url**: (string) The URL of where the image is located.
-            - **image_size** (long) The size of the image in Kilobytes (KB)
-            - **image_width**: (integer) The width of the image.
-            - **image_height**: (integer) The height of the image.
-            - **image_background**: (true/false) True, if this is a background image, otherwise false.
+         - **image_url**: (string) The URL of where the image is located.
+         - **image_size** (long) The size of the image in Kilobytes (KB)
+         - **image_width**: (integer) The width of the image.
+         - **image_height**: (integer) The height of the image.
+         - **image_background**: (true/false) True, if this is a background image, otherwise false.
+         - **image_type**: (Integer) 1=png, 2=jpeg, 3=gif, 4=bmp, 5=svg, 6=avif, 7=tif, 8=webp, 9=apng, 10=heic, 11=icon, 12=base64, -1=Unknown
+         - **image_rendered_width**: (integer) The rendered width of the image.
+         - **image_rendered_height**: (integer) The rendered height of the image.
         - **pd_cdns_found**: (integer) The number of content delivery networks
         found, known to cause adverse delivery issues.
 
@@ -340,9 +366,9 @@ paths:
         - **remove_classes_and_ids**: (_true_/false) If true, all the class and
         ID attributes after CSS Inlining was removed.
 
-        - **remove_comments**: (_true_/false) If true, comments were stripped
-        from both CSS and HTML. Comments are invisble in HTML and can trigger
-        spam filters.
+        - **remove_comments**: (true/false) If true, comments were stripped from
+        both CSS and HTML. Comments are invisible in HTML and can trigger spam
+        filters.
 
         - **remove_control_non_printable:** (true/false) If True, call
         non-printable and control characters are removed.
@@ -353,13 +379,17 @@ paths:
         - **remove_large_widths_over**: (integer) Experimental: If sets removes
         all defined widths over the value set on non images and table tags.
 
-        - **replace_diacritics**: (_true_/false) If true, diacritic characters
+        - **replace_diacritics**: (true/false) If true, diacritic characters
         like á were replaced with a normal characters equivalent.
 
         - **replace_non_ascii_characters**: (true/false) If true, all non-ascii
         characters were replaced with their ascii equivalent. For example, ❝ was
         replaced with **".** Non-ascii characters is of of the major spam
         trigger.
+
+        - **resize_and_host**: (true/false) If true, all eligible images were
+        resized, converted, and hosted on our CDN. Read more about this here:
+        [Resize And Host](https://docs.campaigncleaner.com/en/resize_and_host)
 
         - **spam_words_count**: (integer) The total number of spam words found
         in your campaign.
@@ -388,10 +418,10 @@ paths:
 
         - **surrounding_div**: A surrounding "div" added to your html with the
         following styles added.
-            - **max_width**: The max-width style in pixels applied to the surrounding "div".
-            - **text_align**: (left, center, right) All content within the surrounding "div" will be aligned according to the specified style. However, this can be over-written but setting "text-align" property on inner tags within the "div" to customize the appearance of your email.
-            - **font_size**: The pixel size that set in the surrounding div to adhere to, this adds an "!important" to all font-sizes that are set on any tag in the HTML to maintain the font you want. While setting all unspecified font sizes to the size you choose.
-            - **center_to_parent**: (true/false) If true, this will enable the surrounding "div" to be centered in any parent tags in which it is placed. This is particularly helpful when inserting an HTML snippet into a template
+         - **max_width**: The max-width style in pixels applied to the surrounding "div".
+         - **text_align**: (left, center, right) All content within the surrounding "div" will be aligned according to the specified style. However, this can be over-written but setting "text-align" property on inner tags within the "div" to customize the appearance of your email.
+         - **font_size**: The pixel size that set in the surrounding div to adhere to, this adds an "!important" to all font-sizes that are set on any tag in the HTML to maintain the font you want. While setting all unspecified font sizes to the size you choose.
+         - **center_to_parent**: (true/false) If true, this will enable the surrounding "div" to be centered in any parent tags in which it is placed. This is particularly helpful when inserting an HTML snippet into a template
         - **text_link_max_acceptable_ratio**: (double) the max acceptable text
         to link ratio for any campaign.
 
@@ -407,54 +437,38 @@ paths:
         your campaign.
 
         - **treat_as_fragment**: (true/false), if true, all information outside
-        outside of and including the tag was removed.
-            
+        of and including the tag were removed.
+         
 
-        #### <u><b>Additional Information:</b></u>
+        #### Additional Information:
 
 
         **HTTP Status Codes:**
         [https://developer.mozilla.org/en-US/docs/Web/HTTP/Status](https://developer.mozilla.org/en-US/docs/Web/HTTP/StatusIn)
 
 
-        In addtion to the chart below.
+        In addition to status codes listed in the document above.
 
 
         | **Status Code** | **Description** |
 
         | --- | --- |
 
-        | Connection Failure | **Problem connecting to the website or service:**
-        There was an issue reaching the website or service you're trying to
-        access.  <br>  <br>**Connection closed unexpectedly:** The connection to
-        the website or service was unexpectedly closed before completing the
-        request.  <br>Issue with keeping the connection alive: There was a
-        problem maintaining the connection while communicating with the website
-        or service.  <br>  <br>**Waiting for a response:** A request has been
-        sent, and we are waiting for a response from the website or service. |
+        | 97 | Telephone Links start with tel: |
 
-        | Name Resolution Failure | **Problem finding the website or service:**
-        The system could not find the correct address or name for the website or
-        service you're trying to access.  <br>  <br>**Problem finding the proxy
-        server:** The system could not find the correct address or name for the
-        proxy serve |
+        | 98 | Email links, starts with mailto: |
 
-        | Communication Failure | **Large Message or Request:** The message or
-        request you sent or received was too big to handle.  <br>  <br>**Issue
-        with Caching:** There was a problem with how the system stored and
-        retrieved the request or response from the cache.  <br>  <br>**Issue
-        with Proxy:** The proxy server is causing a problem with processing your
-        request. |
-
-        | Invalid URL | The provided website address is not valid. It may be a
-        partial address, missing the necessary protocols (http or https), or has
-        an incorrect format. |
+        | 99 | Invalid URL - The provided website address is not valid. It may
+        be a partial address, missing the necessary protocols (http or https),
+        or has an incorrect format. |
       requestBody:
         content:
           application/json:
             schema:
               type: object
-              example: "{\r\n  \"campaign\": \r\n    {\"id\": {{campaign_id}}}\r\n}\r\n"
+              example:
+                campaign:
+                  id: '{{campaign_id}}'
       parameters:
         - name: X-CC-API-Key
           in: header
@@ -527,1181 +541,7 @@ paths:
                   text_link_ratio: 1.79
                   text_link_max_acceptable_ratio: 10
                   total_word_count: 728
-                  campaign_html: >-
-                    <div dir=ltr> <div> <div dir=ltr> <br> </div> <div> <u></u>
-                    <div style="width: 100%; margin: 0; background-color:
-                    #FFFFFF"> <div style="opacity: 0; color: rgba(0, 0, 0, 0);
-                    line-height: 0; font-size: 0; overflow: hidden;
-                    border-width: 0; display: none !important">Check out new v10
-                    features, Ecosystem Partner program, and WhatsApp case
-                    study</div> <table width=100%> <tbody><tr> <td align=center
-                    style="display: none; font-size: 0; max-height: 0; width: 0;
-                    line-height: 0; overflow: hidden"> <div style="display:
-                    none; max-height: 0; overflow: hidden"></div> </td> </tr>
-                    </tbody></table> <div style="display: none; max-height: 0;
-                    overflow: hidden">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-                    <table width=100% style="margin-top: 40px"> <tbody><tr> <td
-                    align=center style="background-color: #FFFFFF">test <table
-                    width=100% style="max-width: 632px; margin: 0 auto">
-                    <tbody><tr> <td align=center style="font-size: 0;
-                    vertical-align: top; background-color: #FFFFFF;
-                    padding-left: 16px; padding-right: 16px; padding-bottom: 0">
-                    <div style="display: inline-block; vertical-align: top;
-                    width: 100%; max-width: 200px"> <div style="font-family:
-                    &quot;Inter&quot;, Arial, Helvetica, sans-serif; margin-top:
-                    0; margin-bottom: 0; font-size: 16px; line-height: 24px;
-                    text-align: left; padding-left: 8px; padding-right: 8px"> <p
-                    style="margin-top: 0; margin-bottom: 0"> <a
-                    href="https://go.postman.com/MDY3LVVNRC05OTEAAAGHHkyvUZ8_FzCdYGW039JGw5PgCKh1cN7UGXGwuDpVViT7_qAKS27H9YEsqrWJb5mqSE52Qtk="
-                    style="color: #FFFFFF" target=_blank> <img
-                    src=https://postman-web-property-assets.s3.amazonaws.com/email/trimmed_postman-logo-horizontal.png
-                    width=120 height=36 alt="Postman Logo" title="Postman Logo"
-                    style="max-width: 120px; vertical-align: middle;
-                    line-height: 100%; height: auto"> </a> </div> </div> <div
-                    style="display: inline-block; vertical-align: top; width:
-                    100%; max-width: 400px"> <div style="font-size: 10px;
-                    line-height: 8px; height: 8px"> </div> <div
-                    style="padding-left: 8px; padding-right: 8px"> <table
-                    style="text-align: right; margin-left: auto; margin-right:
-                    0"> <tbody><tr> <td align=center style="font-family:
-                    &quot;Inter&quot;, Arial, Helvetica, sans-serif;
-                    font-weight: 400; margin-top: 0; margin-bottom: 0;
-                    font-size: 16px; line-height: 24px"> <span style="color:
-                    #212121; display: inline; padding: 7px 8px">September
-                    Newsletter</span> </td> </tr> </tbody></table> </div> </div>
-                    </td> </tr> </tbody></table> <table width=100%> <tbody><tr>
-                    <td align=center style="background-color: #FFFFFF;
-                    padding-left: 8px; padding-right: 8px"> <table width=100%
-                    style="max-width: 632px; margin: 0 auto"> <tbody><tr> <td
-                    style="font-size: 32px; line-height: 24px; height: 40px;
-                    background-color: #FFFFFF">&nbsp; </td> </tr>
-                    </tbody></table> </td> </tr> </tbody></table> <table
-                    width=100%> <tbody><tr> <td align=center
-                    style="background-color: #FFFFFF; padding-left: 8px;
-                    padding-right: 8px"> <table width=100% style="max-width:
-                    632px; margin: 0 auto"> <tbody><tr> <td align=center
-                    style="font-family: &quot;Inter&quot;, Arial, Helvetica,
-                    sans-serif; margin-top: 0; margin-bottom: 0; font-size:
-                    16px; line-height: 24px; background-color: #FFFFFF; color:
-                    #E6E6E6"> <table width=100%> <tbody><tr> <td
-                    style="font-size: 10px; line-height: 2px; height: 2px;
-                    border-top: 1px solid #E6E6E6">&nbsp; </td> </tr>
-                    </tbody></table> </td> </tr> </tbody></table> </td> </tr>
-                    </tbody></table> </td> </tr> </tbody></table> <table
-                    width=100% align=center> <tbody><tr> <td> <table width=100%>
-                    <tbody><tr> <td align=center style="background-color:
-                    #FFFFFF; padding-left: 8px; padding-right: 8px"> <table
-                    width=100% style="max-width: 632px; margin: 0 auto">
-                    <tbody><tr> <td align=center style="font-family:
-                    &quot;Inter&quot;, Arial, Helvetica, sans-serif; margin-top:
-                    0; margin-bottom: 0; font-size: 16px; line-height: 24px;
-                    color: #212121"> <div style="font-family: &quot;Inter&quot;,
-                    Arial, Helvetica, sans-serif; margin-top: 0; margin-bottom:
-                    0; font-size: 16px; line-height: 24px; color: #212121;
-                    text-align: left"> <div> <p> <span style="font-size: 16px">
-                    <span style="font-family: Arial; color: #000000;
-                    font-weight: 400; font-variant: normal; vertical-align:
-                    baseline; white-space: pre-wrap">We've just released the
-                    biggest and best version of Postman ever, and we're rolling
-                    it out to users on the early access waitlist. Want access
-                    too? </span> <a
-                    href="https://go.postman.com/MDY3LVVNRC05OTEAAAGHHkyvUmMN6dvf4n_pR07NdQZswQHNxrVfAhV5jJ4S8NgCLHxJjwlFS1TNbkC-d5nA5h6_gWY="
-                    target=_blank> <span style="font-family: Arial; color:
-                    #1155CC; font-weight: 400; font-variant: normal;
-                    text-decoration: underline; vertical-align: baseline;
-                    white-space: pre-wrap">Sign up</span> </a> <span
-                    style="font-family: Arial; color: #000000; font-weight: 400;
-                    font-variant: normal; vertical-align: baseline; white-space:
-                    pre-wrap"> today! In the meantime, read on for a glimpse of
-                    what's new, including native Git support, Partner
-                    Workspaces, and our API Governance and Security features.
-                    And be sure to join us online September 28 for a live
-                    </span> <a
-                    href="https://go.postman.com/MDY3LVVNRC05OTEAAAGHHkyvUXKlfi1kZgP81E9ULaDtGa-9uDLr6YXH-HPHETY1_tW4lNLO79USUHwCf6YqE52Kxnc="
-                    target=_blank> <span style="font-family: Arial; color:
-                    #1155CC; font-weight: 400; font-variant: normal;
-                    text-decoration: underline; vertical-align: baseline;
-                    white-space: pre-wrap">unboxing</span> </a> <span
-                    style="font-family: Arial; color: #000000; font-weight: 400;
-                    font-variant: normal; vertical-align: baseline; white-space:
-                    pre-wrap"> of v10's most exciting features.</span> </span>
-                    </div> </div> </td> </tr> </tbody></table> </td> </tr>
-                    </tbody></table> <table width=100%> <tbody><tr> <td
-                    align=center style="background-color: #FFFFFF; padding-left:
-                    8px; padding-right: 8px"> <table width=100%
-                    style="max-width: 632px; margin: 0 auto"> <tbody><tr> <td
-                    style="font-size: 24px; line-height: 24px; height: 24px;
-                    background-color: #FFFFFF">&nbsp; </td> </tr>
-                    </tbody></table> </td> </tr> </tbody></table> <table
-                    width=100%> <tbody><tr> <td align=center
-                    style="background-color: #FFFFFF; padding-left: 8px;
-                    padding-right: 8px"> <table width=100% style="max-width:
-                    632px; margin: 0 auto"> <tbody><tr> <td align=left
-                    style="font-family: &quot;Inter&quot;, Arial, Helvetica,
-                    sans-serif; color: #242B3D; background-color: #FFFFFF;
-                    padding-left: 24px; padding-right: 24px"> <h4
-                    style="font-family: &quot;Inter&quot;, Arial, Helvetica,
-                    sans-serif; margin-top: 0; margin-bottom: 0; font-size:
-                    22px; line-height: 32px; font-weight: 700">PLATFORM
-                    UPDATES</h4> </td> </tr> </tbody></table> </td> </tr>
-                    </tbody></table> <table width=100%> <tbody><tr> <td
-                    align=center style="background-color: #FFFFFF; padding-left:
-                    8px; padding-right: 8px"> <table width=100%
-                    style="max-width: 632px; margin: 0 auto"> <tbody><tr> <td
-                    align=center style="font-family: &quot;Inter&quot;, Arial,
-                    Helvetica, sans-serif; margin-top: 0; margin-bottom: 0;
-                    font-size: 16px; line-height: 24px; background-color:
-                    #FFFFFF; color: #424651; padding-left: 24px; padding-right:
-                    24px; padding-bottom: 0"> <a> <img
-                    src=https://lp.postman.com/rs/067-UMD-991/images/v10+jpg.jpg
-                    width=584 height=292 alt="v10 jpg.jpg" style="border-width:
-                    0; display: block; max-width: 100%; line-height: 100%;
-                    height: auto; width: 600px"> </a> </td> </tr>
-                    </tbody></table> </td> </tr> </tbody></table> <table
-                    width=100%> <tbody><tr> <td align=center
-                    style="background-color: #FFFFFF; padding-left: 8px;
-                    padding-right: 8px"> <table width=100% style="max-width:
-                    632px; margin: 0 auto"> <tbody><tr> <td style="font-size:
-                    24px; line-height: 24px; height: 24px; background-color:
-                    #FFFFFF">&nbsp; </td> </tr> </tbody></table> </td> </tr>
-                    </tbody></table> <table width=100%> <tbody><tr> <td
-                    align=center style="background-color: #FFFFFF; padding-left:
-                    8px; padding-right: 8px"> <table width=100%
-                    style="max-width: 632px; margin: 0 auto"> <tbody><tr> <td
-                    align=center style="font-family: &quot;Inter&quot;, Arial,
-                    Helvetica, sans-serif; margin-top: 0; margin-bottom: 0;
-                    font-size: 16px; line-height: 24px; color: #424651"> <div
-                    style="font-family: &quot;Inter&quot;, Arial, Helvetica,
-                    sans-serif; margin-top: 0; margin-bottom: 0; font-size:
-                    16px; line-height: 24px; color: #212121; text-align: left">
-                    <h4 style="font-family: &quot;Inter&quot;, Arial, Helvetica,
-                    sans-serif; font-weight: 400; margin-top: 0; margin-bottom:
-                    0; color: #212121; font-size: 22px; line-height:
-                    32px">Collaborate Effectively with Partner Workspaces</h4>
-                    </div> </td> </tr> </tbody></table> </td> </tr>
-                    </tbody></table> <table width=100%> <tbody><tr> <td
-                    align=center style="background-color: #FFFFFF; padding-left:
-                    8px; padding-right: 8px"> <table width=100%
-                    style="max-width: 632px; margin: 0 auto"> <tbody><tr> <td
-                    align=center style="font-family: &quot;Inter&quot;, Arial,
-                    Helvetica, sans-serif; margin-top: 0; margin-bottom: 0;
-                    font-size: 16px; line-height: 24px; color: #212121"> <div
-                    style="font-family: &quot;Inter&quot;, Arial, Helvetica,
-                    sans-serif; margin-top: 0; margin-bottom: 0; font-size:
-                    16px; line-height: 24px; color: #212121; text-align: left">
-                    <div> <p> <span style="font-size: 16px; font-family: Arial;
-                    color: #000000; font-weight: 400; font-variant: normal;
-                    vertical-align: baseline; white-space: pre-wrap">Learn about
-                    Postman's Partner Workspaces, which are shared, secure,
-                    access-controlled places where organizations can invite
-                    select partners to collaborate and build APIs.</span> </div>
-                    </div> </td> </tr> </tbody></table> </td> </tr>
-                    </tbody></table> <table width=100%> <tbody><tr> <td
-                    align=center style="background-color: #FFFFFF; padding-left:
-                    8px; padding-right: 8px"> <table width=100%
-                    style="max-width: 632px; margin: 0 auto"> <tbody><tr> <td
-                    style="font-family: &quot;Inter&quot;, Arial, Helvetica,
-                    sans-serif; margin-top: 0; margin-bottom: 0; font-size:
-                    16px; line-height: 24px; background-color: #FFFFFF; color:
-                    #212121"> <a
-                    href="https://go.postman.com/MDY3LVVNRC05OTEAAAGHHkyvUcjJKsT7CgnN_yTFacTPkk0qvN_LiN6HvyEYBbLdJc-RkefYUxJ3esLc0svbQ2PlUi8="
-                    style="font-size: 16px; line-height: 24px; color: #0265D2;
-                    margin-top: 0; margin-bottom: 0; font-weight: 400"
-                    target=_blank>Start working together →</a> </td> </tr>
-                    </tbody></table> </td> </tr> </tbody></table> <table
-                    width=100%> <tbody><tr> <td align=center
-                    style="background-color: #FFFFFF; padding-left: 8px;
-                    padding-right: 8px"> <table width=100% style="max-width:
-                    632px; margin: 0 auto"> <tbody><tr> <td style="font-size:
-                    24px; line-height: 24px; height: 24px; background-color:
-                    #FFFFFF">&nbsp; </td> </tr> </tbody></table> </td> </tr>
-                    </tbody></table> <table width=100%> <tbody><tr> <td
-                    align=center style="background-color: #FFFFFF; padding-left:
-                    8px; padding-right: 8px"> <table width=100%
-                    style="max-width: 632px; margin: 0 auto"> <tbody><tr> <td
-                    align=center style="font-family: &quot;Inter&quot;, Arial,
-                    Helvetica, sans-serif; margin-top: 0; margin-bottom: 0;
-                    font-size: 16px; line-height: 24px; color: #424651"> <div
-                    style="font-family: &quot;Inter&quot;, Arial, Helvetica,
-                    sans-serif; margin-top: 0; margin-bottom: 0; font-size:
-                    16px; line-height: 24px; color: #212121; text-align: left">
-                    <h4 style="font-family: &quot;Inter&quot;, Arial, Helvetica,
-                    sans-serif; font-weight: 400; margin-top: 0; margin-bottom:
-                    0; color: #212121; font-size: 22px; line-height: 32px">Get
-                    Native Git Support with the Redesigned API Builder</h4>
-                    </div> </td> </tr> </tbody></table> </td> </tr>
-                    </tbody></table> <table width=100%> <tbody><tr> <td
-                    align=center style="background-color: #FFFFFF; padding-left:
-                    8px; padding-right: 8px"> <table width=100%
-                    style="max-width: 632px; margin: 0 auto"> <tbody><tr> <td
-                    align=center style="font-family: &quot;Inter&quot;, Arial,
-                    Helvetica, sans-serif; margin-top: 0; margin-bottom: 0;
-                    font-size: 16px; line-height: 24px; color: #212121"> <div
-                    style="font-family: &quot;Inter&quot;, Arial, Helvetica,
-                    sans-serif; margin-top: 0; margin-bottom: 0; font-size:
-                    16px; line-height: 24px; color: #212121; text-align: left">
-                    <div> <p> <span style="font-size: 16px; font-family: Arial;
-                    color: #000000; font-weight: 400; font-variant: normal;
-                    vertical-align: baseline; white-space: pre-wrap">Postman's
-                    improved API Builder offers native Git support, letting you
-                    connect to your source code repository to automatically
-                    maintain API documentation, tests, and specifications
-                    alongside code.</span> </div> </div> </td> </tr>
-                    </tbody></table> </td> </tr> </tbody></table> <table
-                    width=100%> <tbody><tr> <td align=center
-                    style="background-color: #FFFFFF; padding-left: 8px;
-                    padding-right: 8px"> <table width=100% style="max-width:
-                    632px; margin: 0 auto"> <tbody><tr> <td style="font-family:
-                    &quot;Inter&quot;, Arial, Helvetica, sans-serif; margin-top:
-                    0; margin-bottom: 0; font-size: 16px; line-height: 24px;
-                    background-color: #FFFFFF; color: #212121"> <a
-                    href="https://go.postman.com/MDY3LVVNRC05OTEAAAGHHkyvUVAVQyTdzcDcX4FJ6ujCToocjyAkFwsVn1Pt4Ea1Cj55hgSicekju7IIyu76h8P5Rjc="
-                    style="font-size: 16px; line-height: 24px; color: #0265D2;
-                    margin-top: 0; margin-bottom: 0; font-weight: 400"
-                    target=_blank>Begin building →</a> </td> </tr>
-                    </tbody></table> </td> </tr> </tbody></table> <table
-                    width=100%> <tbody><tr> <td align=center
-                    style="background-color: #FFFFFF; padding-left: 8px;
-                    padding-right: 8px"> <table width=100% style="max-width:
-                    632px; margin: 0 auto"> <tbody><tr> <td style="font-size:
-                    24px; line-height: 24px; height: 24px; background-color:
-                    #FFFFFF">&nbsp; </td> </tr> </tbody></table> </td> </tr>
-                    </tbody></table> <table width=100%> <tbody><tr> <td
-                    align=center style="background-color: #FFFFFF; padding-left:
-                    8px; padding-right: 8px"> <table width=100%
-                    style="max-width: 632px; margin: 0 auto"> <tbody><tr> <td
-                    align=center style="font-family: &quot;Inter&quot;, Arial,
-                    Helvetica, sans-serif; margin-top: 0; margin-bottom: 0;
-                    font-size: 16px; line-height: 24px; color: #424651"> <div
-                    style="font-family: &quot;Inter&quot;, Arial, Helvetica,
-                    sans-serif; margin-top: 0; margin-bottom: 0; font-size:
-                    16px; line-height: 24px; color: #212121; text-align: left">
-                    <h4 style="font-family: &quot;Inter&quot;, Arial, Helvetica,
-                    sans-serif; font-weight: 400; margin-top: 0; margin-bottom:
-                    0; color: #212121; font-size: 22px; line-height: 32px">More
-                    v10 Features and Updates</h4> </div> </td> </tr>
-                    </tbody></table> </td> </tr> </tbody></table> <table
-                    width=100%> <tbody><tr> <td align=center
-                    style="background-color: #FFFFFF; padding-left: 8px;
-                    padding-right: 8px"> <table width=100% style="max-width:
-                    632px; margin: 0 auto"> <tbody><tr> <td style="font-family:
-                    &quot;Inter&quot;, Arial, Helvetica, sans-serif; margin-top:
-                    0; margin-bottom: 0; font-size: 16px; line-height: 24px;
-                    background-color: #FFFFFF; color: #212121"> <a
-                    href="https://go.postman.com/MDY3LVVNRC05OTEAAAGHHkyvUUCWA5PxG1MOa3vTv30sHkaDBNNIsdTKWf00unPl5zxAfSSWV_4rtls403NvRGOqO90="
-                    style="font-size: 16px; line-height: 24px; color: #0265D2;
-                    margin-top: 0; margin-bottom: 0; font-weight: 400"
-                    target=_blank>Automate API Testing with the New Postman CLI
-                    →</a> </td> </tr> </tbody></table> </td> </tr>
-                    </tbody></table> <table width=100%> <tbody><tr> <td
-                    align=center style="background-color: #FFFFFF; padding-left:
-                    8px; padding-right: 8px"> <table width=100%
-                    style="max-width: 632px; margin: 0 auto"> <tbody><tr> <td
-                    style="font-family: &quot;Inter&quot;, Arial, Helvetica,
-                    sans-serif; margin-top: 0; margin-bottom: 0; font-size:
-                    16px; line-height: 24px; background-color: #FFFFFF; color:
-                    #212121"> <a
-                    href="https://go.postman.com/MDY3LVVNRC05OTEAAAGHHkyvUcMNR0JjPyq1BesKDOzcozEAOuIZTky3Ly52nCmOH3bMCM7aWRTFTSUJI1hiJf9FvWQ="
-                    style="font-size: 16px; line-height: 24px; color: #0265D2;
-                    margin-top: 0; margin-bottom: 0; font-weight: 400"
-                    target=_blank>Tighten API Governance with Postman v10 →</a>
-                    </td> </tr> </tbody></table> </td> </tr> </tbody></table>
-                    <table width=100%> <tbody><tr> <td align=center
-                    style="background-color: #FFFFFF; padding-left: 8px;
-                    padding-right: 8px"> <table width=100% style="max-width:
-                    632px; margin: 0 auto"> <tbody><tr> <td style="font-family:
-                    &quot;Inter&quot;, Arial, Helvetica, sans-serif; margin-top:
-                    0; margin-bottom: 0; font-size: 16px; line-height: 24px;
-                    background-color: #FFFFFF; color: #212121"> <a
-                    href="https://go.postman.com/MDY3LVVNRC05OTEAAAGHHkyvUUjpYBQOppvAmjw7ph6EXD7T9MRXXqZ9Kzmv9oesLscJQtCsMHiIO-dBtUefAPP0WEA="
-                    style="font-size: 16px; line-height: 24px; color: #0265D2;
-                    margin-top: 0; margin-bottom: 0; font-weight: 400"
-                    target=_blank>Strengthen API Security with Postman v10 →</a>
-                    </td> </tr> </tbody></table> </td> </tr> </tbody></table>
-                    <table width=100%> <tbody><tr> <td align=center
-                    style="background-color: #FFFFFF; padding-left: 8px;
-                    padding-right: 8px"> <table width=100% style="max-width:
-                    632px; margin: 0 auto"> <tbody><tr> <td style="font-family:
-                    &quot;Inter&quot;, Arial, Helvetica, sans-serif; margin-top:
-                    0; margin-bottom: 0; font-size: 16px; line-height: 24px;
-                    background-color: #FFFFFF; color: #212121"> <a
-                    href="https://go.postman.com/MDY3LVVNRC05OTEAAAGHHkyvUTu7NEUQvff-O9I1vDXKu-0afLB4H2iPPA_gJFLf_dTrr_JHM9PVTGcG5Xjn9YVR4X8="
-                    style="font-size: 16px; line-height: 24px; color: #0265D2;
-                    margin-top: 0; margin-bottom: 0; font-weight: 400"
-                    target=_blank>Improve Internal API Discovery with the
-                    Redesigned Private API Network →</a> </td> </tr>
-                    </tbody></table> </td> </tr> </tbody></table> <table
-                    width=100%> <tbody><tr> <td align=center
-                    style="background-color: #FFFFFF; padding-left: 8px;
-                    padding-right: 8px"> <table width=100% style="max-width:
-                    632px; margin: 0 auto"> <tbody><tr> <td style="font-family:
-                    &quot;Inter&quot;, Arial, Helvetica, sans-serif; margin-top:
-                    0; margin-bottom: 0; font-size: 16px; line-height: 24px;
-                    background-color: #FFFFFF; color: #212121"> <a
-                    href="https://go.postman.com/MDY3LVVNRC05OTEAAAGHHkyvURalAT26IlTTerJZgQtQPbdc2oZ1fPn4JPLP03585Lh21iEGREXfXzNq9sP1vXZFcXo="
-                    style="font-size: 16px; line-height: 24px; color: #0265D2;
-                    margin-top: 0; margin-bottom: 0; font-weight: 400"
-                    target=_blank>Drag and Drop, Resize, and Add Captions in
-                    Postman Editor →</a> </td> </tr> </tbody></table> </td>
-                    </tr> </tbody></table> <table width=100%> <tbody><tr> <td
-                    align=center style="background-color: #FFFFFF; padding-left:
-                    8px; padding-right: 8px"> <table width=100%
-                    style="max-width: 632px; margin: 0 auto"> <tbody><tr> <td
-                    style="font-size: 24px; line-height: 24px; height: 24px;
-                    background-color: #FFFFFF">&nbsp; </td> </tr>
-                    </tbody></table> </td> </tr> </tbody></table> <table
-                    width=100%> <tbody><tr> <td align=center
-                    style="background-color: #FFFFFF; padding-left: 8px;
-                    padding-right: 8px"> <table width=100% style="max-width:
-                    632px; margin: 0 auto"> <tbody><tr> <td style="font-size:
-                    24px; line-height: 24px; height: 24px; background-color:
-                    #FFFFFF">&nbsp; </td> </tr> </tbody></table> </td> </tr>
-                    </tbody></table> <table width=100%> <tbody><tr> <td
-                    align=center style="background-color: #FFFFFF; padding-left:
-                    8px; padding-right: 8px"> <table width=100%
-                    style="max-width: 632px; margin: 0 auto"> <tbody><tr> <td
-                    align=left style="font-family: &quot;Inter&quot;, Arial,
-                    Helvetica, sans-serif; color: #242B3D; background-color:
-                    #FFFFFF; padding-left: 24px; padding-right: 24px"> <h4
-                    style="font-family: &quot;Inter&quot;, Arial, Helvetica,
-                    sans-serif; margin-top: 0; margin-bottom: 0; font-size:
-                    22px; line-height: 32px; font-weight: 700">CASE STUDIES</h4>
-                    </td> </tr> </tbody></table> </td> </tr> </tbody></table>
-                    <table width=100%> <tbody><tr> <td align=center
-                    style="background-color: #FFFFFF; padding-left: 8px;
-                    padding-right: 8px"> <table width=100% style="max-width:
-                    632px; margin: 0 auto"> <tbody><tr> <td align=center
-                    style="font-family: &quot;Inter&quot;, Arial, Helvetica,
-                    sans-serif; margin-top: 0; margin-bottom: 0; font-size:
-                    16px; line-height: 24px; background-color: #FFFFFF; color:
-                    #424651; padding-left: 24px; padding-right: 24px;
-                    padding-bottom: 0"> <a> <img
-                    src=https://lp.postman.com/rs/067-UMD-991/images/whatsapp+-+87kb.jpg
-                    width=584 height=292 alt="whatsapp - 87kb.jpg"
-                    style="border-width: 0; display: block; max-width: 100%;
-                    line-height: 100%; height: auto; width: 600px"> </a> </td>
-                    </tr> </tbody></table> </td> </tr> </tbody></table> <table
-                    width=100%> <tbody><tr> <td align=center
-                    style="background-color: #FFFFFF; padding-left: 8px;
-                    padding-right: 8px"> <table width=100% style="max-width:
-                    632px; margin: 0 auto"> <tbody><tr> <td style="font-size:
-                    24px; line-height: 24px; height: 24px; background-color:
-                    #FFFFFF">&nbsp; </td> </tr> </tbody></table> </td> </tr>
-                    </tbody></table> <table width=100%> <tbody><tr> <td
-                    align=center style="background-color: #FFFFFF; padding-left:
-                    8px; padding-right: 8px"> <table width=100%
-                    style="max-width: 632px; margin: 0 auto"> <tbody><tr> <td
-                    align=center style="font-family: &quot;Inter&quot;, Arial,
-                    Helvetica, sans-serif; margin-top: 0; margin-bottom: 0;
-                    font-size: 16px; line-height: 24px; color: #424651"> <div
-                    style="font-family: &quot;Inter&quot;, Arial, Helvetica,
-                    sans-serif; margin-top: 0; margin-bottom: 0; font-size:
-                    16px; line-height: 24px; color: #212121; text-align: left">
-                    <h4 style="font-family: &quot;Inter&quot;, Arial, Helvetica,
-                    sans-serif; font-weight: 400; margin-top: 0; margin-bottom:
-                    0; color: #212121; font-size: 22px; line-height:
-                    32px">WhatsApp Makes Developers' Job Easier With Postman
-                    </h4> </div> </td> </tr> </tbody></table> </td> </tr>
-                    </tbody></table> <table width=100%> <tbody><tr> <td
-                    align=center style="background-color: #FFFFFF; padding-left:
-                    8px; padding-right: 8px"> <table width=100%
-                    style="max-width: 632px; margin: 0 auto"> <tbody><tr> <td
-                    align=center style="font-family: &quot;Inter&quot;, Arial,
-                    Helvetica, sans-serif; margin-top: 0; margin-bottom: 0;
-                    font-size: 16px; line-height: 24px; color: #212121"> <div
-                    style="font-family: &quot;Inter&quot;, Arial, Helvetica,
-                    sans-serif; margin-top: 0; margin-bottom: 0; font-size:
-                    16px; line-height: 24px; color: #212121; text-align: left">
-                    <div> <p> <span style="font-size: 16px; font-family: Arial;
-                    color: #000000; font-weight: 400; font-variant: normal;
-                    vertical-align: baseline; white-space: pre-wrap">Postman has
-                    enabled the WhatsApp Business Platform to reduce developer
-                    onboarding time to minutes for its Cloud API and generate
-                    documentation for easier collaboration. </span> </div>
-                    </div> </td> </tr> </tbody></table> </td> </tr>
-                    </tbody></table> <table width=100%> <tbody><tr> <td
-                    align=center style="background-color: #FFFFFF; padding-left:
-                    8px; padding-right: 8px"> <table width=100%
-                    style="max-width: 632px; margin: 0 auto"> <tbody><tr> <td
-                    style="font-family: &quot;Inter&quot;, Arial, Helvetica,
-                    sans-serif; margin-top: 0; margin-bottom: 0; font-size:
-                    16px; line-height: 24px; background-color: #FFFFFF; color:
-                    #212121"> <a
-                    href="https://go.postman.com/MDY3LVVNRC05OTEAAAGHHkyvUTfF5qwnFk8bhTTcaTcofo64TeLqn7-6vD7VAg2YUWEX6L0kxx6W-IIJCjvTkAyjLkQ="
-                    style="font-size: 16px; line-height: 24px; color: #0265D2;
-                    margin-top: 0; margin-bottom: 0; font-weight: 400"
-                    target=_blank>See how WhatsApp did it →</a> </td> </tr>
-                    </tbody></table> </td> </tr> </tbody></table> <table
-                    width=100%> <tbody><tr> <td align=center
-                    style="background-color: #FFFFFF; padding-left: 8px;
-                    padding-right: 8px"> <table width=100% style="max-width:
-                    632px; margin: 0 auto"> <tbody><tr> <td style="font-size:
-                    24px; line-height: 24px; height: 24px; background-color:
-                    #FFFFFF">&nbsp; </td> </tr> </tbody></table> </td> </tr>
-                    </tbody></table> <table width=100%> <tbody><tr> <td
-                    align=center style="background-color: #FFFFFF; padding-left:
-                    8px; padding-right: 8px"> <table width=100%
-                    style="max-width: 632px; margin: 0 auto"> <tbody><tr> <td
-                    style="font-size: 24px; line-height: 24px; height: 24px;
-                    background-color: #FFFFFF">&nbsp; </td> </tr>
-                    </tbody></table> </td> </tr> </tbody></table> <table
-                    width=100%> <tbody><tr> <td align=center
-                    style="background-color: #FFFFFF; padding-left: 8px;
-                    padding-right: 8px"> <table width=100% style="max-width:
-                    632px; margin: 0 auto"> <tbody><tr> <td align=left
-                    style="font-family: &quot;Inter&quot;, Arial, Helvetica,
-                    sans-serif; color: #242B3D; background-color: #FFFFFF;
-                    padding-left: 24px; padding-right: 24px"> <h4
-                    style="font-family: &quot;Inter&quot;, Arial, Helvetica,
-                    sans-serif; margin-top: 0; margin-bottom: 0; font-size:
-                    22px; line-height: 32px; font-weight: 700">UPCOMING
-                    EVENTS</h4> </td> </tr> </tbody></table> </td> </tr>
-                    </tbody></table> <table width=100%> <tbody><tr> <td
-                    align=center style="background-color: #FFFFFF; padding-left:
-                    8px; padding-right: 8px"> <table width=100%
-                    style="max-width: 632px; margin: 0 auto"> <tbody><tr> <td
-                    align=center style="font-family: &quot;Inter&quot;, Arial,
-                    Helvetica, sans-serif; margin-top: 0; margin-bottom: 0;
-                    font-size: 16px; line-height: 24px; background-color:
-                    #FFFFFF; color: #424651; padding-left: 24px; padding-right:
-                    24px; padding-bottom: 0"> <a> <img
-                    src=https://lp.postman.com/rs/067-UMD-991/images/events.jpg
-                    width=584 height=292 style="display: inline-block;
-                    max-width: 584px; vertical-align: middle; line-height: 100%;
-                    height: auto; width: 100%"> </a> </td> </tr>
-                    </tbody></table> </td> </tr> </tbody></table> <table
-                    width=100%> <tbody><tr> <td align=center
-                    style="background-color: #FFFFFF; padding-left: 8px;
-                    padding-right: 8px"> <table width=100% style="max-width:
-                    632px; margin: 0 auto"> <tbody><tr> <td align=center
-                    style="font-family: &quot;Inter&quot;, Arial, Helvetica,
-                    sans-serif; margin-top: 0; margin-bottom: 0; font-size:
-                    16px; line-height: 24px; color: #424651"> <div
-                    style="font-family: &quot;Inter&quot;, Arial, Helvetica,
-                    sans-serif; margin-top: 0; margin-bottom: 0; font-size:
-                    16px; line-height: 24px; color: #212121; text-align: left">
-                    <h4 style="font-family: &quot;Inter&quot;, Arial, Helvetica,
-                    sans-serif; font-weight: 400; margin-top: 0; margin-bottom:
-                    0; color: #212121; font-size: 22px; line-height:
-                    32px">Unboxing What's New in Postman v10, Sept. 28</h4>
-                    </div> </td> </tr> </tbody></table> </td> </tr>
-                    </tbody></table> <table width=100%> <tbody><tr> <td
-                    align=center style="background-color: #FFFFFF; padding-left:
-                    8px; padding-right: 8px"> <table width=100%
-                    style="max-width: 632px; margin: 0 auto"> <tbody><tr> <td
-                    align=center style="font-family: &quot;Inter&quot;, Arial,
-                    Helvetica, sans-serif; margin-top: 0; margin-bottom: 0;
-                    font-size: 16px; line-height: 24px; color: #212121"> <div
-                    style="font-family: &quot;Inter&quot;, Arial, Helvetica,
-                    sans-serif; margin-top: 0; margin-bottom: 0; font-size:
-                    16px; line-height: 24px; color: #212121; text-align: left">
-                    <div> <p> <span style="font-size: 16px; font-family: Arial;
-                    color: #000000; font-weight: 400; font-variant: normal;
-                    vertical-align: baseline; white-space: pre-wrap">This
-                    one-hour session is especially well suited for testers,
-                    developers, and DevOps but also for anyone interested in
-                    boosting team productivity.</span> </div> </div> </td> </tr>
-                    </tbody></table> </td> </tr> </tbody></table> <table
-                    width=100%> <tbody><tr> <td align=center
-                    style="background-color: #FFFFFF; padding-left: 8px;
-                    padding-right: 8px"> <table width=100% style="max-width:
-                    632px; margin: 0 auto"> <tbody><tr> <td style="font-family:
-                    &quot;Inter&quot;, Arial, Helvetica, sans-serif; margin-top:
-                    0; margin-bottom: 0; font-size: 16px; line-height: 24px;
-                    background-color: #FFFFFF; color: #212121"> <a
-                    href="https://go.postman.com/MDY3LVVNRC05OTEAAAGHHkyvUXKlfi1kZgP81E9ULaDtGa-9uDLr6YXH-HPHETY1_tW4lNLO79USUHwCf6YqE52Kxnc="
-                    style="font-size: 16px; line-height: 24px; color: #0265D2;
-                    margin-top: 0; margin-bottom: 0; font-weight: 400"
-                    target=_blank>Register today →</a> </td> </tr>
-                    </tbody></table> </td> </tr> </tbody></table> <table
-                    width=100%> <tbody><tr> <td align=center
-                    style="background-color: #FFFFFF; padding-left: 8px;
-                    padding-right: 8px"> <table width=100% style="max-width:
-                    632px; margin: 0 auto"> <tbody><tr> <td style="font-size:
-                    24px; line-height: 24px; height: 24px; background-color:
-                    #FFFFFF">&nbsp; </td> </tr> </tbody></table> </td> </tr>
-                    </tbody></table> <table width=100%> <tbody><tr> <td
-                    align=center style="background-color: #FFFFFF; padding-left:
-                    8px; padding-right: 8px"> <table width=100%
-                    style="max-width: 632px; margin: 0 auto"> <tbody><tr> <td
-                    style="font-size: 24px; line-height: 24px; height: 24px;
-                    background-color: #FFFFFF">&nbsp; </td> </tr>
-                    </tbody></table> </td> </tr> </tbody></table> <table
-                    width=100%> <tbody><tr> <td align=center
-                    style="background-color: #FFFFFF; padding-left: 8px;
-                    padding-right: 8px"> <table width=100% style="max-width:
-                    632px; margin: 0 auto"> <tbody><tr> <td align=left
-                    style="font-family: &quot;Inter&quot;, Arial, Helvetica,
-                    sans-serif; color: #242B3D; background-color: #FFFFFF;
-                    padding-left: 24px; padding-right: 24px"> <h4
-                    style="font-family: &quot;Inter&quot;, Arial, Helvetica,
-                    sans-serif; margin-top: 0; margin-bottom: 0; font-size:
-                    22px; line-height: 32px; font-weight: 700">THE POSTMAN API
-                    NETWORK</h4> </td> </tr> </tbody></table> </td> </tr>
-                    </tbody></table> <table width=100%> <tbody><tr> <td
-                    align=center style="background-color: #FFFFFF; padding-left:
-                    8px; padding-right: 8px"> <table width=100%
-                    style="max-width: 632px; margin: 0 auto"> <tbody><tr> <td
-                    align=center style="font-family: &quot;Inter&quot;, Arial,
-                    Helvetica, sans-serif; margin-top: 0; margin-bottom: 0;
-                    font-size: 16px; line-height: 24px; background-color:
-                    #FFFFFF; color: #424651; padding-left: 24px; padding-right:
-                    24px; padding-bottom: 0"> <a> <img
-                    src=https://lp.postman.com/rs/067-UMD-991/images/Announcement-of-Ecosystem-Partner-Program%402x-100.jpg
-                    width=584 height=292
-                    alt=Announcement-of-Ecosystem-Partner-Program@2x-100.jpg
-                    style="display: inline-block; max-width: 584px;
-                    vertical-align: middle; line-height: 100%; height: auto;
-                    width: 100%"> </a> </td> </tr> </tbody></table> </td> </tr>
-                    </tbody></table> <table width=100%> <tbody><tr> <td
-                    align=center style="background-color: #FFFFFF; padding-left:
-                    8px; padding-right: 8px"> <table width=100%
-                    style="max-width: 632px; margin: 0 auto"> <tbody><tr> <td
-                    style="font-size: 24px; line-height: 24px; height: 24px;
-                    background-color: #FFFFFF">&nbsp; </td> </tr>
-                    </tbody></table> </td> </tr> </tbody></table> <table
-                    width=100%> <tbody><tr> <td align=center
-                    style="background-color: #FFFFFF; padding-left: 8px;
-                    padding-right: 8px"> <table width=100% style="max-width:
-                    632px; margin: 0 auto"> <tbody><tr> <td align=center
-                    style="font-family: &quot;Inter&quot;, Arial, Helvetica,
-                    sans-serif; margin-top: 0; margin-bottom: 0; font-size:
-                    16px; line-height: 24px; color: #424651"> <div
-                    style="font-family: &quot;Inter&quot;, Arial, Helvetica,
-                    sans-serif; margin-top: 0; margin-bottom: 0; font-size:
-                    16px; line-height: 24px; color: #212121; text-align: left">
-                    <h4 style="font-family: &quot;Inter&quot;, Arial, Helvetica,
-                    sans-serif; font-weight: 400; margin-top: 0; margin-bottom:
-                    0; color: #212121; font-size: 22px; line-height:
-                    32px">Postman's Ecosystem Partner Program Is Live</h4>
-                    </div> </td> </tr> </tbody></table> </td> </tr>
-                    </tbody></table> <table width=100%> <tbody><tr> <td
-                    align=center style="background-color: #FFFFFF; padding-left:
-                    8px; padding-right: 8px"> <table width=100%
-                    style="max-width: 632px; margin: 0 auto"> <tbody><tr> <td
-                    style="font-size: 24px; line-height: 24px; height: 24px;
-                    background-color: #FFFFFF">&nbsp; </td> </tr>
-                    </tbody></table> </td> </tr> </tbody></table> <table
-                    width=100%> <tbody><tr> <td align=center
-                    style="background-color: #FFFFFF; padding-left: 8px;
-                    padding-right: 8px"> <table width=100% style="max-width:
-                    632px; margin: 0 auto"> <tbody><tr> <td align=center
-                    style="font-family: &quot;Inter&quot;, Arial, Helvetica,
-                    sans-serif; margin-top: 0; margin-bottom: 0; font-size:
-                    16px; line-height: 24px; color: #212121"> <div
-                    style="font-family: &quot;Inter&quot;, Arial, Helvetica,
-                    sans-serif; margin-top: 0; margin-bottom: 0; font-size:
-                    16px; line-height: 24px; color: #212121; text-align: left">
-                    <div> <p style="line-height: 1.38; margin-top: 0;
-                    margin-bottom: 0"> <span style="font-size: 16px;
-                    font-family: Arial; color: #212121; background-color:
-                    #FFFFFF; font-weight: 400; font-variant: normal;
-                    vertical-align: baseline; white-space: pre-wrap">Our
-                    Ecosystem Partner Program is created to support companies
-                    and independent software vendors in building joint solutions
-                    with the Postman API Platform that improve the developer
-                    experience and enhance visibility in front of Postman's 20
-                    million users.</span> </div> </div> </td> </tr>
-                    </tbody></table> </td> </tr> </tbody></table> <table
-                    width=100%> <tbody><tr> <td align=center
-                    style="background-color: #FFFFFF; padding-left: 8px;
-                    padding-right: 8px"> <table width=100% style="max-width:
-                    632px; margin: 0 auto"> <tbody><tr> <td style="font-size:
-                    24px; line-height: 24px; height: 24px; background-color:
-                    #FFFFFF">&nbsp; </td> </tr> </tbody></table> </td> </tr>
-                    </tbody></table> <table width=100%> <tbody><tr> <td
-                    align=center style="background-color: #FFFFFF; padding-left:
-                    8px; padding-right: 8px"> <table width=100%
-                    style="max-width: 632px; margin: 0 auto"> <tbody><tr> <td
-                    style="font-family: &quot;Inter&quot;, Arial, Helvetica,
-                    sans-serif; margin-top: 0; margin-bottom: 0; font-size:
-                    16px; line-height: 24px; background-color: #FFFFFF; color:
-                    #212121"> <a
-                    href="https://go.postman.com/MDY3LVVNRC05OTEAAAGHHkyvUcK9WGP0p20sYT5_rdoBWL7cm8QRE7ZmwGXZk4gV26mC-9EUCdfglpldGNmF1hCWjoo="
-                    style="font-size: 16px; line-height: 24px; color: #0265D2;
-                    margin-top: 0; margin-bottom: 0; font-weight: 400"
-                    target=_blank>Put 'er there, partner →</a> </td> </tr>
-                    </tbody></table> </td> </tr> </tbody></table> <table
-                    width=100%> <tbody><tr> <td align=center
-                    style="background-color: #FFFFFF; padding-left: 8px;
-                    padding-right: 8px"> <table width=100% style="max-width:
-                    632px; margin: 0 auto"> <tbody><tr> <td style="font-size:
-                    24px; line-height: 24px; height: 24px; background-color:
-                    #FFFFFF">&nbsp; </td> </tr> </tbody></table> </td> </tr>
-                    </tbody></table> <table width=100%> <tbody><tr> <td
-                    align=center style="background-color: #FFFFFF; padding-left:
-                    8px; padding-right: 8px"> <table width=100%
-                    style="max-width: 632px; margin: 0 auto"> <tbody><tr> <td
-                    align=center style="font-family: &quot;Inter&quot;, Arial,
-                    Helvetica, sans-serif; margin-top: 0; margin-bottom: 0;
-                    font-size: 16px; line-height: 24px; color: #424651"> <div
-                    style="font-family: &quot;Inter&quot;, Arial, Helvetica,
-                    sans-serif; margin-top: 0; margin-bottom: 0; font-size:
-                    16px; line-height: 24px; color: #212121; text-align: left">
-                    <h4 style="font-family: &quot;Inter&quot;, Arial, Helvetica,
-                    sans-serif; font-weight: 400; margin-top: 0; margin-bottom:
-                    0; color: #212121; font-size: 22px; line-height:
-                    32px">Empower Your Business with These Payment APIs</h4>
-                    </div> </td> </tr> </tbody></table> </td> </tr>
-                    </tbody></table> <table width=100%> <tbody><tr> <td
-                    align=center style="background-color: #FFFFFF; padding-left:
-                    8px; padding-right: 8px"> <table width=100%
-                    style="max-width: 632px; margin: 0 auto"> <tbody><tr> <td
-                    align=center style="font-family: &quot;Inter&quot;, Arial,
-                    Helvetica, sans-serif; margin-top: 0; margin-bottom: 0;
-                    font-size: 16px; line-height: 24px; color: #212121"> <div
-                    style="font-family: &quot;Inter&quot;, Arial, Helvetica,
-                    sans-serif; margin-top: 0; margin-bottom: 0; font-size:
-                    16px; line-height: 24px; color: #212121; text-align: left">
-                    <div> <p> <span style="font-size: 16px; font-family: Arial;
-                    color: #000000; font-weight: 400; font-variant: normal;
-                    vertical-align: baseline; white-space: pre-wrap">Businesses
-                    can develop payment programs faster by integrating publicly
-                    exposed payment APIs with their own systems. We've compiled
-                    a set of high-quality and ready-to-use payment APIs to
-                    cominbe with your own apps. </span> </div> </div> </td>
-                    </tr> </tbody></table> </td> </tr> </tbody></table> <table
-                    width=100%> <tbody><tr> <td align=center
-                    style="background-color: #FFFFFF; padding-left: 8px;
-                    padding-right: 8px"> <table width=100% style="max-width:
-                    632px; margin: 0 auto"> <tbody><tr> <td style="font-family:
-                    &quot;Inter&quot;, Arial, Helvetica, sans-serif; margin-top:
-                    0; margin-bottom: 0; font-size: 16px; line-height: 24px;
-                    background-color: #FFFFFF; color: #212121"> <a
-                    href="https://go.postman.com/MDY3LVVNRC05OTEAAAGHHkyvUUnXbec5SnwSUE-2ahTt0IZZp_AL-Ti2zjULruVGz15vTSU6sgu8NLFF_jUhtfVPmuc="
-                    style="font-size: 16px; line-height: 24px; color: #0265D2;
-                    margin-top: 0; margin-bottom: 0; font-weight: 400"
-                    target=_blank>Get paid →</a> </td> </tr> </tbody></table>
-                    </td> </tr> </tbody></table> <table width=100%> <tbody><tr>
-                    <td align=center style="background-color: #FFFFFF;
-                    padding-left: 8px; padding-right: 8px"> <table width=100%
-                    style="max-width: 632px; margin: 0 auto"> <tbody><tr> <td
-                    style="font-size: 24px; line-height: 24px; height: 24px;
-                    background-color: #FFFFFF">&nbsp; </td> </tr>
-                    </tbody></table> </td> </tr> </tbody></table> <table
-                    width=100%> <tbody><tr> <td align=center
-                    style="background-color: #FFFFFF; padding-left: 8px;
-                    padding-right: 8px"> <table width=100% style="max-width:
-                    632px; margin: 0 auto"> <tbody><tr> <td align=center
-                    style="font-family: &quot;Inter&quot;, Arial, Helvetica,
-                    sans-serif; margin-top: 0; margin-bottom: 0; font-size:
-                    16px; line-height: 24px; color: #424651"> <div
-                    style="font-family: &quot;Inter&quot;, Arial, Helvetica,
-                    sans-serif; margin-top: 0; margin-bottom: 0; font-size:
-                    16px; line-height: 24px; color: #212121; text-align: left">
-                    <h4 style="font-family: &quot;Inter&quot;, Arial, Helvetica,
-                    sans-serif; font-weight: 400; margin-top: 0; margin-bottom:
-                    0; color: #212121; font-size: 22px; line-height: 32px">More
-                    API Network Resources</h4> </div> </td> </tr>
-                    </tbody></table> </td> </tr> </tbody></table> <table
-                    width=100%> <tbody><tr> <td align=center
-                    style="background-color: #FFFFFF; padding-left: 8px;
-                    padding-right: 8px"> <table width=100% style="max-width:
-                    632px; margin: 0 auto"> <tbody><tr> <td style="font-family:
-                    &quot;Inter&quot;, Arial, Helvetica, sans-serif; margin-top:
-                    0; margin-bottom: 0; font-size: 16px; line-height: 24px;
-                    background-color: #FFFFFF; color: #212121"> <a
-                    href="https://go.postman.com/MDY3LVVNRC05OTEAAAGHHkyvUaunwW14VMo77VP_2ZFb-VDz3VmxUgFZrWsoRty4TeTcCvl-bLGk_u9bgb50ZgK8jdc="
-                    style="font-size: 16px; line-height: 24px; color: #0265D2;
-                    margin-top: 0; margin-bottom: 0; font-weight: 400"
-                    target=_blank>Add Same-Day Delivery to Your Business Using
-                    DoorDash's Drive API →</a> </td> </tr> </tbody></table>
-                    </td> </tr> </tbody></table> <table width=100%> <tbody><tr>
-                    <td align=center style="background-color: #FFFFFF;
-                    padding-left: 8px; padding-right: 8px"> <table width=100%
-                    style="max-width: 632px; margin: 0 auto"> <tbody><tr> <td
-                    style="font-family: &quot;Inter&quot;, Arial, Helvetica,
-                    sans-serif; margin-top: 0; margin-bottom: 0; font-size:
-                    16px; line-height: 24px; background-color: #FFFFFF; color:
-                    #212121"> <a
-                    href="https://go.postman.com/MDY3LVVNRC05OTEAAAGHHkyvUdVkOVk5QSmg2oqUmx3_aWSmqgu_2rCHiO47nA73LBo93Xr6fLyN6mwIF-PXW-Y1nVQ="
-                    style="font-size: 16px; line-height: 24px; color: #0265D2;
-                    margin-top: 0; margin-bottom: 0; font-weight: 400"
-                    target=_blank>The Most Popular Collection in the Postman API
-                    Network →</a> </td> </tr> </tbody></table> </td> </tr>
-                    </tbody></table> <table width=100%> <tbody><tr> <td
-                    align=center style="background-color: #FFFFFF; padding-left:
-                    8px; padding-right: 8px"> <table width=100%
-                    style="max-width: 632px; margin: 0 auto"> <tbody><tr> <td
-                    style="font-family: &quot;Inter&quot;, Arial, Helvetica,
-                    sans-serif; margin-top: 0; margin-bottom: 0; font-size:
-                    16px; line-height: 24px; background-color: #FFFFFF; color:
-                    #212121"> <a
-                    href="https://go.postman.com/MDY3LVVNRC05OTEAAAGHHkyvUWdJ4Jht3s3c4cP1IfVfK1Bdw2y2NWCIOFOmj2ORlxddtDnYuB72dMBvBP0_pz9qu_M="
-                    style="font-size: 16px; line-height: 24px; color: #0265D2;
-                    margin-top: 0; margin-bottom: 0; font-weight: 400"
-                    target=_blank>New Postman Integration with AppMap: Create
-                    and Manage Always-Accurate Collections →</a> </td> </tr>
-                    </tbody></table> </td> </tr> </tbody></table> <table
-                    width=100%> <tbody><tr> <td align=center
-                    style="background-color: #FFFFFF; padding-left: 8px;
-                    padding-right: 8px"> <table width=100% style="max-width:
-                    632px; margin: 0 auto"> <tbody><tr> <td style="font-size:
-                    24px; line-height: 24px; height: 24px; background-color:
-                    #FFFFFF">&nbsp; </td> </tr> </tbody></table> </td> </tr>
-                    </tbody></table> <table width=100%> <tbody><tr> <td
-                    align=center style="background-color: #FFFFFF; padding-left:
-                    8px; padding-right: 8px"> <table width=100%
-                    style="max-width: 632px; margin: 0 auto"> <tbody><tr> <td
-                    style="font-size: 24px; line-height: 24px; height: 24px;
-                    background-color: #FFFFFF">&nbsp; </td> </tr>
-                    </tbody></table> </td> </tr> </tbody></table> <table
-                    width=100%> <tbody><tr> <td align=center
-                    style="background-color: #FFFFFF; padding-left: 8px;
-                    padding-right: 8px"> <table width=100% style="max-width:
-                    632px; margin: 0 auto"> <tbody><tr> <td style="font-size:
-                    24px; line-height: 24px; height: 24px; background-color:
-                    #FFFFFF">&nbsp; </td> </tr> </tbody></table> </td> </tr>
-                    </tbody></table> <table width=100%> <tbody><tr> <td
-                    align=center style="background-color: #FFFFFF; padding-left:
-                    8px; padding-right: 8px"> <table width=100%
-                    style="max-width: 632px; margin: 0 auto"> <tbody><tr> <td
-                    align=left style="font-family: &quot;Inter&quot;, Arial,
-                    Helvetica, sans-serif; color: #242B3D; background-color:
-                    #FFFFFF; padding-left: 24px; padding-right: 24px"> <h4
-                    style="font-family: &quot;Inter&quot;, Arial, Helvetica,
-                    sans-serif; margin-top: 0; margin-bottom: 0; font-size:
-                    22px; line-height: 32px; font-weight: 700">POSTMAN
-                    RESOURCES</h4> </td> </tr> </tbody></table> </td> </tr>
-                    </tbody></table> <table width=100%> <tbody><tr> <td
-                    align=center style="background-color: #FFFFFF; padding-left:
-                    8px; padding-right: 8px"> <table width=100%
-                    style="max-width: 632px; margin: 0 auto"> <tbody><tr> <td
-                    align=center style="font-family: &quot;Inter&quot;, Arial,
-                    Helvetica, sans-serif; margin-top: 0; margin-bottom: 0;
-                    font-size: 16px; line-height: 24px; background-color:
-                    #FFFFFF; color: #424651; padding-left: 24px; padding-right:
-                    24px; padding-bottom: 0"> <a> <img
-                    src=https://lp.postman.com/rs/067-UMD-991/images/postman+workspaces+abhinav.jpg
-                    width=584 height=292 alt="postman workspaces abhinav.jpg"
-                    style="display: inline-block; max-width: 584px;
-                    vertical-align: middle; line-height: 100%; height: auto;
-                    width: 100%"> </a> </td> </tr> </tbody></table> </td> </tr>
-                    </tbody></table> <table width=100%> <tbody><tr> <td
-                    align=center style="background-color: #FFFFFF; padding-left:
-                    8px; padding-right: 8px"> <table width=100%
-                    style="max-width: 632px; margin: 0 auto"> <tbody><tr> <td
-                    style="font-size: 24px; line-height: 24px; height: 24px;
-                    background-color: #FFFFFF">&nbsp; </td> </tr>
-                    </tbody></table> </td> </tr> </tbody></table> <table
-                    width=100%> <tbody><tr> <td align=center
-                    style="background-color: #FFFFFF; padding-left: 8px;
-                    padding-right: 8px"> <table width=100% style="max-width:
-                    632px; margin: 0 auto"> <tbody><tr> <td align=center
-                    style="font-family: &quot;Inter&quot;, Arial, Helvetica,
-                    sans-serif; margin-top: 0; margin-bottom: 0; font-size:
-                    16px; line-height: 24px; color: #424651"> <div
-                    style="font-family: &quot;Inter&quot;, Arial, Helvetica,
-                    sans-serif; margin-top: 0; margin-bottom: 0; font-size:
-                    16px; line-height: 24px; color: #212121; text-align: left">
-                    <h4 style="font-family: &quot;Inter&quot;, Arial, Helvetica,
-                    sans-serif; font-weight: 400; margin-top: 0; margin-bottom:
-                    0; color: #212121; font-size: 22px; line-height: 32px">Solve
-                    Problems Together with Postman Workspaces</h4> </div> </td>
-                    </tr> </tbody></table> </td> </tr> </tbody></table> <table
-                    width=100%> <tbody><tr> <td align=center
-                    style="background-color: #FFFFFF; padding-left: 8px;
-                    padding-right: 8px"> <table width=100% style="max-width:
-                    632px; margin: 0 auto"> <tbody><tr> <td align=center
-                    style="font-family: &quot;Inter&quot;, Arial, Helvetica,
-                    sans-serif; margin-top: 0; margin-bottom: 0; font-size:
-                    16px; line-height: 24px; color: #212121"> <div
-                    style="font-family: &quot;Inter&quot;, Arial, Helvetica,
-                    sans-serif; margin-top: 0; margin-bottom: 0; font-size:
-                    16px; line-height: 24px; color: #212121; text-align: left">
-                    <div> <p> <span style="font-size: 16px; font-family: Arial;
-                    color: #000000; font-weight: 400; font-variant: normal;
-                    vertical-align: baseline; white-space: pre-wrap">Postman
-                    Co-founder and CEO Abhinav Asthana shares the ten common
-                    types of Postman workspaces that are helping teams
-                    collaborate to get more done, faster.</span> </div> </div>
-                    </td> </tr> </tbody></table> </td> </tr> </tbody></table>
-                    <table width=100%> <tbody><tr> <td align=center
-                    style="background-color: #FFFFFF; padding-left: 8px;
-                    padding-right: 8px"> <table width=100% style="max-width:
-                    632px; margin: 0 auto"> <tbody><tr> <td style="font-family:
-                    &quot;Inter&quot;, Arial, Helvetica, sans-serif; margin-top:
-                    0; margin-bottom: 0; font-size: 16px; line-height: 24px;
-                    background-color: #FFFFFF; color: #212121"> <a
-                    href="https://go.postman.com/MDY3LVVNRC05OTEAAAGHHkyvUchN1TOze1jKSErFx_nawNL6n8iBZXit9OjGOPRRFU0RrtHxnjB50NV1lvGSRFxIdVU="
-                    style="font-size: 16px; line-height: 24px; color: #0265D2;
-                    margin-top: 0; margin-bottom: 0; font-weight: 400"
-                    target=_blank>See all ten →</a> </td> </tr> </tbody></table>
-                    </td> </tr> </tbody></table> <table width=100%> <tbody><tr>
-                    <td align=center style="background-color: #FFFFFF;
-                    padding-left: 8px; padding-right: 8px"> <table width=100%
-                    style="max-width: 632px; margin: 0 auto"> <tbody><tr> <td
-                    style="font-size: 24px; line-height: 24px; height: 24px;
-                    background-color: #FFFFFF">&nbsp; </td> </tr>
-                    </tbody></table> </td> </tr> </tbody></table> <table
-                    width=100%> <tbody><tr> <td align=center
-                    style="background-color: #FFFFFF; padding-left: 8px;
-                    padding-right: 8px"> <table width=100% style="max-width:
-                    632px; margin: 0 auto"> <tbody><tr> <td align=center
-                    style="font-family: &quot;Inter&quot;, Arial, Helvetica,
-                    sans-serif; margin-top: 0; margin-bottom: 0; font-size:
-                    16px; line-height: 24px; color: #424651"> <div
-                    style="font-family: &quot;Inter&quot;, Arial, Helvetica,
-                    sans-serif; margin-top: 0; margin-bottom: 0; font-size:
-                    16px; line-height: 24px; color: #212121; text-align: left">
-                    <h4 style="font-family: &quot;Inter&quot;, Arial, Helvetica,
-                    sans-serif; font-weight: 400; margin-top: 0; margin-bottom:
-                    0; color: #212121; font-size: 22px; line-height:
-                    32px">Understand Asynchronous APIs and When to Use Them</h4>
-                    </div> </td> </tr> </tbody></table> </td> </tr>
-                    </tbody></table> <table width=100%> <tbody><tr> <td
-                    align=center style="background-color: #FFFFFF; padding-left:
-                    8px; padding-right: 8px"> <table width=100%
-                    style="max-width: 632px; margin: 0 auto"> <tbody><tr> <td
-                    align=center style="font-family: &quot;Inter&quot;, Arial,
-                    Helvetica, sans-serif; margin-top: 0; margin-bottom: 0;
-                    font-size: 16px; line-height: 24px; color: #212121"> <div
-                    style="font-family: &quot;Inter&quot;, Arial, Helvetica,
-                    sans-serif; margin-top: 0; margin-bottom: 0; font-size:
-                    16px; line-height: 24px; color: #212121; text-align: left">
-                    <div> <p> <span style="font-size: 16px; font-family: Arial;
-                    color: #000000; font-weight: 400; font-variant: normal;
-                    vertical-align: baseline; white-space: pre-wrap">Take a
-                    closer look at what makes asynchronous APIs different from
-                    synchronous APIs and learn when it's best to use
-                    each.</span> </div> </div> </td> </tr> </tbody></table>
-                    </td> </tr> </tbody></table> <table width=100%> <tbody><tr>
-                    <td align=center style="background-color: #FFFFFF;
-                    padding-left: 8px; padding-right: 8px"> <table width=100%
-                    style="max-width: 632px; margin: 0 auto"> <tbody><tr> <td
-                    style="font-family: &quot;Inter&quot;, Arial, Helvetica,
-                    sans-serif; margin-top: 0; margin-bottom: 0; font-size:
-                    16px; line-height: 24px; background-color: #FFFFFF; color:
-                    #212121"> <a
-                    href="https://go.postman.com/MDY3LVVNRC05OTEAAAGHHkyvUZlg-W4RJvfwOIIz2u_yYjUQ-dlblaqG-4bK9c5FE1svf84IshWvCbkKRh2mxgeUlGE="
-                    style="font-size: 16px; line-height: 24px; color: #0265D2;
-                    margin-top: 0; margin-bottom: 0; font-weight: 400"
-                    target=_blank>Get the scoop →</a> </td> </tr>
-                    </tbody></table> </td> </tr> </tbody></table> <table
-                    width=100%> <tbody><tr> <td align=center
-                    style="background-color: #FFFFFF; padding-left: 8px;
-                    padding-right: 8px"> <table width=100% style="max-width:
-                    632px; margin: 0 auto"> <tbody><tr> <td style="font-size:
-                    24px; line-height: 24px; height: 24px; background-color:
-                    #FFFFFF">&nbsp; </td> </tr> </tbody></table> </td> </tr>
-                    </tbody></table> <table width=100%> <tbody><tr> <td
-                    align=center style="background-color: #FFFFFF; padding-left:
-                    8px; padding-right: 8px"> <table width=100%
-                    style="max-width: 632px; margin: 0 auto"> <tbody><tr> <td
-                    align=center style="font-family: &quot;Inter&quot;, Arial,
-                    Helvetica, sans-serif; margin-top: 0; margin-bottom: 0;
-                    font-size: 16px; line-height: 24px; color: #424651"> <div
-                    style="font-family: &quot;Inter&quot;, Arial, Helvetica,
-                    sans-serif; margin-top: 0; margin-bottom: 0; font-size:
-                    16px; line-height: 24px; color: #212121; text-align: left">
-                    <h4 style="font-family: &quot;Inter&quot;, Arial, Helvetica,
-                    sans-serif; font-weight: 400; margin-top: 0; margin-bottom:
-                    0; color: #212121; font-size: 22px; line-height: 32px">More
-                    Postman Resources</h4> </div> </td> </tr> </tbody></table>
-                    </td> </tr> </tbody></table> <table width=100%> <tbody><tr>
-                    <td align=center style="background-color: #FFFFFF;
-                    padding-left: 8px; padding-right: 8px"> <table width=100%
-                    style="max-width: 632px; margin: 0 auto"> <tbody><tr> <td
-                    style="font-family: &quot;Inter&quot;, Arial, Helvetica,
-                    sans-serif; margin-top: 0; margin-bottom: 0; font-size:
-                    16px; line-height: 24px; background-color: #FFFFFF; color:
-                    #212121"> <a
-                    href="https://go.postman.com/MDY3LVVNRC05OTEAAAGHHkyvUZFx0MY1NhYp8K8RaKEz67uEgyzs77BmosFq92BKKWWqXC5MCBqmJa4tJwsMsiO8IJE="
-                    style="font-size: 16px; line-height: 24px; color: #0265D2;
-                    margin-top: 0; margin-bottom: 0; font-weight: 400"
-                    target=_blank>What Do 37,000 Developers Say About Postman? 3
-                    Key Things →</a> </td> </tr> </tbody></table> </td> </tr>
-                    </tbody></table> <table width=100%> <tbody><tr> <td
-                    align=center style="background-color: #FFFFFF; padding-left:
-                    8px; padding-right: 8px"> <table width=100%
-                    style="max-width: 632px; margin: 0 auto"> <tbody><tr> <td
-                    style="font-family: &quot;Inter&quot;, Arial, Helvetica,
-                    sans-serif; margin-top: 0; margin-bottom: 0; font-size:
-                    16px; line-height: 24px; background-color: #FFFFFF; color:
-                    #212121"> <a
-                    href="https://go.postman.com/MDY3LVVNRC05OTEAAAGHHkyvUbWY32hq9OSdvdW5Ix993h5UGMXkXQmEyj7SpEvwvNJEhypfoXHp8ZssIX-p_JZ1I0E="
-                    style="font-size: 16px; line-height: 24px; color: #0265D2;
-                    margin-top: 0; margin-bottom: 0; font-weight: 400"
-                    target=_blank>3 Ways to Build Workflows That Simplify
-                    Requests in Postman →</a> </td> </tr> </tbody></table> </td>
-                    </tr> </tbody></table> <table width=100%> <tbody><tr> <td
-                    align=center style="background-color: #FFFFFF; padding-left:
-                    8px; padding-right: 8px"> <table width=100%
-                    style="max-width: 632px; margin: 0 auto"> <tbody><tr> <td
-                    style="font-family: &quot;Inter&quot;, Arial, Helvetica,
-                    sans-serif; margin-top: 0; margin-bottom: 0; font-size:
-                    16px; line-height: 24px; background-color: #FFFFFF; color:
-                    #212121"> <a
-                    href="https://go.postman.com/MDY3LVVNRC05OTEAAAGHHkyvUZBDXz7pzl6XcLOfeu6fqGkpt7H6kZV7sHutq_E4O7vaOJJA_ojqa5wSYG8ndEtoBJA="
-                    style="font-size: 16px; line-height: 24px; color: #0265D2;
-                    margin-top: 0; margin-bottom: 0; font-weight: 400"
-                    target=_blank>Introducing Postman's Open Data and Research
-                    Intelligence Initiative →</a> </td> </tr> </tbody></table>
-                    </td> </tr> </tbody></table> <table width=100%> <tbody><tr>
-                    <td align=center style="background-color: #FFFFFF;
-                    padding-left: 8px; padding-right: 8px"> <table width=100%
-                    style="max-width: 632px; margin: 0 auto"> <tbody><tr> <td
-                    style="font-family: &quot;Inter&quot;, Arial, Helvetica,
-                    sans-serif; margin-top: 0; margin-bottom: 0; font-size:
-                    16px; line-height: 24px; background-color: #FFFFFF; color:
-                    #212121"> <a
-                    href="https://go.postman.com/MDY3LVVNRC05OTEAAAGHHkyvUSIcK5fJkzjIHh7rAjnCBtlAu31wEr8xrNF9fzadho--p4rJKsZifSowmyWolXlJFPY="
-                    style="font-size: 16px; line-height: 24px; color: #0265D2;
-                    margin-top: 0; margin-bottom: 0; font-weight: 400"
-                    target=_blank>Breaking Changes Podcast: ngrok's Shafton,
-                    Formerly of Twilio, Shares Veteran API Stories →</a> </td>
-                    </tr> </tbody></table> </td> </tr> </tbody></table> <table
-                    width=100%> <tbody><tr> <td align=center
-                    style="background-color: #FFFFFF; padding-left: 8px;
-                    padding-right: 8px"> <table width=100% style="max-width:
-                    632px; margin: 0 auto"> <tbody><tr> <td style="font-size:
-                    24px; line-height: 24px; height: 24px; background-color:
-                    #FFFFFF">&nbsp; </td> </tr> </tbody></table> </td> </tr>
-                    </tbody></table> <table width=100%> <tbody><tr> <td
-                    align=center style="background-color: #FFFFFF; padding-left:
-                    8px; padding-right: 8px"> <table width=100%
-                    style="max-width: 632px; margin: 0 auto"> <tbody><tr> <td
-                    style="font-size: 24px; line-height: 24px; height: 24px;
-                    background-color: #FFFFFF">&nbsp; </td> </tr>
-                    </tbody></table> </td> </tr> </tbody></table> <table
-                    width=100%> <tbody><tr> <td align=center
-                    style="background-color: #FFFFFF; padding-left: 8px;
-                    padding-right: 8px"> <table width=100% style="max-width:
-                    632px; margin: 0 auto"> <tbody><tr> <td align=left
-                    style="font-family: &quot;Inter&quot;, Arial, Helvetica,
-                    sans-serif; color: #242B3D; background-color: #FFFFFF;
-                    padding-left: 24px; padding-right: 24px"> <h4
-                    style="font-family: &quot;Inter&quot;, Arial, Helvetica,
-                    sans-serif; margin-top: 0; margin-bottom: 0; font-size:
-                    22px; line-height: 32px; font-weight: 700">IN CASE YOU
-                    MISSED IT</h4> </td> </tr> </tbody></table> </td> </tr>
-                    </tbody></table> <table width=100%> <tbody><tr> <td
-                    align=center style="background-color: #FFFFFF; padding-left:
-                    8px; padding-right: 8px"> <table width=100%
-                    style="max-width: 632px; margin: 0 auto"> <tbody><tr> <td
-                    align=center style="font-family: &quot;Inter&quot;, Arial,
-                    Helvetica, sans-serif; margin-top: 0; margin-bottom: 0;
-                    font-size: 16px; line-height: 24px; background-color:
-                    #FFFFFF; color: #424651; padding-left: 24px; padding-right:
-                    24px; padding-bottom: 0"> <a> <img
-                    src=https://lp.postman.com/rs/067-UMD-991/images/guide-to-api-first.png
-                    width=584 height=292 alt=guide-to-api-first.png
-                    style="display: inline-block; max-width: 584px;
-                    vertical-align: middle; line-height: 100%; height: auto;
-                    width: 100%"> </a> </td> </tr> </tbody></table> </td> </tr>
-                    </tbody></table> <table width=100%> <tbody><tr> <td
-                    align=center style="background-color: #FFFFFF; padding-left:
-                    8px; padding-right: 8px"> <table width=100%
-                    style="max-width: 632px; margin: 0 auto"> <tbody><tr> <td
-                    style="font-size: 24px; line-height: 24px; height: 24px;
-                    background-color: #FFFFFF">&nbsp; </td> </tr>
-                    </tbody></table> </td> </tr> </tbody></table> <table
-                    width=100%> <tbody><tr> <td align=center
-                    style="background-color: #FFFFFF; padding-left: 8px;
-                    padding-right: 8px"> <table width=100% style="max-width:
-                    632px; margin: 0 auto"> <tbody><tr> <td align=center
-                    style="font-family: &quot;Inter&quot;, Arial, Helvetica,
-                    sans-serif; margin-top: 0; margin-bottom: 0; font-size:
-                    16px; line-height: 24px; color: #424651"> <div
-                    style="font-family: &quot;Inter&quot;, Arial, Helvetica,
-                    sans-serif; margin-top: 0; margin-bottom: 0; font-size:
-                    16px; line-height: 24px; color: #212121; text-align: left">
-                    <h4 style="font-family: &quot;Inter&quot;, Arial, Helvetica,
-                    sans-serif; font-weight: 400; margin-top: 0; margin-bottom:
-                    0; color: #212121; font-size: 22px; line-height: 32px">Guide
-                    to API-First</h4> </div> </td> </tr> </tbody></table> </td>
-                    </tr> </tbody></table> <table width=100%> <tbody><tr> <td
-                    align=center style="background-color: #FFFFFF; padding-left:
-                    8px; padding-right: 8px"> <table width=100%
-                    style="max-width: 632px; margin: 0 auto"> <tbody><tr> <td
-                    align=center style="font-family: &quot;Inter&quot;, Arial,
-                    Helvetica, sans-serif; margin-top: 0; margin-bottom: 0;
-                    font-size: 16px; line-height: 24px; color: #212121"> <div
-                    style="font-family: &quot;Inter&quot;, Arial, Helvetica,
-                    sans-serif; margin-top: 0; margin-bottom: 0; font-size:
-                    16px; line-height: 24px; color: #212121; text-align: left">
-                    <div> <p> <span style="font-size: 12pt; font-family: Arial;
-                    color: #212121; background-color: #FFFFFF; font-weight: 400;
-                    font-variant: normal; vertical-align: baseline; white-space:
-                    pre-wrap">The most farsighted companies take an API-first
-                    approach to their software development. Before writing a
-                    single line of code, developers first design or build the
-                    API. Check out our Guide to API-First to learn about the
-                    benefits for developers, organizations, and their
-                    customers.</span> </div> </div> </td> </tr> </tbody></table>
-                    </td> </tr> </tbody></table> <table width=100%> <tbody><tr>
-                    <td align=center style="background-color: #FFFFFF;
-                    padding-left: 8px; padding-right: 8px"> <table width=100%
-                    style="max-width: 632px; margin: 0 auto"> <tbody><tr> <td
-                    style="font-family: &quot;Inter&quot;, Arial, Helvetica,
-                    sans-serif; margin-top: 0; margin-bottom: 0; font-size:
-                    16px; line-height: 24px; background-color: #FFFFFF; color:
-                    #212121"> <a
-                    href="https://go.postman.com/MDY3LVVNRC05OTEAAAGHHkyvURcI-rOfIgojzEVvIhO9FuNY1zNLX7CtiAO8wnpE1azDOHkmI1Lesiov19PDF1SnmhE="
-                    style="font-size: 16px; line-height: 24px; color: #0265D2;
-                    margin-top: 0; margin-bottom: 0; font-weight: 400"
-                    target=_blank>Get the guide →</a> </td> </tr>
-                    </tbody></table> </td> </tr> </tbody></table> <table
-                    width=100%> <tbody><tr> <td align=center
-                    style="background-color: #FFFFFF; padding-left: 8px;
-                    padding-right: 8px"> <table width=100% style="max-width:
-                    632px; margin: 0 auto"> <tbody><tr> <td style="font-size:
-                    24px; line-height: 24px; height: 24px; background-color:
-                    #FFFFFF">&nbsp; </td> </tr> </tbody></table> </td> </tr>
-                    </tbody></table> <table width=100%> <tbody><tr> <td
-                    align=center style="background-color: #FFFFFF; padding-left:
-                    8px; padding-right: 8px"> <table width=100%
-                    style="max-width: 632px; margin: 0 auto"> <tbody><tr> <td
-                    align=center style="font-family: &quot;Inter&quot;, Arial,
-                    Helvetica, sans-serif; margin-top: 0; margin-bottom: 0;
-                    font-size: 16px; line-height: 24px; color: #424651"> <div
-                    style="font-family: &quot;Inter&quot;, Arial, Helvetica,
-                    sans-serif; margin-top: 0; margin-bottom: 0; font-size:
-                    16px; line-height: 24px; color: #212121; text-align: left">
-                    <h4 style="font-family: &quot;Inter&quot;, Arial, Helvetica,
-                    sans-serif; font-weight: 400; margin-top: 0; margin-bottom:
-                    0; color: #212121; font-size: 22px; line-height: 32px">The
-                    2022 State of the API Report</h4> </div> </td> </tr>
-                    </tbody></table> </td> </tr> </tbody></table> <table
-                    width=100%> <tbody><tr> <td align=center
-                    style="background-color: #FFFFFF; padding-left: 8px;
-                    padding-right: 8px"> <table width=100% style="max-width:
-                    632px; margin: 0 auto"> <tbody><tr> <td align=center
-                    style="font-family: &quot;Inter&quot;, Arial, Helvetica,
-                    sans-serif; margin-top: 0; margin-bottom: 0; font-size:
-                    16px; line-height: 24px; color: #212121"> <div
-                    style="font-family: &quot;Inter&quot;, Arial, Helvetica,
-                    sans-serif; margin-top: 0; margin-bottom: 0; font-size:
-                    16px; line-height: 24px; color: #212121; text-align: left">
-                    <div> <p> <span style="font-size: 16px; font-family: Arial;
-                    color: #000000; font-weight: 400; font-variant: normal;
-                    vertical-align: baseline; white-space: pre-wrap">The results
-                    are in from the 2022 State of the API report, the largest
-                    and most comprehensive survey and report on APIs, ever. More
-                    than 37,000 respondents told us how they work with APIs,
-                    what tools and technology they're most excited about, and
-                    where they see the industry going.</span> </div> </div>
-                    </td> </tr> </tbody></table> </td> </tr> </tbody></table>
-                    <table width=100%> <tbody><tr> <td align=center
-                    style="background-color: #FFFFFF; padding-left: 8px;
-                    padding-right: 8px"> <table width=100% style="max-width:
-                    632px; margin: 0 auto"> <tbody><tr> <td style="font-family:
-                    &quot;Inter&quot;, Arial, Helvetica, sans-serif; margin-top:
-                    0; margin-bottom: 0; font-size: 16px; line-height: 24px;
-                    background-color: #FFFFFF; color: #212121"> <a
-                    href="https://go.postman.com/MDY3LVVNRC05OTEAAAGHHkyvUS_3on_KajSH3hg8D7RRi-lLT14Rk52IqQYc_LR9qsrbbrrbex55HJrKXwll9N98qw8="
-                    style="font-size: 16px; line-height: 24px; color: #0265D2;
-                    margin-top: 0; margin-bottom: 0; font-weight: 400"
-                    target=_blank>See the full report →</a> </td> </tr>
-                    </tbody></table> </td> </tr> </tbody></table> <table
-                    width=100%> <tbody><tr> <td align=center
-                    style="background-color: #FFFFFF; padding-left: 8px;
-                    padding-right: 8px"> <table width=100% style="max-width:
-                    632px; margin: 0 auto"> <tbody><tr> <td style="font-size:
-                    24px; line-height: 24px; height: 24px; background-color:
-                    #FFFFFF">&nbsp; </td> </tr> </tbody></table> </td> </tr>
-                    </tbody></table> <table width=100%> <tbody><tr> <td
-                    align=center style="background-color: #FFFFFF; padding-left:
-                    8px; padding-right: 8px"> <table width=100%
-                    style="max-width: 632px; margin: 0 auto"> <tbody><tr> <td
-                    align=center style="font-family: &quot;Inter&quot;, Arial,
-                    Helvetica, sans-serif; margin-top: 0; margin-bottom: 0;
-                    font-size: 16px; line-height: 24px; color: #212121"> <div
-                    style="font-family: &quot;Inter&quot;, Arial, Helvetica,
-                    sans-serif; margin-top: 0; margin-bottom: 0; font-size:
-                    16px; line-height: 24px; color: #212121; text-align: left">
-                    <div> <p style="line-height: 1.38; margin-top: 0;
-                    margin-bottom: 0"> <span style="font-size: 16px"> <i> <span
-                    style="font-family: Arial; color: #000000; font-weight: 400;
-                    font-variant: normal; vertical-align: baseline; white-space:
-                    pre-wrap">Know someone who would like to receive the Postman
-                    Newsletter? Tell them they can sign up </span> </i> <a
-                    href="https://go.postman.com/MDY3LVVNRC05OTEAAAGHHkyvUSSCDPnUbLrU2na2pYNODKnCYEWshQboggU-AgWbQH9yHU6B98sv4jG_Pew6elrLJPI="
-                    target=_blank> <i> <span style="font-family: Arial; color:
-                    #1155CC; font-weight: 400; font-variant: normal;
-                    text-decoration: underline; vertical-align: baseline;
-                    white-space: pre-wrap">here</span> </i> </a> <i> <span
-                    style="font-family: Arial; color: #000000; font-weight: 400;
-                    font-variant: normal; vertical-align: baseline; white-space:
-                    pre-wrap">!</span> </i> </span> <p style="line-height: 1.38;
-                    margin-top: 0; margin-bottom: 0"> <span style="font-size:
-                    16px"> <i></i> </span> <br> </div> </div> </td> </tr>
-                    </tbody></table> </td> </tr> </tbody></table> </td> </tr>
-                    </tbody></table> <table width=100% style="margin-top: 0">
-                    <tbody><tr> <td align=center style="background-color:
-                    #FFFFFF; padding-left: 8px; padding-right: 8px;
-                    padding-bottom: 25px"> <table width=100% style="max-width:
-                    632px; margin: 0 auto"> <tbody><tr> <td align=center
-                    style="font-family: &quot;Inter&quot;, Arial, Helvetica,
-                    sans-serif; margin-top: 0; margin-bottom: 0; font-size:
-                    14px; line-height: 21px; background-color: #FFFFFF; color:
-                    #A0A3AB; border-radius: 0; padding: 40px 24px 0"> <p
-                    style="margin-top: 0; margin-bottom: 16px; font-size: 12px;
-                    line-height: 16px; font-family: &quot;Inter&quot;, Arial,
-                    Helvetica, sans-serif; color: #212121; font-weight:
-                    bold">FOLLOW US</p> <div style="font-family:
-                    &quot;Inter&quot;, Arial, Helvetica, sans-serif; margin-top:
-                    0; margin-bottom: 24px; font-size: 14px; line-height: 21px;
-                    text-align: center; padding-left: 8px; padding-right: 8px">
-                    <p style="margin-top: 0; margin-bottom: 0"> <a
-                    href="https://go.postman.com/MDY3LVVNRC05OTEAAAGHHkyvUdodyY0K7D6GTO3umolHzVPuWYEGDbgSsBdlOSC-ByIQMkkv0K0hP1D9se39o7z6TDI="
-                    style="color: #212121" target=_blank> <img height=24
-                    width=24
-                    src=https://assets.getpostman.com/email/icon-twtr-color.png>
-                    </a> <span>&nbsp;</span> <a
-                    href="https://go.postman.com/MDY3LVVNRC05OTEAAAGHHkyvUfXd30x2tqPHORUrnyIUnBSfrLclWMR6EWeQIXyJW0L4dQXCNJmjIaCbcCRdzLFQOio="
-                    style="color: #212121" target=_blank> <img height=24
-                    width=24
-                    src=https://assets.getpostman.com/email/icon-li-color.png>
-                    </a> <span>&nbsp;</span> <a
-                    href="https://go.postman.com/MDY3LVVNRC05OTEAAAGHHkyvUXgDJJFcpbtyu5krFpEe9qy4L4vEoMlCXNtZ7HJKH1mIiTVbyWQ9Zcv4TSXW3FpCYBk="
-                    style="color: #212121" target=_blank> <img height=24
-                    width=24
-                    src=https://assets.getpostman.com/email/icon-github-color.png>
-                    </a> <span>&nbsp;</span> <a
-                    href="https://go.postman.com/MDY3LVVNRC05OTEAAAGHHkyvUWjxyiM4f06t23aaWeb2AeX-_JTTtZZhyRBeLjy-k5MkBQjsnTbvuRsE9_MU1ZgDP6c="
-                    style="color: #212121" target=_blank> <img height=24
-                    width=24
-                    src=https://assets.getpostman.com/email/icon-yt-color.png>
-                    </a> <span>&nbsp;</span> <a
-                    href="https://go.postman.com/MDY3LVVNRC05OTEAAAGHHkyvUROuEvXy4_jmIr-WhCrEIrSvcXkw8cQp0QgYprC-LT97jHrBm03hZMir7fgDSq-e9I4="
-                    style="color: #212121" target=_blank> <img height=24
-                    width=24
-                    src=https://assets.getpostman.com/email/icon-twitch-color.png>
-                    </a> </div> <p style="margin-top: 0; font-size: 12px"> <a
-                    href="https://lp.postman.com/index.php/email/emailWebview?mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvUrWjvaNiHr0A8BlcJf6QCTmEHFUJx9_IGnoEklCc9RfKjUjR9tA-a9TrmSR6GMhQxz61k1iQsHE4SWhCGlYFiSMVwrLrnZMIVO8n4us&amp;md_id=8797"
-                    style="display: inline-block; text-decoration: underline;
-                    color: #0265D2; font-weight: normal" target=_blank>View in
-                    Browser</a> <span>&nbsp; |</span> <br style="display: none;
-                    font-size: 0; max-height: 0; width: 0; line-height: 0;
-                    overflow: hidden"> <a
-                    href="https://lp.postman.com/email-preferences.html?mkt_unsubscribe=1&amp;mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvUrWjvaNiHr0A8BlcJf6QCTmEHFUJx9_IGnoEklCc9RfKjUjR9tA-a9TrmSR6GMhQxz61k1iQsHE4SWhCGlYFiSMVwrLrnZMIVO8n4us"
-                    style="display: inline-block; text-decoration: underline;
-                    color: #0265D2; font-weight: normal" target=_blank>Email
-                    Preferences</a> <span>&nbsp; |</span> <br style="display:
-                    none; font-size: 0; max-height: 0; width: 0; line-height: 0;
-                    overflow: hidden"> <a
-                    href="https://lp.postman.com/UnsubscribePage.html?mkt_unsubscribe=1&amp;mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvUrWjvaNiHr0A8BlcJf6QCTmEHFUJx9_IGnoEklCc9RfKjUjR9tA-a9TrmSR6GMhQxz61k1iQsHE4SWhCGlYFiSMVwrLrnZMIVO8n4us"
-                    style="display: inline-block; text-decoration: underline;
-                    color: #0265D2; font-weight: normal"
-                    target=_blank>Unsubscribe</a> <span>&nbsp; |</span> <br
-                    style="display: none; font-size: 0; max-height: 0; width: 0;
-                    line-height: 0; overflow: hidden"> <a
-                    href=https://www.postman.com/legal/privacy-policy/
-                    style="display: inline-block; text-decoration: underline;
-                    color: #0265D2; font-weight: normal" target=_blank>Privacy
-                    Policy</a> <p style="margin-top: 0; margin-bottom: 24px;
-                    font-size: 12px; line-height: 16px; font-family:
-                    &quot;Inter&quot;, Arial, Helvetica, sans-serif; color:
-                    #212121"> 201 Mission Street, Suite 2375, San Francisco, CA
-                    94105 <p style="margin-top: 0; font-size: 12px">© 2022
-                    Postman, Inc. All rights reserved. </td> </tr>
-                    </tbody></table> </td> </tr> </tbody></table> <a
-                    href="https://go.postman.com/MDY3LVVNRC05OTEAAAGHHkyvUZO2fwg4bBrNYfnjyoSVNeHjxYJIe0WGcc7Vl5QBt8ekR3DrRhU_FJGdmMjgygYoGS0="
-                    target=_blank></a> <img
-                    src="https://go.postman.com/trk?t=1&amp;mid=MDY3LVVNRC05OTE6MDo2MTE1OjYxMTAwOjM3MjY5Mjo4Nzk3Ojk6NDY4Mjk6MTM1Nzg4NjU6dGltbWVzMTk3MUBnbWFpbC5jb20%3D"
-                    width=1 height=1 style="display: none !important"> </div>
-                    </div> </div> </div>
+                  campaign_html: ''
                   spam_keyword_list:
                     Sign up: 2
                     Check: 2
@@ -2596,11 +1436,11 @@ paths:
         API endpoint.
 
 
-        #### <u>Response:</u>
+        #### Response:
 
 
         - **Credits**: The amount of available credits you have on your account.
-            
+         
 
         In the event of any other error, you will get an "**error**:" response,
         with a description of the reason.
@@ -2633,14 +1473,14 @@ paths:
         The **send_campaign** API Endpoint allows you to send in a campaign to
         be processed and analyzed by [Campaign
         Cleaner](https://campaigncleaner.com). Below is the list of settings
-        that can be set, all optional settings, if not specified will default
-        to the bold/italicized setting.
+        that can be set, all optional settings, if not specified will default to
+        the bold/italicized setting.
 
 
         All submitted campaigns will be sanitized and CSS inlined.
 
 
-        #### <u>Request Body:</u>
+        #### Request Body:
 
 
         _Required:_
@@ -2653,7 +1493,7 @@ paths:
 
         - **campaign_name**: The name of your campaign - campaign name must pass
         our sanitization checks.
-            
+         
 
         Campaigns are normally processed in under 2 minutes, in most instances
         in a few seconds. But in some cases with very large campaigns with lots
@@ -2694,6 +1534,11 @@ paths:
         want to send us, it will also be passed back to you when you call the
         get_campaign API. It's limited to 500 characters. - It must pass our
         sanitization checks.
+
+        - **host_extensionless_images:** (true/**false**) If true, images
+        without extensions will be hosted on our CDN when the
+        **resize_and_host** parameter is set to true. Typically, dynamically
+        generated images lack extensions, though there are exceptions.
 
         - **image_max_width:** (int) When this is specified, it will add an
         max-width style to all images. it is not desirable for the image width
@@ -2743,7 +1588,7 @@ paths:
         your email campaign has any relative paths, it will be converted to an
         absolute URL. In most instances, you won't need to set this.
 
-        - **replace_diacritics**: (_**true**_/false) If true, replaces diacritic
+        - **replace_diacritics**: (**true**/false) If true, replaces diacritic
         characters like á with normal characters equivalent, if you're sending
         emails in English emails, this is a must.
 
@@ -2752,14 +1597,19 @@ paths:
         will be replaced with **".** Non-ascii characters is of of the major
         spam trigger.
 
+        - **resize_and_host**: (true/**false**) If true,we will resize, convert,
+        and host all eligible images on our CDN. Please read our documentation
+        here: [Resizing and
+        Hosting](https://docs.campaigncleaner.com/en/resize_and_host)
+
         - **surrounding_div:** When you set any parameter of the surrounding
         div, it will add "div" tag around your html with the styles you set.
         This is helpful to set default styles and conditions that can affect the
         look of your html.
-            - **max_width:** The max_width style applied to the surrounding "div" can be specified in pixels as an integer value. It is typically set to the desired maximum width of the campaign, which is commonly either 600 or 900 pixels.
-            - **text_align**: (left, center, right) All content within the surrounding "div" will be aligned according to your specified style. However, you can use the "text-align" property on inner tags within the "div" to customize the appearance of your email.
-            - **font_size:** The pixel size that you want everything in the surrounding div to adhere to, setting this, will add an "_!important"_ to the font-size in the surrounding "div". Font sizes that are set on any tag in the HTML will retain their original size. While all unspecified font sizes to the size you chose.
-            - **center_to_parent:** (true/false) Using this feature will enable the surrounding "div" to be centered in any parent tags in which it is placed. This is particularly helpful when inserting an HTML snippet into a template.
+         - **max_width:** The max_width style applied to the surrounding "div" can be specified in pixels as an integer value. It is typically set to the desired maximum width of the campaign, which is commonly either 600 or 900 pixels.
+         - **text_align**: (left, center, right) All content within the surrounding "div" will be aligned according to your specified style. However, you can use the "text-align" property on inner tags within the "div" to customize the appearance of your email.
+         - **font_size:** The pixel size that you want everything in the surrounding div to adhere to, setting this, will add an "_!important"_ to the font-size in the surrounding "div". Font sizes that are set on any tag in the HTML will retain their original size. While all unspecified font sizes to the size you chose.
+         - **center_to_parent:** (true/false) Using this feature will enable the surrounding "div" to be centered in any parent tags in which it is placed. This is particularly helpful when inserting an HTML snippet into a template.
         - **treat_as_fragment**: (**true**/false), If true, all information
         before and after and including the body tag is removed.
 
@@ -2767,9 +1617,9 @@ paths:
         campaign is fully processed we will send the results back that is found
         in the Get Campaign API. You can utilize the webhook section under API
         Management to troubleshoot and test your endpoint.
-            
+         
 
-        #### <u>Response:</u>
+        #### Response:
 
 
         **campaign:**
@@ -2788,7 +1638,7 @@ paths:
                   adjust_font_colors: true
                   remove_comments: true
                   treat_as_fragment: true
-                  campaign_html: <html><div>Hello</div>
+                  campaign_html: ''
                   campaign_name: Test Passed
                   remove_width_over: 400
                   image_max_width: 600
@@ -2829,21 +1679,21 @@ paths:
         Cleaner](https://campaigncleaner.com).
 
 
-        #### <u>Request Body:</u>
+        #### Request Body:
 
 
         **campaign**:
 
 
         - **id**: The campaign id that will be used in other API calls.
-            
+         
 
-        #### <u>Response:</u>
+        #### Response:
 
 
         - **status**: _success_ or _failure,_ failures can occur when the
         **campaign_id** doesn't exists or was deleted.
-            
+         
 
         In the event of an error, you will get an "**error**:" response, with a
         description of the reason.
