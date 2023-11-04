@@ -29,7 +29,7 @@ paths:
   /v1/get_campaign_status:
     post:
       tags:
-        - default
+        - Campaign Cleaner
       summary: Get Campaign Status
       description: >-
         After submitting a campaign to be corrected and analyzed it can take up
