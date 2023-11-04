@@ -106,7 +106,7 @@ paths:
   /v1/get_campaign_list:
     get:
       tags:
-        - default
+        - Campaign Cleaner
       summary: Get Campaign List
       description: >-
         The **get_campaign_list** API endpoint allows you to get the status of
@@ -168,7 +168,7 @@ paths:
   /v1/get_campaign:
     post:
       tags:
-        - default
+        - Campaign Cleaner
       summary: Get Campaign
       description: >-
         The **get_campaign** API allows you to retrieve any of your Saved
@@ -1428,7 +1428,7 @@ paths:
   /v1/get_credits:
     get:
       tags:
-        - default
+        - Campaign Cleaner
       summary: Get Credits
       description: >-
         The **get_credits** API will show you how many credits you currently
@@ -1467,7 +1467,7 @@ paths:
   /v1/send_campaign:
     post:
       tags:
-        - default
+        - Campaign Cleaner
       summary: Send Campaign
       description: >-
         The **send_campaign** API Endpoint allows you to send in a campaign to
@@ -1671,7 +1671,7 @@ paths:
   /v1/delete_campaign:
     post:
       tags:
-        - default
+        - Campaign Cleaner
       summary: Delete Campaign
       description: >-
         The **delete_campaign** API endpoint allows you to delete any of the
