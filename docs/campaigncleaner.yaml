@@ -24,7 +24,7 @@ info:
     Use the navigation on the left to access the different API Endpoints.
   version: 1.0.0
 servers:
-  - url: http://{{baseurl}}
+  - url: https://api.campaigncleaner.com
 paths:
   /v1/get_campaign_status:
     post:
