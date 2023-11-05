@@ -180,12 +180,20 @@ paths:
 
         #### Request Body:
 
+        _Required:_
 
         **campaign**:
 
 
         - **id**: The campaign id that will be used in other API calls.
          
+
+
+        _Optional:_
+
+        **campaign**:
+
+        - **id**: (true/false) If true (default), removes all whitespace, tabs, etc. Condensing the HTML.
 
         #### Response:
 
@@ -328,9 +336,6 @@ paths:
 
         - **max_font_size_allowed**: (A positive Integer under 100) in pixels.
 
-        - **minify_html**: (_true_/false) If true, all whitespace, tabs, etc.
-        was removed, Condensing the HTML.
-
         - **os_image_list**:(list of images) All the oversized images in the
         campaign
          - **image_url**: (string) The URL of where the image is located.
@@ -469,6 +474,7 @@ paths:
               example:
                 campaign:
                   id: '{{campaign_id}}'
+                  minimize_html: true
       parameters:
         - name: X-CC-API-Key
           in: header
@@ -508,7 +514,6 @@ paths:
                   images_missing_alt_attribute: 10
                   links_missing_title_attribute: 5
                   links_scanned: 36
-                  minify_html: true
                   min_font_size_allowed: 10
                   max_font_size_allowed: 32
                   os_images_found: 6
@@ -1409,14 +1414,6 @@ paths:
                       count: 0
                       html_changed: true
                       apply_count: false
-                    - message: HTML was minimized.
-                      count: 0
-                      html_changed: true
-                      apply_count: false
-                    - message: HTML was beautified.
-                      count: 0
-                      html_changed: true
-                      apply_count: false
                     - message: Surrounding DIV was added.
                       count: 0
                       html_changed: true
@@ -1551,9 +1548,6 @@ paths:
         - **max_font_size_allowed**: (_**32**_) (A positive Integer under 100)
         The **max_font_size** must be larger or equal to the **min_font_size**
         in pixels
-
-        - **minify_html**: (_true_/**false**) If true, removes all whitespace,
-        tabs, etc. Condensing the HTML
 
         - **remove_classes_and_ids**: (_**true**_/false) If true, removes all
         the class and ID attributes after CSS Inlining.
