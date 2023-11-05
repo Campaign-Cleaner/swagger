@@ -481,11 +481,7 @@ paths:
           schema:
             type: string
           example: '{{api_key}}'
-        - name: minimize_html
-          in: header
-          schema:
-            type: boolean
-          example: true
+       
       responses:
         '200':
           description: OK
