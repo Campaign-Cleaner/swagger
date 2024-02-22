@@ -352,6 +352,8 @@ paths:
         - **pd_cdns_link_count**: (integer) The total number of links pointed to
         content delivery networks know to cause adverse delivery issues.
 
+        - **preserve_media_queries**: (true/false) True, if all media queries were preserved.
+
         - **relative_links_base_url**: If set this needs to be a full base URL
         like "[https://campaigncleaner.com/"](https://campaigncleaner.com/), if
         your email campaign has any relative paths, it will be converted to an
@@ -440,10 +442,7 @@ paths:
 
         - **total_word_count**: (integer) The total number of words found in
         your campaign.
-
-        - **treat_as_fragment**: (true/false), if true, all information outside
-        of and including the tag were removed.
-         
+        
 
         #### Additional Information:
 
@@ -520,6 +519,7 @@ paths:
                   os_images_found: 6
                   pd_cdns_found: 0
                   pd_cdns_link_count: 0
+                  preserve_media_queries: true
                   relative_links_base_url: null
                   remove_inherited_css: true
                   remove_classes_and_ids: true
@@ -529,7 +529,6 @@ paths:
                   replace_non_ascii_characters: true
                   remove_successive_punctuation: false
                   results_time: '2023-03-14T23:14:26-04:00'
-                  treat_as_fragment: false
                   spam_keyword_ratio: 2.06
                   spam_keyword_max_acceptable_ratio: 5
                   spam_words_count: 15
@@ -1550,6 +1549,8 @@ paths:
         The **max_font_size** must be larger or equal to the **min_font_size**
         in pixels
 
+        - **preserve_media_queries**: (_**true**_/false) True, if media queries should be preserved.
+        
         - **remove_classes_and_ids**: (_**true**_/false) If true, removes all
         the class and ID attributes after CSS Inlining.
 
@@ -1632,7 +1633,6 @@ paths:
                   remove_css_inheritance: true
                   adjust_font_colors: true
                   remove_comments: true
-                  treat_as_fragment: true
                   campaign_html: ''
                   campaign_name: Test Passed
                   remove_width_over: 400
