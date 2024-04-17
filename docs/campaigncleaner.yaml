@@ -193,7 +193,7 @@ paths:
 
         **campaign**:
 
-        - **id**: (true/false) If true (default), removes all whitespace, tabs, etc. Condensing the HTML.
+        - **minimize-html**: (true/false) If true (default), removes all whitespace, tabs, etc. Condensing the HTML.
 
         #### Response:
 
