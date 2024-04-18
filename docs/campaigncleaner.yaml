@@ -1680,7 +1680,7 @@ paths:
         **campaign**:
 
 
-        - **id**: The campaign id that will be used in other API calls.
+        - **id**: The campaign id that will be deleted.
          
 
         #### Response:
