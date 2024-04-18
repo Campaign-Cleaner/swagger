@@ -1460,7 +1460,7 @@ paths:
               schema:
                 type: object
               example:
-                credits: '987'
+                credits: 987
   /v1/send_campaign:
     post:
       tags:
