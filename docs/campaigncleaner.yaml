@@ -222,16 +222,16 @@ paths:
 
         - **all_link_list:** (list of links) All the links found in the campaign
         (images, text, etc.)
-         - **link_url**: (string) The URL or location of the broken link.
-         - **link_status**: (string) The status code of the link, please view the status guide below.
-         - **link_redirected_url**: (string) The location of where the link was redirected to, empty string, if it wasn't redirected.
-         - **link_is_image**: (true/false) True, if the link is used as an image.
-         - **link_is_broken**: (true/false) True, if the link was non-functional at the time of the scan.
-         - **link_initial**: (true/false) True, if the link was the initial link in the campaign, not an intermediate or final link, if redirected.
-         - **link_count**: (integer) The number of times this link was found.
-         - **link_secure:** (true/false) true, if the link is HTTPS.
-         - **link_tel:** (true/false) true, if the link is tel:
-         - **link_mailto:** (true/false) tru, if the link is mailto:
+           - **link_url**: (string) The URL or location of the broken link.
+           - **link_status**: (string) The status code of the link, please view the status guide below.
+           - **link_redirected_url**: (string) The location of where the link was redirected to, empty string, if it wasn't redirected.
+           - **link_is_image**: (true/false) True, if the link is used as an image.
+           - **link_is_broken**: (true/false) True, if the link was non-functional at the time of the scan.
+           - **link_initial**: (true/false) True, if the link was the initial link in the campaign, not an intermediate or final link, if redirected.
+           - **link_count**: (integer) The number of times this link was found.
+           - **link_secure:** (true/false) true, if the link is HTTPS.
+           - **link_tel:** (true/false) true, if the link is tel:
+           - **link_mailto:** (true/false) tru, if the link is mailto:
         - **bg_images_found**: (integer) The number of background images found,
         some major email clients don't support background images.
 
