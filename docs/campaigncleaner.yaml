@@ -548,29 +548,31 @@ paths:
                   text_link_max_acceptable_ratio: 10
                   total_word_count: 728
                   campaign_html: ''
-                  spam_keyword_list:
-                   - keyword: >- Sign up
+                 spam_keyword_list:
+                  - keyword: "Sign up"
                     count: 2
-                   - keyword: >-Check
+                  - keyword: "Check"
                     count: 2
-                   - keyword: >- Offer
-                     count: 1
-                   - keyword: >- Get paid
-                     count: 1
-                   - keyword: >-Request
-                     count: 1
-                   - keyword: >- Open
-                     count: 1
-                   - keyword: >- Solution
-                     count: 1
-                   - keyword: >- Subscribe
-                     count: 1
-                   - keyword: >- Cure
-                     count: 1
-                   - keyword: >- Now
-                     count: 1
-                   - keyword: >-Privacy
-                     count: 1
+                  - keyword: "Collect"
+                    count: 2
+                  - keyword: "Offer"
+                    count: 1
+                  - keyword: "Get paid"
+                    count: 1
+                  - keyword: "Request"
+                    count: 1
+                  - keyword: "Open"
+                    count: 1
+                  - keyword: "Solution"
+                    count: 1
+                  - keyword: "Subscribe"
+                    count: 1
+                  - keyword: "Cure"
+                    count: 1
+                  - keyword: "Now"
+                    count: 1
+                  - keyword: "Privacy"
+                    count: 1
                   image_list:
                     - image_url: >-
                         https://assets.getpostman.com/email/icon-github-color.png
