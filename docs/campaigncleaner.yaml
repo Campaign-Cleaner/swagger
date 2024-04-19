@@ -549,18 +549,28 @@ paths:
                   total_word_count: 728
                   campaign_html: ''
                   spam_keyword_list:
-                    Sign up: 2
-                    Check: 2
-                    Collect: 2
-                    Offer: 1
-                    Get paid: 1
-                    Request: 1
-                    Open: 1
-                    Solution: 1
-                    Subscribe: 1
-                    Cure: 1
-                    Now: 1
-                    Privacy: 1
+                   - keyword: Sign up
+                    count: 2
+                   - keyword: Check
+                    count: 2
+                   - keyword: Offer
+                    count:1
+                   - keyword: Get paid
+                     count: 1
+                   - keyword: Request
+                     count: 1
+                   - keyword Open
+                     count: 1
+                   - keyword: Solution
+                     count: 1
+                   - keyword: Subscribe
+                     count: 1
+                   - keyword: Cure
+                     count: 1
+                   - keyword: Now
+                     count: 1
+                   - keyword: Privacy
+                     count: 1
                   image_list:
                     - image_url: >-
                         https://assets.getpostman.com/email/icon-github-color.png
