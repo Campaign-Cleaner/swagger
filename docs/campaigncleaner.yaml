@@ -548,7 +548,7 @@ paths:
                   text_link_max_acceptable_ratio: 10
                   total_word_count: 728
                   campaign_html: ''
-                 spam_keyword_list:
+                  spam_keyword_list:
                   - keyword: "Sign up"
                     count: 2
                   - keyword: "Check"
