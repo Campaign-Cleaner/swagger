@@ -549,27 +549,27 @@ paths:
                   total_word_count: 728
                   campaign_html: ''
                   spam_keyword_list:
-                   - keyword: Sign up
+                   - keyword: >- Sign up
                     count: 2
-                   - keyword: Check
+                   - keyword: >-Check
                     count: 2
-                   - keyword: Offer
-                    count:1
-                   - keyword: Get paid
+                   - keyword: >- Offer
                      count: 1
-                   - keyword: Request
+                   - keyword: >- Get paid
                      count: 1
-                   - keyword Open
+                   - keyword: >-Request
                      count: 1
-                   - keyword: Solution
+                   - keyword: >- Open
                      count: 1
-                   - keyword: Subscribe
+                   - keyword: >- Solution
                      count: 1
-                   - keyword: Cure
+                   - keyword: >- Subscribe
                      count: 1
-                   - keyword: Now
+                   - keyword: >- Cure
                      count: 1
-                   - keyword: Privacy
+                   - keyword: >- Now
+                     count: 1
+                   - keyword: >-Privacy
                      count: 1
                   image_list:
                     - image_url: >-
