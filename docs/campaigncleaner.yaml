@@ -330,8 +330,8 @@ paths:
 
         - **pd_cdn_list**: (List of links on Poor delivery CDNs) Links that
         point to CDNs that are known to affect delivery.
-         - **pd_cdn_name**: (string) The name of the CDN that can affect delivery.
-         - **pd_cdn_url**: (string) The URL or Location the CDN uses to host content.
+           - **pd_cdn_name**: (string) The name of the CDN that can affect delivery.
+           - **pd_cdn_url**: (string) The URL or Location the CDN uses to host content.
         - **min_font_size_allowed**: (A positive Integer, under 100) in pixels.
 
         - **max_font_size_allowed**: (A positive Integer under 100) in pixels.
@@ -401,10 +401,11 @@ paths:
         - **spam_words_count**: (integer) The total number of spam words found
         in your campaign.
 
-        - **spam_keyword_list**: (array) (keyword (string), count (integer)
+        - **spam_keyword_list**: (List of Spam Keywords) (keyword (string), count (integer)
         Array of all spam keywords found and the number of times they were
         found.
-
+          - **keyword**: The spam Keyword or phrase.
+          - **count**: The number of occurrences of the spam keyword.
         - **spam_keyword_ratio**: (double) The spam keyword ratio of the
         campaign.
 
