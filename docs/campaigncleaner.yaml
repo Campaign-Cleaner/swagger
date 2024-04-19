@@ -311,15 +311,15 @@ paths:
 
         - **image_list**: (list of images) A list of all images found and their
         properties.
-         - **image_url**: (string) The URL of where the image is located.
-         - **image_size** (long) The size of the image in Kilobytes (KB)
-         - **image_width**: (integer) The width of the image.
-         - **image_height**: (integer) The height of the image.
-         - **image_background**: (true/false) True, if this is a background image, otherwise
-         - **image_type**: (Integer) 1=png, 2=jpeg, 3=gif, 4=bmp, 5=svg, 6=avif, 7=tif, 8=webp, 9=apng, 10=heic, 11=icon, 12=base64, -1=Unknown
-         - **image_rendered_width**: (integer) The rendered width of the image.
-         - **image_rendered_height**: (integer) The rendered height of the image.
-        - **links_missing_title_attribute** : (integer) The number of links
+          - **image_url**: (string) The URL of where the image is located.
+          - **image_size** (long) The size of the image in Kilobytes (KB)
+          - **image_width**: (integer) The width of the image.
+          - **image_height**: (integer) The height of the image.
+          - **image_background**: (true/false) True, if this is a background image, otherwise
+          - **image_type**: (Integer) 1=png, 2=jpeg, 3=gif, 4=bmp, 5=svg, 6=avif, 7=tif, 8=webp, 9=apng, 10=heic, 11=icon, 12=base64, -1=Unknown
+          - **image_rendered_width**: (integer) The rendered width of the image.
+          - **image_rendered_height**: (integer) The rendered height of the image.
+          - **links_missing_title_attribute** : (integer) The number of links
         missing the **"title"** attribute.
 
         - **links_scanned**: (integer) The total number of links scanned,
@@ -338,14 +338,14 @@ paths:
 
         - **os_image_list**:(list of images) All the oversized images in the
         campaign
-         - **image_url**: (string) The URL of where the image is located.
-         - **image_size** (long) The size of the image in Kilobytes (KB)
-         - **image_width**: (integer) The width of the image.
-         - **image_height**: (integer) The height of the image.
-         - **image_background**: (true/false) True, if this is a background image, otherwise false.
-         - **image_type**: (Integer) 1=png, 2=jpeg, 3=gif, 4=bmp, 5=svg, 6=avif, 7=tif, 8=webp, 9=apng, 10=heic, 11=icon, 12=base64, -1=Unknown
-         - **image_rendered_width**: (integer) The rendered width of the image.
-         - **image_rendered_height**: (integer) The rendered height of the image.
+          - **image_url**: (string) The URL of where the image is located.
+          - **image_size** (long) The size of the image in Kilobytes (KB)
+          - **image_width**: (integer) The width of the image.
+          - **image_height**: (integer) The height of the image.
+          - **image_background**: (true/false) True, if this is a background image, otherwise false.
+          - **image_type**: (Integer) 1=png, 2=jpeg, 3=gif, 4=bmp, 5=svg, 6=avif, 7=tif, 8=webp, 9=apng, 10=heic, 11=icon, 12=base64, -1=Unknown
+          - **image_rendered_width**: (integer) The rendered width of the image.
+          - **image_rendered_height**: (integer) The rendered height of the image.
         - **pd_cdns_found**: (integer) The number of content delivery networks
         found, known to cause adverse delivery issues.
 
