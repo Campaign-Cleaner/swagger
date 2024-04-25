@@ -4,7 +4,7 @@ info:
   description: >-
 
 
-    [Campaign Cleaner](https://campaincleaner.com) is the leader in ensuring
+    [Campaign Cleaner](https://campaigncleaner.com) is the leader in ensuring
     that your campaigns don't affect your IP and Domain reputation, it's the
     most advanced toolset you'll find that gives you all the tools you need to
     keep your campaigns within acceptable ratios of many email and spam
@@ -18,7 +18,7 @@ info:
 
 
     The **{{api_key}}** is located in your account on [Campaign
-    Cleaner](https://campaincleaner.com) under **API Management API Keys.**
+    Cleaner](https://campaigncleaner.com) under **API Management API Keys.**
 
 
     Use the navigation on the left to access the different API Endpoints.
@@ -172,7 +172,7 @@ paths:
       summary: Get Campaign
       description: >-
         The **get_campaign** API allows you to retrieve any of your Saved
-        Campaigns in [Campain Cleaner](https://campaigncleaner.com). The
+        Campaigns in [Campaign Cleaner](https://campaigncleaner.com). The
         response below is a real example of a newsletter that "Postman" sent us,
         overall it's a pretty good newsletter with a few issues, mainly image
         size and a couple of broken links.
