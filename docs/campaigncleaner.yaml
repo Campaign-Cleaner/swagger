@@ -1619,9 +1619,7 @@ paths:
           - **text_align**: (left, center, right) All content within the surrounding "div" will be aligned according to your specified style. However, you can use the "text-align" property on inner tags within the "div" to customize the appearance of your email.
           - **font_size:** The pixel size that you want everything in the surrounding div to adhere to, setting this, will add an "_!important"_ to the font-size in the surrounding "div". Font sizes that are set on any tag in the HTML will retain their original size. While all unspecified font sizes to the size you chose.
           - **center_to_parent:** (true/false) Using this feature will enable the surrounding "div" to be centered in any parent tags in which it is placed. This is particularly helpful when inserting an HTML snippet into a template.
-          - **treat_as_fragment**: (**true**/false), If true, all information
-        before and after and including the body tag is removed.
-
+        
         - **webhook_url**: An endpoint that you provide us and when your
         campaign is fully processed we will send the results back that is found
         in the Get Campaign API. You can utilize the webhook section under API
