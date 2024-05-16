@@ -1474,6 +1474,98 @@ paths:
                 type: object
               example:
                 credits: 987
+  /v1/get_campaign_pdf_analysis:
+    post:
+      tags:
+        - Campaign Cleaner
+      summary: Get Campaign PDF Analysis
+      description: >-
+        The **get_campaign_pdf_analysis** API allows you to retrieve the analysis report for any of your Saved Campaigns in Campaign Cleaner.
+
+        #### Request Body:
+
+
+        **campaign**:
+
+
+        - **id**: The campaign id that will be used in other API calls.
+         
+
+        #### Response:
+
+          Is an Application/pdf stream.
+        
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                campaign:
+                  id: '{{campaign_id}}'
+      parameters:
+        - name: X-CC-API-Key
+          in: header
+          schema:
+            type: string
+          example: '{{api_key}}'
+      responses:
+        '200':
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/pdf
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+              example:>-
+          %PDF-1.4
+          1 0 obj
+          << /Type /Catalog
+             /Pages 2 0 R
+          >>
+          endobj
+          2 0 obj
+          << /Type /Pages
+             /Kids [3 0 R]
+             /Count 1
+          >>
+          endobj
+          3 0 obj
+          << /Type /Page
+             /Parent 2 0 R
+             /MediaBox [0 0 612 792]
+             /Contents 4 0 R
+          >>
+          endobj
+          4 0 obj
+          << /Length 44 >>
+          stream
+          BT
+          /F1 24 Tf
+          100 700 Td
+          (Hello, PDF world!) Tj
+          ET
+          endstream
+          endobj
+          xref
+          0 5
+          0000000000 65535 f
+          0000000010 00000 n
+          0000000075 00000 n
+          0000000125 00000 n
+          0000000200 00000 n
+          trailer
+          << /Size 5
+             /Root 1 0 R
+          >>
+          startxref
+          267
+          %%EOF                
   /v1/send_campaign:
     post:
       tags:
