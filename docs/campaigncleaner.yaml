@@ -1519,7 +1519,7 @@ paths:
               schema:
                 type: string
                 format: binary
-              example: PDF File Download
+              example: 'PDF File Download'
   /v1/send_campaign:
     post:
       tags:
