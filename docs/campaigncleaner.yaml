@@ -1474,57 +1474,57 @@ paths:
                 type: object
               example:
                 credits: 987
-/v1/get_campaign_pdf_analysis:
-  post:
-    tags:
-      - Campaign Cleaner
-    summary: Get Campaign PDF Analysis
-    description: >-
-      The **get_campaign_pdf_analysis** API allows you to retrieve the analysis report for any of your Saved Campaigns in Campaign Cleaner.
+  /v1/get_campaign_pdf_analysis:
+    post:
+      tags:
+        - Campaign Cleaner
+      summary: Get Campaign PDF Analysis
+      description: >-
+        The **get_campaign_pdf_analysis** API allows you to retrieve the analysis report for any of your Saved Campaigns in Campaign Cleaner.
 
-      #### Request Body:
+        #### Request Body:
 
-      **campaign**:
+        **campaign**:
 
-      - **id**: The campaign id that will be used in other API calls.
+        - **id**: The campaign id that will be used in other API calls.
        
-      #### Response:
+        #### Response:
 
-      An Application/pdf stream.
-    requestBody:
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              campaign:
-                type: object
-                properties:
-                  id:
-                    type: string
-            example:
-              campaign:
-                id: '{{campaign_id}}'
-    parameters:
-      - name: X-CC-API-Key
-        in: header
-        schema:
-          type: string
-        example: '{{api_key}}'
-    responses:
-      '200':
-        description: OK
-        headers:
-          Content-Type:
-            schema:
-              type: string
-              example: application/pdf
+        An Application/pdf stream.
+      requestBody:
         content:
-          application/pdf:
+          application/json:
             schema:
-              type: string
-              format: binary
- /v1/send_campaign:
+              type: object
+              properties:
+                campaign:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+              example:
+                campaign:
+                  id: '{{campaign_id}}'
+      parameters:
+        - name: X-CC-API-Key
+          in: header
+          schema:
+            type: string
+          example: '{{api_key}}'
+      responses:
+        '200':
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/pdf
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+  /v1/send_campaign:
     post:
       tags:
         - Campaign Cleaner
