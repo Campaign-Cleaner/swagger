@@ -1513,20 +1513,12 @@ paths:
           example: '{{api_key}}'
       responses:
         '200':
-          description: OK
-          headers:
-            Content-Type:
-              schema:
-                type: string
-                example: application/pdf
+          description: Returns the report in the PDF format
           content:
             application/pdf:
               schema:
                 type: string
                 format: binary
-              examples:
-                value: '%PDF-1.4\n1 0 obj\n<<\n/Title (Example PDF)\n/Creator (Example Creator)\n/Producer (Example Producer)\n/CreationDate (D:20240516150617-04\'00\')\n>>\nendobj\n3 0 obj\n<<\n/Type /ExtGState\n/SA true\n/SM 0.02\n/ca 1.0\n/CA 1.0\n/AIS false\n/SMask /None>>\nendobj\n4 0 obj\n'
-
   /v1/send_campaign:
     post:
       tags:
