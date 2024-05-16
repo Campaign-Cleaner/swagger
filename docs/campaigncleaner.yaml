@@ -1513,12 +1513,13 @@ paths:
           example: '{{api_key}}'
       responses:
         '200':
-          description: Returns the report in the PDF format
+          description: Returns the file in the PDF format
           content:
             application/pdf:
               schema:
                 type: string
                 format: binary
+               example: PDF File Download
   /v1/send_campaign:
     post:
       tags:
