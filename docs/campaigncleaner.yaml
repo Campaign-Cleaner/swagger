@@ -1479,7 +1479,7 @@ paths:
     tags:
       - Campaign Cleaner
     summary: Get Campaign PDF Analysis
-    description: >
+    description: >-
       The **get_campaign_pdf_analysis** API allows you to retrieve the analysis report for any of your Saved Campaigns in Campaign Cleaner.
 
       #### Request Body:
