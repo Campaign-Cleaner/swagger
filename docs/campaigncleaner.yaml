@@ -299,14 +299,20 @@ paths:
         without extensions will be hosted on our CDN when the
         **resize_and_host** parameter is set to true. Typically, dynamically
         generated images lack extensions, though there are exceptions.
-
+        
+        - **inline_css:** (**true**/false) When set to true, CSS styles are directly applied within the style attribute of each HTML element.
+    
+        - **inline_css_important:** (true/**false**) When set to true, the `!important` flag will also be inlined with CSS styles. If you are using media queries, it is generally recommended to keep this set to false.
+    
+        - **media_queries_important:** (**true**/false) When set to true, all media query styles will be marked with the `!important` flag. This ensures they can override any inline CSS without an `!important` flag.
+        
         - **image_count**: (integer) The total number of images found in your
         campaign including background images.
 
         - **image_max_width**: (integer): The max-width style applied to all
         images in pixels.
 
-        - i**mages_missing_alt_attribute:** (integer) The number of images
+        - **images_missing_alt_attribute:** (integer) The number of images
         missing or have an empty **"alt"** attribute.
 
         - **image_list**: (list of images) A list of all images found and their
@@ -1595,6 +1601,12 @@ paths:
         without extensions will be hosted on our CDN when the
         **resize_and_host** parameter is set to true. Typically, dynamically
         generated images lack extensions, though there are exceptions.
+
+        - **inline_css:** (**true**/false) When set to true, CSS styles are directly applied within the style attribute of each HTML element.
+    
+        - **inline_css_important:** (true/**false**) When set to true, the `!important` flag will also be inlined with CSS styles. If you are using media queries, it is generally recommended to keep this set to false.
+    
+        - **media_queries_important:** (**true**/false) When set to true, all media query styles will be marked with the `!important` flag. This ensures they can override any inline CSS without an `!important` flag.
 
         - **image_max_width:** (int) When this is specified, it will add an
         max-width style to all images. it is not desirable for the image width
