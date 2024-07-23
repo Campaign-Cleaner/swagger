@@ -45,7 +45,7 @@ paths:
         **campaign**:
 
 
-        - **id**: The campaign id that will be used in other API calls.
+        - **id**: The Campaign ID that you want to get the status for.
          
 
         #### Response:
