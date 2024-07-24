@@ -368,7 +368,7 @@ paths:
 
         - **preserve_media_queries**: (true/false) True, if all media queries were preserved.
 
-        - **relative_links_base_url**: If set this needs to be a full base URL
+        - **relative_links_base_url**: If set, this needs to be a full base URL
         like "[https://campaigncleaner.com/"](https://campaigncleaner.com/), if
         your email campaign has any relative paths, it will be converted to an
         absolute URL. In most instances, you won't need to set this.
@@ -1654,18 +1654,18 @@ paths:
         - **remove_control_non_printable:** (**true**/false) If true, all
         non-printable and control characters are removed.
 
-        - **remove_image_height:** (**true**/false) if true, the height style is
+        - **remove_image_height:** (**true**/false) If true, the height style is
         removed from all images, preventing any image distortions. Only the
         width property should be set on images sent in emails.
 
         - **remove_large_widths_over**: (integer) Experimental: If sets removes
         all defined widths over the value set on non images and table tags.
 
-        - **remove_successive_punctuation**: (true/**false**) if true, this will
+        - **remove_successive_punctuation**: (true/**false**) If true, this will
         remove succession punctuation like ..., !!!!, $$$ to a single
         occurrence.
 
-        - **relative_links_base_url**: If set this needs to be a full base URL
+        - **relative_links_base_url**: If set, this needs to be a full base URL
         like "[https://campaigncleaner.com/"](https://campaigncleaner.com/), if
         your email campaign has any relative paths, it will be converted to an
         absolute URL. In most instances, you won't need to set this.
