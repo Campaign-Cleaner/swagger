@@ -38,7 +38,10 @@ paths:
         'completed' status, you can call the **get_campaign** API to retrieve
         the results.
 
-
+        #### Header:
+        
+        **X-CC-API-Key**: Your API Key
+        
         #### Request Body:
 
 
@@ -113,6 +116,10 @@ paths:
         all the campaigns you have saved on [Campaign
         Cleaner](https://campaigncleaner.com).
 
+        #### Header:
+        
+        **X-CC-API-Key**: Your API Key
+        
 
         #### Response:
 
@@ -177,7 +184,10 @@ paths:
         overall it's a pretty good newsletter with a few issues, mainly image
         size and a couple of broken links.
 
-
+        #### Header:
+        
+        **X-CC-API-Key**: Your API Key
+        
         #### Request Body:
 
         _Required:_
@@ -187,8 +197,6 @@ paths:
 
         - **id**: The campaign id that will be used in other API calls.
          
-
-
         _Optional:_
 
         **campaign**:
@@ -1487,7 +1495,11 @@ paths:
       summary: Get Campaign PDF Analysis
       description: >-
         The **get_campaign_pdf_analysis** API allows you to retrieve the analysis report for any of your Saved Campaigns in Campaign Cleaner.
-
+     
+        #### Header:
+        
+        **X-CC-API-Key**: Your API Key
+        
         #### Request Body:
 
         **campaign**:
@@ -1541,7 +1553,10 @@ paths:
 
         All submitted campaigns will be sanitized and CSS inlined.
 
-
+        #### Header:
+        
+        **X-CC-API-Key**: Your API Key
+        
         #### Request Body:
 
 
@@ -1683,7 +1698,10 @@ paths:
         in the Get Campaign API. You can utilize the webhook section under API
         Management to troubleshoot and test your endpoint.
          
-
+        #### Header:
+        
+        **X-CC-API-Key**: Your API Key
+        
         #### Response:
 
 
@@ -1742,7 +1760,10 @@ paths:
         campaigns in your saved campaigns in [Campaign
         Cleaner](https://campaigncleaner.com).
 
-
+        #### Header:
+        
+        **X-CC-API-Key**: Your API Key
+        
         #### Request Body:
 
 
