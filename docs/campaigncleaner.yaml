@@ -1551,7 +1551,7 @@ paths:
         the bold/italicized setting.
 
 
-        All submitted campaigns will be sanitized and CSS inlined.
+        All submitted campaigns will be sanitized.
 
         #### Header:
         
