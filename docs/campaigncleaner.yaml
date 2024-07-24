@@ -1679,7 +1679,7 @@ paths:
         will be replaced with **".** Non-ascii characters is of of the major
         spam trigger.
 
-        - **resize_and_host**: (true/**false**) If true,we will resize, convert,
+        - **resize_and_host**: (true/**false**) If true, we will resize, convert,
         and host all eligible images on our CDN. Please read our documentation
         here: [Resizing and
         Hosting](https://docs.campaigncleaner.com/en/resize_and_host)
