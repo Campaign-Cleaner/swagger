@@ -1654,7 +1654,7 @@ paths:
         - **remove_control_non_printable:** (**true**/false) If true, all
         non-printable and control characters are removed.
 
-        - **remove_image_height:** (**true**/false) If true, the height style is
+        - **remove_image_height:** (true/**false**) If true, the height style is
         removed from all images, preventing any image distortions. Only the
         width property should be set on images sent in emails.
 
