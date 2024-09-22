@@ -410,7 +410,7 @@ paths:
 
         - **resize_and_host**: (true/false) If true, all eligible images were
         resized, converted, and hosted on our CDN. Read more about this here:
-        [Resize And Host](https://docs.campaigncleaner.com/en/resize_and_host)
+        [Resize And Host](https://docs.campaigncleaner.com/features-settings/resize-and-host)
 
         - **spam_words_count**: (integer) The total number of spam words found
         in your campaign.
@@ -1682,7 +1682,7 @@ paths:
         - **resize_and_host**: (true/**false**) If true, we will resize, convert,
         and host all eligible images on our CDN. Please read our documentation
         here: [Resizing and
-        Hosting](https://docs.campaigncleaner.com/en/resize_and_host)
+        Hosting](https://docs.campaigncleaner.com/features-settings/resize-and-host)
 
         - **surrounding_div:** When you set any parameter of the surrounding
         div, it will add "div" tag around your html with the styles you set.
