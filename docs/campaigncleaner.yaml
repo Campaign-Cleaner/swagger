@@ -1,1795 +1,60 @@
-openapi: 3.0.0
-info:
-  title: API DOCUMENTATION
-  description: >-
-
-
-    [Campaign Cleaner](https://campaigncleaner.com) is the leader in ensuring
-    that your campaigns don't affect your IP and Domain reputation, it's the
-    most advanced toolset you'll find that gives you all the tools you need to
-    keep your campaigns within acceptable ratios of many email and spam
-    filtering software and automatically fixes your HTML by sanitizing all
-    non-email friendly attributes and inlines all your CSS to be compatible with
-    every email client.
-
-
-    We offer a robust collection of API's to allow you to integrate its
-    functionality into your email marketing software and tools.
-
-
-    The **{{api_key}}** is located in your account on [Campaign
-    Cleaner](https://campaigncleaner.com) under **API Management API Keys.**
-
-
-    Use the navigation on the left to access the different API Endpoints.
-  version: 1.0.0
-servers:
-  - url: https://api.campaigncleaner.com
-paths:
-  /v1/get_campaign_status:
+/v1/create_inbox_test:
     post:
       tags:
         - Campaign Cleaner
-      summary: Get Campaign Status
+      summary: Create Inbox Test
       description: >-
-        After submitting a campaign to be corrected and analyzed it can take up
-        to a minute to finalize the results. You can check the status of your
-        campaign with the **check_campaign_status** API. When you see a
-        'completed' status, you can call the **get_campaign** API to retrieve
-        the results.
+        The **create_inbox_test** API allows you to create a new inbox placement
+        test. Once created, you will receive a list of seed email addresses to
+        send your campaign to. After sending your campaign to all addresses in
+        the **send_to** list, you can use the **get_inbox_test_results** API to
+        retrieve the placement results.
+
+
+        This endpoint requires an active Campaign Cleaner subscription or a
+        standalone Inbox Placement Tester subscription. One API credit will be
+        deducted per test created.
 
         #### Header:
-        
+
         **X-CC-API-Key**: Your API Key
-        
-        #### Request Body:
 
-
-        **campaign**:
-
-
-        - **id**: The Campaign ID that you want to get the status for.
-         
-
-        #### Response:
-
-
-        **campaign_list**:
-
-
-        - **id**: The campaign id that will be used in other API calls.
-
-        - **campaign_name**: The name of the campaign.
-
-        - **status**: The status will be either _processing_, _completed_, or
-        _paused_
-
-        - **date_added**: The date and time your campaign was saved or submitted
-        to [Campaign Cleaner](https://campaigncleaner.com).
-         
-
-        If the **status** is _completed_, you will be able to retrieve the
-        campaign via the **get_campaign** API
-
-
-        In the event of an error, you will get an "**error**:" response, with a
-        description of the reason
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              example:
-                campaign:
-                  id: '{{campaign_id}}'
-      parameters:
-        - name: X-CC-API-Key
-          in: header
-          schema:
-            type: string
-          example: '{{api_key}}'
-      responses:
-        '200':
-          description: OK
-          headers:
-            Content-Type:
-              schema:
-                type: string
-                example: application/json
-          content:
-            application/json:
-              schema:
-                type: object
-              example:
-                campaign_status:
-                  id: e8c8af95-c033-11ed-9848-003048d8d536
-                  campaign_name: Test Campaign 1
-                  status: completed
-                  date_added: '2023-02-23T12:02:46-05:00'
-  /v1/get_campaign_list:
-    get:
-      tags:
-        - Campaign Cleaner
-      summary: Get Campaign List
-      description: >-
-        The **get_campaign_list** API endpoint allows you to get the status of
-        all the campaigns you have saved on [Campaign
-        Cleaner](https://campaigncleaner.com).
-
-        #### Header:
-        
-        **X-CC-API-Key**: Your API Key
-        
-
-        #### Response:
-
-
-        **campaign_list**:
-
-
-        - **id**: The campaign id that will be used in other API calls.
-
-        - **campaign_name**: The name of the campaign.
-
-        - **status**: The status will be either _processing_, _completed_, or
-        _paused_
-
-        - **date_added**: The date and time your campaign was saved or submitted
-        to Campaign Cleaner.
-         
-
-        If the **status** is _completed_, you will be able to retrieve the
-        campaign via the **get_campaign** API
-
-
-        In the event of an error, you will get an "**error**:" response, with a
-        description of the reason
-      parameters:
-        - name: X-CC-API-Key
-          in: header
-          schema:
-            type: string
-          example: '{{api_key}}'
-      responses:
-        '200':
-          description: OK
-          headers:
-            Content-Type:
-              schema:
-                type: string
-                example: application/json
-          content:
-            application/json:
-              schema:
-                type: object
-              example:
-                campaign_list:
-                  - id: e8c8af95-c033-11ed-9848-003048d8d536
-                    campaign_name: Test Campaign 1
-                    status: completed
-                    date_added: '2023-02-23T12:02:46-05:00'
-                  - id: a8c8af95-c033-11ed-9848-003048d8d537
-                    campaign_name: Test Campaign 2
-                    status: completed
-                    date_added: '2023-02-25T22:26:15-05:00'
-  /v1/get_campaign:
-    post:
-      tags:
-        - Campaign Cleaner
-      summary: Get Campaign
-      description: >-
-        The **get_campaign** API allows you to retrieve any of your Saved
-        Campaigns in [Campaign Cleaner](https://campaigncleaner.com). The
-        response below is a real example of a newsletter that "Postman" sent us,
-        overall it's a pretty good newsletter with a few issues, mainly image
-        size and a couple of broken links.
-
-        #### Header:
-        
-        **X-CC-API-Key**: Your API Key
-        
         #### Request Body:
 
         _Required:_
 
-        **campaign**:
-
-
-        - **id**: The campaign id that will be used in other API calls.
-         
-        _Optional:_
-
-        **campaign**:
-
-        - **minimize_html**: (true/false) If true (default), removes all whitespace, tabs, etc. Condensing the HTML.
+        **test_name**: The name of your inbox test - maximum 255 characters.
 
         #### Response:
 
+        - **job_id**: The unique ID of the inbox test, used to retrieve results
+        via the **get_inbox_test_results** API.
 
-        **campaign:**
+        - **test_name**: The name you provided for the test.
 
+        - **mailtester_address**: The unique monitoring address that must be
+        included in your send list. This is already included in the **send_to**
+        array.
 
-        - **adjust_font_colors**: (true/false), If true, certain bright colors
-        are spam triggers, like "**red**" or "**#FF0000**", was adjusted to a
-        slightly different color like "**#FF0101"**, it will look the same, but
-        won't trigger some spam filters.
+        - **instructions**: A description of what to do next.
 
-        - **adjust_font_size**: (true/false) If true, The min and max font size
-        defined below in pixels were applied. If your newsletter contains larger
-        or small font's it was adjusted to the min/max you define.
+        - **send_to**: An array of all seed email addresses including the
+        **mailtester_address**. Send your campaign to every address in this
+        list.
 
-        - **all_capitalized_word_ratio**: (double) The ratio of all capitalized
-        words to total words in your campaign.
 
-        - **all_capitalized_words**: (integer) The number of capitalized words
-        found in your campaign.
-
-        - **all_capitalized_word_max_acceptable_ratio**: (double) The max
-        acceptable ratio of all capitalize words to total words in your
-        campaign.
-
-        - **all_link_list:** (list of links) All the links found in the campaign
-        (images, text, etc.)
-           - **link_url**: (string) The URL or location of the broken link.
-           - **link_status**: (string) The status code of the link, please view the status guide below.
-           - **link_redirected_url**: (string) The location of where the link was redirected to, empty string, if it wasn't redirected.
-           - **link_is_image**: (true/false) True, if the link is used as an image.
-           - **link_is_broken**: (true/false) True, if the link was non-functional at the time of the scan.
-           - **link_initial**: (true/false) True, if the link was the initial link in the campaign, not an intermediate or final link, if redirected.
-           - **link_count**: (integer) The number of times this link was found.
-           - **link_secure:** (true/false) true, if the link is HTTPS.
-           - **link_tel:** (true/false) true, if the link is tel:
-           - **link_mailto:** (true/false) tru, if the link is mailto:
-        - **bg_images_found**: (integer) The number of background images found,
-        some major email clients don't support background images.
-
-        - **bg_image_list**: (List of images) All the background images found
-          - **image_url**: (string) The URL of where the image is located.
-          - **image_size** (long) The size of the image in Kilobytes (KB)
-          - **image_width**: (integer) The width of the image.
-          - **image_height**: (integer) The height of the image.
-          - **image_rendered_width**: (integer) The rendered width of the image.
-          - **image_rendered_height**: (integer) The rendered height of the image.
-          - **image_background**: (true/false) Will always be true, since this is a background image.
-          - **image_type**: (Integer) 1=png, 2=jpeg, 3=gif, 4=bmp, 5=svg, 6=avif, 7=tif, 8=webp, 9=apng, 10=heic, 11=icon, 12=base64, -1=Unknown
-        - **blacklisted_links**: (list of blacklisted links) Links that are on
-        blacklists and their properties.
-          - **bl_url**: (string) The web address where the blacklist is located.
-          - **bl_name**: (string) The name of the blacklist
-          - **link_url**: (string) The link in the campaign that is on a blacklist, can be a redirected link.
-        - **blacklisted_links_found**: (integer) The total number of blacklisted
-        links found.
-
-        - **broken_links**: (list of links) All the broken links found in the
-        campaign.
-          - **link_url**: (string) The URL or location of the broken link.
-          - **link_status**: (string) The reason why the link was considered broken, please view the status guide below.
-          - **link_redirected_url**: (string) The location of where the link was redirected to, empty string, if it wasn't redirected.
-          - **link_is_image**: (true/false) true, if the link is used as an image.
-          - **link_is_broken**: (true/false) true, if the link was non-functional at the time of the scan.
-          - **link_initial**: (true/false) true, if the link was the initial link in the campaign, not an intermediate or final link, if redirected.
-          - **link_count**: (integer) The number of times this link was found.
-          - **link_secure:** (true/false) true, if the link is HTTPS.
-          - **link_tel:** (true/false) true, if the link is tel:
-          - **link_mailto:** (true/false) tru, if the link is mailto:
-        - **campaign_id**: The campaign id that will be used in other API calls.
-
-        - **campaign_html:** (string) The adjusted HTML of the campaign, with
-        all the fixes that were selected.
-
-        - **campaign_name**: (string) The name the campaign was saved with.
-
-        - **campaign_summary**: (list of messages) A quick summary of some of
-        the changes that were applied and some analysis highlights.
-         - **apply_count**: (true/false) If true, the count column apples to the message as the number of occurrences found. If false, the count will be zero, and the message is a statement of what happened.
-         - **count**: (integer) The total occurrences that was found or corrected.
-         - **html_changed**: (true/false) Indicates if the Campaign HTML was changed to correct the issue.
-         - **message**: (string) The change or analysis that took place that indicating something change or something should be looked into further.
-        - **convert_h_to_p_tags**: (true/false) If true, this will change all
-        the H tags to P tags and set the correct font-size.
-
-        - **convert_tables_to_divs:** (true/false) **\-** This is an
-        experimental feature to convert all the tables to divs, in certain
-        instances with a complicated table structure you might need to edit the
-        HTML. We recommend leaving this as false or not setting it.
-
-        - **custom_info**: The values you passed us when calling the
-        **send_campaign** API
-
-        - **domains_scanned**: (array of strings) The domains that were scanned
-        at different blacklists.
-
-        - **header_tags_count**: (integer) The number of header tags found in
-        the campaign, header tags displays are not consistent across email
-        clients, use "**div**" or "**p**" tags styled correctly instead.
-
-        - **host_extensionless_images:** (true/**false**) If true, images
-        without extensions will be hosted on our CDN when the
-        **resize_and_host** parameter is set to true. Typically, dynamically
-        generated images lack extensions, though there are exceptions.
-        
-        - **inline_css:** (**true**/false) When set to true, CSS styles are directly applied within the style attribute of each HTML element.
-    
-        - **inline_css_important:** (true/**false**) When set to true, the `!important` flag will also be inlined with CSS styles. If you are using media queries, it is generally recommended to keep this set to false.
-    
-        - **media_queries_important:** (**true**/false) When set to true, all media query styles will be marked with the `!important` flag. This ensures they can override any inline CSS without an `!important` flag.
-        
-        - **image_count**: (integer) The total number of images found in your
-        campaign including background images.
-
-        - **image_max_width**: (integer): The max-width style applied to all
-        images in pixels.
-
-        - **images_missing_alt_attribute:** (integer) The number of images
-        missing or have an empty **"alt"** attribute.
-
-        - **image_list**: (list of images) A list of all images found and their
-        properties.
-          - **image_url**: (string) The URL of where the image is located.
-          - **image_size** (long) The size of the image in Kilobytes (KB)
-          - **image_width**: (integer) The width of the image.
-          - **image_height**: (integer) The height of the image.
-          - **image_background**: (true/false) True, if this is a background image, otherwise
-          - **image_type**: (Integer) 1=png, 2=jpeg, 3=gif, 4=bmp, 5=svg, 6=avif, 7=tif, 8=webp, 9=apng, 10=heic, 11=icon, 12=base64, -1=Unknown
-          - **image_rendered_width**: (integer) The rendered width of the image.
-          - **image_rendered_height**: (integer) The rendered height of the image.
-          - **links_missing_title_attribute** : (integer) The number of links
-        missing the **"title"** attribute.
-
-        - **links_scanned**: (integer) The total number of links scanned,
-        images, text, and redirects.
-
-        - **os_images_found**: (integer) The number of oversized images found in
-        your campaign, slowing down the loading of your campaign.
-
-        - **pd_cdn_list**: (List of links on Poor delivery CDNs) Links that
-        point to CDNs that are known to affect delivery.
-           - **pd_cdn_name**: (string) The name of the CDN that can affect delivery.
-           - **pd_cdn_url**: (string) The URL or Location the CDN uses to host content.
-        - **min_font_size_allowed**: (A positive Integer, under 100) in pixels.
-
-        - **max_font_size_allowed**: (A positive Integer under 100) in pixels.
-
-        - **os_image_list**:(list of images) All the oversized images in the
-        campaign
-          - **image_url**: (string) The URL of where the image is located.
-          - **image_size** (long) The size of the image in Kilobytes (KB)
-          - **image_width**: (integer) The width of the image.
-          - **image_height**: (integer) The height of the image.
-          - **image_background**: (true/false) True, if this is a background image, otherwise false.
-          - **image_type**: (Integer) 1=png, 2=jpeg, 3=gif, 4=bmp, 5=svg, 6=avif, 7=tif, 8=webp, 9=apng, 10=heic, 11=icon, 12=base64, -1=Unknown
-          - **image_rendered_width**: (integer) The rendered width of the image.
-          - **image_rendered_height**: (integer) The rendered height of the image.
-        - **pd_cdns_found**: (integer) The number of content delivery networks
-        found, known to cause adverse delivery issues.
-
-        - **pd_cdns_link_count**: (integer) The total number of links pointed to
-        content delivery networks know to cause adverse delivery issues.
-
-        - **preserve_media_queries**: (true/false) True, if all media queries were preserved.
-
-        - **relative_links_base_url**: If set, this needs to be a full base URL
-        like "[https://campaigncleaner.com/"](https://campaigncleaner.com/), if
-        your email campaign has any relative paths, it will be converted to an
-        absolute URL. In most instances, you won't need to set this.
-
-        - **remove_successive_punctuation**: (true/false) if true, this will
-        remove succession punctuation like ..., !!!!, $$$ to a single
-        occurrence.
-
-        - **remove_css_inheritance**: (true/false) If true, removes all elements
-        of CSS that are inherited. Once CSS is inlined, the inherited CSS will
-        be removed, for example if font-size of a parent tag is 15 pixels, there
-        is no need for the font-size of the child tag to be specified as 15
-        pixels because it's inherited or computed from the parent tag, this
-        reduces the size of your HTML Campaign.
-
-        - **remove_classes_and_ids**: (_true_/false) If true, all the class and
-        ID attributes after CSS Inlining was removed.
-
-        - **remove_comments**: (true/false) If true, comments were stripped from
-        both CSS and HTML. Comments are invisible in HTML and can trigger spam
-        filters.
-
-        - **remove_control_non_printable:** (true/false) If True, call
-        non-printable and control characters are removed.
-
-        - **remove_image_height:** (true/false) if true, the height style was
-        removed from all images, preventing any image distortions.
-
-        - **remove_large_widths_over**: (integer) Experimental: If sets removes
-        all defined widths over the value set on non images and table tags.
-
-        - **replace_diacritics**: (true/false) If true, diacritic characters
-        like á were replaced with a normal characters equivalent.
-
-        - **replace_non_ascii_characters**: (true/false) If true, all non-ascii
-        characters were replaced with their ascii equivalent. For example, ❝ was
-        replaced with **".** Non-ascii characters is of of the major spam
-        trigger.
-
-        - **resize_and_host**: (true/false) If true, all eligible images were
-        resized, converted, and hosted on our CDN. Read more about this here:
-        [Resize And Host](https://docs.campaigncleaner.com/features-settings/resize-and-host)
-
-        - **spam_words_count**: (integer) The total number of spam words found
-        in your campaign.
-
-        - **spam_keyword_list**: (List of Spam Keywords) (keyword (string), count (integer)
-        Array of all spam keywords found and the number of times they were
-        found.
-          - **keyword**: The spam Keyword or phrase.
-          - **count**: The number of occurrences of the spam keyword.
-        - **spam_keyword_ratio**: (double) The spam keyword ratio of the
-        campaign.
-
-        - **spam_keyword_max_acceptable_ratio**: (double) The max acceptable
-        ratio for spam keywords for any campaign.
-
-        - **successive_currency_marks**: (integer) The number of successive
-        currency marks found "$$".
-
-        - **successive_exclaimations**: (integer) The number of successive
-        exclamation points found "!!".
-
-        - **successive_question_marks**: (integer) The number of successive
-        question marks found "??".
-
-        - **successive_periods**: (integer) The number of successive periods
-        found "..".
-
-        - **surrounding_div**: A surrounding "div" added to your html with the
-        following styles added.
-           - **max_width**: The max-width style in pixels applied to the surrounding "div".
-           - **text_align**: (left, center, right) All content within the surrounding "div" will be aligned according to the specified style. However, this can be over-written but setting "text-align" property on inner tags within the "div" to customize the appearance of your email.
-           - **font_size**: The pixel size that set in the surrounding div to adhere to, this adds an "!important" to all font-sizes that are set on any tag in the HTML to maintain the font you want. While setting all unspecified font sizes to the size you choose.
-           - **center_to_parent**: (true/false) If true, this will enable the surrounding "div" to be centered in any parent tags in which it is placed. This is particularly helpful when inserting an HTML snippet into a template
-          - **text_link_max_acceptable_ratio**: (double) the max acceptable text
-        to link ratio for any campaign.
-
-        - **text_link_ratio**: (double) The text to link ratio of your campaign.
-
-        - **text_image_max_acceptable_ratio**: (double) the max acceptable text
-        to image ratio for any campaign.
-
-        - **text_image_ratio**: (double) The text to image ratio of your
-        campaign.
-
-        - **total_word_count**: (integer) The total number of words found in
-        your campaign.
-        
-
-        #### Additional Information:
-
-
-        **HTTP Status Codes:**
-        [https://developer.mozilla.org/en-US/docs/Web/HTTP/Status](https://developer.mozilla.org/en-US/docs/Web/HTTP/StatusIn)
-
-
-        In addition to status codes listed in the document above.
-
-
-        | **Status Code** | **Description** |
-
-        | --- | --- |
-
-        | 97 | Telephone Links start with tel: |
-
-        | 98 | Email links, starts with mailto: |
-
-        | 99 | Invalid URL - The provided website address is not valid. It may
-        be a partial address, missing the necessary protocols (http or https),
-        or has an incorrect format. |
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              example:
-                campaign:
-                  id: '{{campaign_id}}'
-                  minimize_html: true
-      parameters:
-        - name: X-CC-API-Key
-          in: header
-          schema:
-            type: string
-          example: '{{api_key}}'
-       
-      responses:
-        '200':
-          description: OK
-          headers:
-            Content-Type:
-              schema:
-                type: string
-                example: application/json
-          content:
-            application/json:
-              schema:
-                type: object
-              example:
-                campaign:
-                  adjust_font_colors: true
-                  adjust_font_size: false
-                  all_capitalized_words: 52
-                  all_capitalized_word_ratio: 7.14
-                  all_capitalized_word_max_acceptable_ratio: 10
-                  blacklisted_links_found: 0
-                  bg_images_found: 0
-                  broken_links_found: 2
-                  campaign_id: 8e754ce1-c2df-11ed-9848-003048d8d533
-                  campaign_name: CC Postman Newsletter Analysis
-                  convert_h_to_p_tags: false
-                  convert_tables_to_divs: false
-                  custom_info: ''
-                  header_tags_count: 19
-                  image_count: 13
-                  image_max_width: null
-                  images_missing_alt_attribute: 10
-                  links_missing_title_attribute: 5
-                  links_scanned: 36
-                  min_font_size_allowed: 10
-                  max_font_size_allowed: 32
-                  os_images_found: 6
-                  pd_cdns_found: 0
-                  pd_cdns_link_count: 0
-                  preserve_media_queries: true
-                  relative_links_base_url: null
-                  remove_inherited_css: true
-                  remove_classes_and_ids: true
-                  remove_control_non_printable: false
-                  remove_comments: true
-                  remove_image_height: true
-                  replace_non_ascii_characters: true
-                  remove_successive_punctuation: false
-                  results_time: '2023-03-14T23:14:26-04:00'
-                  spam_keyword_ratio: 2.06
-                  spam_keyword_max_acceptable_ratio: 5
-                  spam_words_count: 15
-                  successive_exclaimations: 0
-                  successive_question_marks: 0
-                  successive_currency_marks: 0
-                  successive_periods: 0
-                  surrounding_div:
-                    max_width: 600
-                    text_align: left
-                    font_size: 15
-                    center_to_parent: true
-                  text_image_ratio: 1.79
-                  text_image_max_acceptable_ratio: 10
-                  text_link_ratio: 1.79
-                  text_link_max_acceptable_ratio: 10
-                  total_word_count: 728
-                  campaign_html: ''
-                  spam_keyword_list:
-                  - keyword: "Sign up"
-                    count: 2
-                  - keyword: "Check"
-                    count: 2
-                  - keyword: "Collect"
-                    count: 2
-                  - keyword: "Offer"
-                    count: 1
-                  - keyword: "Get paid"
-                    count: 1
-                  - keyword: "Request"
-                    count: 1
-                  - keyword: "Open"
-                    count: 1
-                  - keyword: "Solution"
-                    count: 1
-                  - keyword: "Subscribe"
-                    count: 1
-                  - keyword: "Cure"
-                    count: 1
-                  - keyword: "Now"
-                    count: 1
-                  - keyword: "Privacy"
-                    count: 1
-                  image_list:
-                    - image_url: >-
-                        https://assets.getpostman.com/email/icon-github-color.png
-                      image_size: 1
-                      image_width: 24
-                      image_height: 24
-                      image_background: true
-                    - image_url: https://assets.getpostman.com/email/icon-li-color.png
-                      image_size: 1
-                      image_width: 24
-                      image_height: 24
-                      image_background: true
-                    - image_url: >-
-                        https://assets.getpostman.com/email/icon-twitch-color.png
-                      image_size: 1
-                      image_width: 24
-                      image_height: 24
-                      image_background: true
-                    - image_url: https://assets.getpostman.com/email/icon-twtr-color.png
-                      image_size: 1
-                      image_width: 24
-                      image_height: 24
-                      image_background: true
-                    - image_url: https://assets.getpostman.com/email/icon-yt-color.png
-                      image_size: 1
-                      image_width: 24
-                      image_height: 24
-                      image_background: true
-                    - image_url: https://go.postman.com/images/downloadPicture.gif
-                      image_size: 0
-                      image_width: 1
-                      image_height: 1
-                      image_background: true
-                    - image_url: >-
-                        https://lp.postman.com/rs/067-UMD-991/images/Announcement-of-Ecosystem-Partner-Program%402x-100.jpg
-                      image_size: 62
-                      image_width: 1633
-                      image_height: 865
-                      image_background: true
-                    - image_url: https://lp.postman.com/rs/067-UMD-991/images/events.jpg
-                      image_size: 41
-                      image_width: 1201
-                      image_height: 601
-                      image_background: true
-                    - image_url: >-
-                        https://lp.postman.com/rs/067-UMD-991/images/guide-to-api-first.png
-                      image_size: 69
-                      image_width: 1000
-                      image_height: 528
-                      image_background: true
-                    - image_url: >-
-                        https://lp.postman.com/rs/067-UMD-991/images/postman+workspaces+abhinav.jpg
-                      image_size: 84
-                      image_width: 1600
-                      image_height: 900
-                      image_background: true
-                    - image_url: https://lp.postman.com/rs/067-UMD-991/images/v10+jpg.jpg
-                      image_size: 144
-                      image_width: 3265
-                      image_height: 1729
-                      image_background: true
-                    - image_url: >-
-                        https://lp.postman.com/rs/067-UMD-991/images/whatsapp+-+87kb.jpg
-                      image_size: 24
-                      image_width: 681
-                      image_height: 384
-                      image_background: true
-                    - image_url: >-
-                        https://postman-web-property-assets.s3.amazonaws.com/email/trimmed_postman-logo-horizontal.png
-                      image_size: 3
-                      image_width: 320
-                      image_height: 98
-                      image_background: true
-                  os_image_list:
-                    - image_url: >-
-                        https://lp.postman.com/rs/067-UMD-991/images/Announcement-of-Ecosystem-Partner-Program%402x-100.jpg
-                      image_size: 62
-                      image_width: 1633
-                      image_height: 865
-                      image_background: true
-                    - image_url: https://lp.postman.com/rs/067-UMD-991/images/events.jpg
-                      image_size: 41
-                      image_width: 1201
-                      image_height: 601
-                      image_background: true
-                    - image_url: >-
-                        https://lp.postman.com/rs/067-UMD-991/images/guide-to-api-first.png
-                      image_size: 69
-                      image_width: 1000
-                      image_height: 528
-                      image_background: true
-                    - image_url: >-
-                        https://lp.postman.com/rs/067-UMD-991/images/postman+workspaces+abhinav.jpg
-                      image_size: 84
-                      image_width: 1600
-                      image_height: 900
-                      image_background: true
-                    - image_url: https://lp.postman.com/rs/067-UMD-991/images/v10+jpg.jpg
-                      image_size: 144
-                      image_width: 3265
-                      image_height: 1729
-                      image_background: true
-                    - image_url: >-
-                        https://lp.postman.com/rs/067-UMD-991/images/whatsapp+-+87kb.jpg
-                      image_size: 24
-                      image_width: 681
-                      image_height: 384
-                      image_background: true
-                  bg_image_list:
-                    - image_url: >-
-                        https://assets.getpostman.com/email/icon-github-color.png
-                      image_size: 1
-                      image_width: 24
-                      image_height: 24
-                      image_background: true
-                    - image_url: https://assets.getpostman.com/email/icon-li-color.png
-                      image_size: 1
-                      image_width: 24
-                      image_height: 24
-                      image_background: true
-                    - image_url: >-
-                        https://assets.getpostman.com/email/icon-twitch-color.png
-                      image_size: 1
-                      image_width: 24
-                      image_height: 24
-                      image_background: true
-                    - image_url: https://assets.getpostman.com/email/icon-twtr-color.png
-                      image_size: 1
-                      image_width: 24
-                      image_height: 24
-                      image_background: true
-                    - image_url: https://assets.getpostman.com/email/icon-yt-color.png
-                      image_size: 1
-                      image_width: 24
-                      image_height: 24
-                      image_background: true
-                    - image_url: https://go.postman.com/images/downloadPicture.gif
-                      image_size: 0
-                      image_width: 1
-                      image_height: 1
-                      image_background: true
-                    - image_url: >-
-                        https://lp.postman.com/rs/067-UMD-991/images/Announcement-of-Ecosystem-Partner-Program%402x-100.jpg
-                      image_size: 62
-                      image_width: 1633
-                      image_height: 865
-                      image_background: true
-                    - image_url: https://lp.postman.com/rs/067-UMD-991/images/events.jpg
-                      image_size: 41
-                      image_width: 1201
-                      image_height: 601
-                      image_background: true
-                    - image_url: >-
-                        https://lp.postman.com/rs/067-UMD-991/images/guide-to-api-first.png
-                      image_size: 69
-                      image_width: 1000
-                      image_height: 528
-                      image_background: true
-                    - image_url: >-
-                        https://lp.postman.com/rs/067-UMD-991/images/postman+workspaces+abhinav.jpg
-                      image_size: 84
-                      image_width: 1600
-                      image_height: 900
-                      image_background: true
-                    - image_url: https://lp.postman.com/rs/067-UMD-991/images/v10+jpg.jpg
-                      image_size: 144
-                      image_width: 3265
-                      image_height: 1729
-                      image_background: true
-                    - image_url: >-
-                        https://lp.postman.com/rs/067-UMD-991/images/whatsapp+-+87kb.jpg
-                      image_size: 24
-                      image_width: 681
-                      image_height: 384
-                      image_background: true
-                    - image_url: >-
-                        https://postman-web-property-assets.s3.amazonaws.com/email/trimmed_postman-logo-horizontal.png
-                      image_size: 3
-                      image_width: 320
-                      image_height: 98
-                      image_background: true
-                  pd_cdn_list: []
-                  blacklisted_links: []
-                  domains_scanned:
-                    - assets.getpostman.com
-                    - blog.postman.com
-                    - github.com
-                    - go.postman.com
-                    - lp.postman.com
-                    - postman-web-property-assets.s3.amazonaws.com
-                    - twitter.com
-                    - www.linkedin.com
-                    - www.postman.com
-                    - www.twitch.tv
-                    - www.youtube.com
-                  broken_links:
-                    - link_url: >-
-                        http://go.postman.com/track?mktoTestLink&mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvUdX_2Si9w4zGTZVMU_omcKkgJ4IrP4unrXcDrM1bEcs_gl8jsqiMybmT6-mAwlcKRt_VgcT9Ou3nBO6XXYVo6GFMaUZwh7GiKHq8hB4
-                      link_status: PNR Falure
-                      link_redirected_url: ''
-                      link_is_image: false
-                      link_is_broken: true
-                      link_initial: false
-                    - link_url: >-
-                        https://www.linkedin.com/company/postman-platform?mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvUQumbK9XH1BDFrudsblvF_xfZ6b1iOa4TTAXwhqdc2i8sVqnf5z5Lrhn4oeffpYFsb6Zx-Wqqq_3jILf5pTdiMLTof0CFen8TtA-ULQ
-                      link_status: Protocol Error
-                      link_redirected_url: ''
-                      link_is_image: false
-                      link_is_broken: true
-                      link_initial: false
-                  all_link_list:
-                    - link_url: >-
-                        http://go.postman.com/track?mktoTestLink&mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvUdX_2Si9w4zGTZVMU_omcKkgJ4IrP4unrXcDrM1bEcs_gl8jsqiMybmT6-mAwlcKRt_VgcT9Ou3nBO6XXYVo6GFMaUZwh7GiKHq8hB4
-                      link_status: PNR Falure
-                      link_redirected_url: ''
-                      link_is_image: false
-                      link_is_broken: true
-                      link_initial: false
-                    - link_url: >-
-                        https://assets.getpostman.com/email/icon-github-color.png
-                      link_status: '206'
-                      link_redirected_url: ''
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: true
-                    - link_url: https://assets.getpostman.com/email/icon-li-color.png
-                      link_status: '206'
-                      link_redirected_url: ''
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: true
-                    - link_url: >-
-                        https://assets.getpostman.com/email/icon-twitch-color.png
-                      link_status: '206'
-                      link_redirected_url: ''
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: true
-                    - link_url: https://assets.getpostman.com/email/icon-twtr-color.png
-                      link_status: '206'
-                      link_redirected_url: ''
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: true
-                    - link_url: https://assets.getpostman.com/email/icon-yt-color.png
-                      link_status: '206'
-                      link_redirected_url: ''
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: true
-                    - link_url: >-
-                        https://blog.postman.com/3-ways-to-build-workflows-in-postman/?utm_source=newsletter&utm_medium=marketo&utm_campaign=email&utm_term=workflows_newsletter&utm_content=&mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvUYsGVV4DkeWrwh5UlqyhHVY9MCGPO5hOuMPaq9h2njvitABm2WWNvLOb_ngXdaLLdWSHEHizuLe7DK7eD-jI6tnYoIsN9WtSq6TnDrY
-                      link_status: '200'
-                      link_redirected_url: ''
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: false
-                    - link_url: >-
-                        https://blog.postman.com/add-same-day-delivery-to-your-business-doordash-drive-api/?utm_source=newsletter&utm_medium=marketo&utm_campaign=email&utm_term=doordash_newsletter&utm_content=&mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvUXxc5x63sGyj-Cb9B5BgECLNKYQiarHqlIjoGuxt7glESopHh2MDJUUX13tHfkHu7-yVxe8sJYt-Ori5Rb6_LqDEoMUnJ2O5efGgAzw
-                      link_status: '206'
-                      link_redirected_url: ''
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: false
-                    - link_url: >-
-                        https://blog.postman.com/announcing-postmans-redesigned-api-builder-with-native-git-support/?utm_source=newsletter&utm_medium=marketo&utm_campaign=email&utm_term=api_builder_newsletter&utm_content=&mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvUcFz8cVvHoXhor11MxjAT6_g8Pmx8HFrzFOMPlKEnb8lZRWdOhNc76TBuIWrye5Y9yIDyJYK9PFNL_SQxnkWN7yAq1lJL7OUtGcmkGo
-                      link_status: '200'
-                      link_redirected_url: ''
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: false
-                    - link_url: >-
-                        https://blog.postman.com/announcing-the-postman-ecosystem-partner-program/?utm_source=newsletter&utm_medium=marketo&utm_campaign=email&utm_term=ecosystem_newsletter&utm_content=&mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvUVmksDvB0JKNFTRcpaCIKUIgpaYWccGkQd-noWNh3cy_vGLpSoC7fv1yIwkBMx72kmI_QK9ykZcyg1AQbN2p7Qi3LyQR60L4HTTOyh8
-                      link_status: '206'
-                      link_redirected_url: ''
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: false
-                    - link_url: >-
-                        https://blog.postman.com/api-governance-with-postman-v10/?utm_source=newsletter&utm_medium=marketo&utm_campaign=email&utm_term=governance_v10_newsletter&utm_content=&mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvUWteZyYMI3FNHzkgwDH9YwAPGO2kWW6eGak1Hu2omvGvqN92KbAt_4I8t6XGyLw4r7o7-fsLsl1Ef093WFmX5uV13vzU_6wUe2WYogo
-                      link_status: '206'
-                      link_redirected_url: ''
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: false
-                    - link_url: >-
-                        https://blog.postman.com/breaking-changes-ngroks-peter-shafton-formerly-twilio-api-stories/?utm_source=newsletter&utm_medium=marketo&utm_campaign=email&utm_term=twilio_newsletter&utm_content=&mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvUVugOCZbTa7icbpIQCND4cyINmiYlvAUbahlXvwK91md1trf1ApgXSuJH136ykH4uXnWL1xOLYiaWhg3EefbL9yb32n-QVwvxFy7KuU
-                      link_status: '200'
-                      link_redirected_url: ''
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: false
-                    - link_url: >-
-                        https://blog.postman.com/empower-your-business-with-these-payments-apis/?utm_source=newsletter&utm_medium=marketo&utm_campaign=email&utm_term=payment_apis_newsletter&utm_content=&mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvUQWzqtMDGPg9gogHB0s-pUWCTtOIB1cTTFKxgprLm634AaQ2dhbXH7h8wRGCuC8vOGuLrImc2jyqX173dDID38s8x0KMo1NnU5j6xu0
-                      link_status: '200'
-                      link_redirected_url: ''
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: false
-                    - link_url: >-
-                        https://blog.postman.com/improving-api-discovery-with-the-redesigned-private-api-network/?utm_source=newsletter&utm_medium=marketo&utm_campaign=email&utm_term=private_api_newsletter&utm_content=&mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvUWAU3csxUjZHjKDwUV8hYAjgUCxFPPcIz1EOEXsUcxDnPSa0L7rr1WrtkpJa5RRYq7_YGwzYJ08DJhklmBNryvPHctspWfA4VBN4NFo
-                      link_status: '206'
-                      link_redirected_url: ''
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: false
-                    - link_url: >-
-                        https://blog.postman.com/introducing-api-security-in-postman-v10/?utm_source=newsletter&utm_medium=marketo&utm_campaign=email&utm_term=api_security_newsletter&utm_content=&mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvUVhEkg2cJDPWcXR0ZNPQMnatA3fFXKkpPuPLVaHmCiXlCSjbdVWmalZehSr84QFccEHyLLvfOy5JJrLl05wdQTFAK7rbWt1g_AIkc9c
-                      link_status: '206'
-                      link_redirected_url: ''
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: false
-                    - link_url: >-
-                        https://blog.postman.com/introducing-partner-workspaces/?utm_source=newsletter&utm_medium=marketo&utm_campaign=email&utm_term=partner_workspaces_newsletter&utm_content=&mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvUUEY5TV9cZNBF1r8GVXmEHYs3e44JqFUW-i1h8ZxbZcMvL4-jdfHOHnbPkcuzWzjXlo9axUAE1jcRqnWMGNtTehRQLXxsGUQl8b8z1E
-                      link_status: '200'
-                      link_redirected_url: ''
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: false
-                    - link_url: >-
-                        https://blog.postman.com/introducing-postman-open-data-and-research-intelligence-initiative/?utm_source=newsletter&utm_medium=marketo&utm_campaign=email&utm_term=open_data_newsletter&utm_content=&mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvUZc4w8LWjkceEyx_R5lTeBS9UYIFJPGUhNxjaFup4uLqmgY2fFqCIz9QtGsek3o7STlW8CCwe8krU5hhIuu939g5H3RH9GzIKIMiwA0
-                      link_status: '200'
-                      link_redirected_url: ''
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: false
-                    - link_url: >-
-                        https://blog.postman.com/introducing-the-postman-cli-to-automate-your-api-testing/?utm_source=marketo&utm_medium=email&utm_campaign=newsletter&utm_term=09_2022_newsletter&utm_content=&mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvUZbQ1Hki8charZDj5DzuodLo1rPJwBgeqecVjlylVwq3ziEmbF10Y3LzhIVxFx83J3VT16D5P7MTpQdypk8y2wLBSyb8hXr11vq6jY0
-                      link_status: '200'
-                      link_redirected_url: ''
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: false
-                    - link_url: >-
-                        https://blog.postman.com/new-postman-integration-with-appmap-create-and-manage-always-accurate-collections/?utm_source=newsletter&utm_medium=marketo&utm_campaign=email&utm_term=appmap_newsletter&utm_content=&mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvURlrjSDK2q010Gabxv_Av8M7qXcCp2hBtf3W28Tlo7oXO5iaAWuxRDMM-Fy9_HsdNLYRpBBV1AB0jdCP80dYNlbTTyX0MJICVbF2nNM
-                      link_status: '200'
-                      link_redirected_url: ''
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: false
-                    - link_url: >-
-                        https://blog.postman.com/resize-images-add-captions-in-postman-editor/?utm_source=newsletter&utm_medium=marketo&utm_campaign=email&utm_term=captions_newsletter&utm_content=&mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvUQ1_IGohFKzCyQZ3NGvlaOz9IcmS8JEWe4nJ1Cjk13r14hArQTYca11kPnoglQ7r4AXOQ5Ym6Y0z0S8GL3PeeUtZDK84wv2QvR7qh8A
-                      link_status: '200'
-                      link_redirected_url: ''
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: false
-                    - link_url: >-
-                        https://blog.postman.com/solving-problems-together-with-postman-workspaces/?utm_source=newsletter&utm_medium=marketo&utm_campaign=email&utm_term=solve_workspaces_newsletter&utm_content=&mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvUeVUjrXwLMbFfSwtalJNCkmU_eE3zQWyhz0veTuyNFsOwU7ebKcx1lzM3Fgzyw7hQ4SsYiWeIc_95U2l16egOdIbCjFlK8o_SSfJpIU
-                      link_status: '206'
-                      link_redirected_url: ''
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: false
-                    - link_url: >-
-                        https://blog.postman.com/the-most-popular-collection-in-the-postman-api-network/?utm_source=newsletter&utm_medium=marketo&utm_campaign=email&utm_term=popular_apis_newsletter&utm_content=&mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvUV6foHWqAy-0uPflKD_yrdugfL71VOqtZ6shpooJF9lSWcmOPf-n2xJqWHsLDivFwCHwtBSv_xZyftDGN_bZxw45EUBQgCHKo6mLboM
-                      link_status: '200'
-                      link_redirected_url: ''
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: false
-                    - link_url: >-
-                        https://blog.postman.com/understanding-asynchronous-apis/?utm_source=newsletter&utm_medium=marketo&utm_campaign=email&utm_term=async_newsletter&utm_content=&mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvUSUYfxD5IBA1S20Xbmj9CY3FWruV5C4dCozuCDvp9r78wxfEYTRSLBYaffkaK4-2USxluKxyQ15BeLcewACl8NRIkRnAnIw50WEDx6E
-                      link_status: '200'
-                      link_redirected_url: ''
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: false
-                    - link_url: >-
-                        https://blog.postman.com/what-developers-say-about-postman/?utm_source=newsletter&utm_medium=marketo&utm_campaign=email&utm_term=devs_37k_newsletter&utm_content=&mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvUR4koHkw0idGCV-l96Hnxy2vNKI-1cuYGx1cjs1TVDFKY6n6A9XFXKKOIxIRiJ1qItqmOhRGad03zpf-PnOQ6zbP89KVMUSBnPyTKTs
-                      link_status: '200'
-                      link_redirected_url: ''
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: false
-                    - link_url: >-
-                        https://github.com/postmanlabs?mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvUc4lmuA7bPp5-xU3wyWqgAWfNXirj93_UqijZdZ9NP4iZER4-c8QtXf5ckPnNmlzHb4rc3PuWMLoi3M1C9kw72VOTGMS6JEaVMw0r94
-                      link_status: '200'
-                      link_redirected_url: ''
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: false
-                    - link_url: https://go.postman.com/images/downloadPicture.gif
-                      link_status: '200'
-                      link_redirected_url: ''
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: false
-                    - link_url: >-
-                        https://go.postman.com/MDY3LVVNRC05OTEAAAGHHkyvUaunwW14VMo77VP_2ZFb-VDz3VmxUgFZrWsoRty4TeTcCvl-bLGk_u9bgb50ZgK8jdc=
-                      link_status: ''
-                      link_redirected_url: >-
-                        https://blog.postman.com/add-same-day-delivery-to-your-business-doordash-drive-api/?utm_source=newsletter&utm_medium=marketo&utm_campaign=email&utm_term=doordash_newsletter&utm_content=&mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvUXxc5x63sGyj-Cb9B5BgECLNKYQiarHqlIjoGuxt7glESopHh2MDJUUX13tHfkHu7-yVxe8sJYt-Ori5Rb6_LqDEoMUnJ2O5efGgAzw
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: true
-                    - link_url: >-
-                        https://go.postman.com/MDY3LVVNRC05OTEAAAGHHkyvUbWY32hq9OSdvdW5Ix993h5UGMXkXQmEyj7SpEvwvNJEhypfoXHp8ZssIX-p_JZ1I0E=
-                      link_status: ''
-                      link_redirected_url: >-
-                        https://blog.postman.com/3-ways-to-build-workflows-in-postman/?utm_source=newsletter&utm_medium=marketo&utm_campaign=email&utm_term=workflows_newsletter&utm_content=&mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvUYsGVV4DkeWrwh5UlqyhHVY9MCGPO5hOuMPaq9h2njvitABm2WWNvLOb_ngXdaLLdWSHEHizuLe7DK7eD-jI6tnYoIsN9WtSq6TnDrY
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: true
-                    - link_url: >-
-                        https://go.postman.com/MDY3LVVNRC05OTEAAAGHHkyvUchN1TOze1jKSErFx_nawNL6n8iBZXit9OjGOPRRFU0RrtHxnjB50NV1lvGSRFxIdVU=
-                      link_status: ''
-                      link_redirected_url: >-
-                        https://blog.postman.com/solving-problems-together-with-postman-workspaces/?utm_source=newsletter&utm_medium=marketo&utm_campaign=email&utm_term=solve_workspaces_newsletter&utm_content=&mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvUeVUjrXwLMbFfSwtalJNCkmU_eE3zQWyhz0veTuyNFsOwU7ebKcx1lzM3Fgzyw7hQ4SsYiWeIc_95U2l16egOdIbCjFlK8o_SSfJpIU
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: true
-                    - link_url: >-
-                        https://go.postman.com/MDY3LVVNRC05OTEAAAGHHkyvUcjJKsT7CgnN_yTFacTPkk0qvN_LiN6HvyEYBbLdJc-RkefYUxJ3esLc0svbQ2PlUi8=
-                      link_status: ''
-                      link_redirected_url: >-
-                        https://blog.postman.com/introducing-partner-workspaces/?utm_source=newsletter&utm_medium=marketo&utm_campaign=email&utm_term=partner_workspaces_newsletter&utm_content=&mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvUUEY5TV9cZNBF1r8GVXmEHYs3e44JqFUW-i1h8ZxbZcMvL4-jdfHOHnbPkcuzWzjXlo9axUAE1jcRqnWMGNtTehRQLXxsGUQl8b8z1E
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: true
-                    - link_url: >-
-                        https://go.postman.com/MDY3LVVNRC05OTEAAAGHHkyvUcK9WGP0p20sYT5_rdoBWL7cm8QRE7ZmwGXZk4gV26mC-9EUCdfglpldGNmF1hCWjoo=
-                      link_status: ''
-                      link_redirected_url: >-
-                        https://blog.postman.com/announcing-the-postman-ecosystem-partner-program/?utm_source=newsletter&utm_medium=marketo&utm_campaign=email&utm_term=ecosystem_newsletter&utm_content=&mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvUVmksDvB0JKNFTRcpaCIKUIgpaYWccGkQd-noWNh3cy_vGLpSoC7fv1yIwkBMx72kmI_QK9ykZcyg1AQbN2p7Qi3LyQR60L4HTTOyh8
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: true
-                    - link_url: >-
-                        https://go.postman.com/MDY3LVVNRC05OTEAAAGHHkyvUcMNR0JjPyq1BesKDOzcozEAOuIZTky3Ly52nCmOH3bMCM7aWRTFTSUJI1hiJf9FvWQ=
-                      link_status: ''
-                      link_redirected_url: >-
-                        https://blog.postman.com/api-governance-with-postman-v10/?utm_source=newsletter&utm_medium=marketo&utm_campaign=email&utm_term=governance_v10_newsletter&utm_content=&mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvUWteZyYMI3FNHzkgwDH9YwAPGO2kWW6eGak1Hu2omvGvqN92KbAt_4I8t6XGyLw4r7o7-fsLsl1Ef093WFmX5uV13vzU_6wUe2WYogo
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: true
-                    - link_url: >-
-                        https://go.postman.com/MDY3LVVNRC05OTEAAAGHHkyvUdodyY0K7D6GTO3umolHzVPuWYEGDbgSsBdlOSC-ByIQMkkv0K0hP1D9se39o7z6TDI=
-                      link_status: ''
-                      link_redirected_url: >-
-                        https://twitter.com/getpostman?mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvUdCpTp-zKvuy8yPvCAqtqjKMU_D_MWLuTDN-VQhTz_bssUXuxkXhcG0l-4_INTaTQmLBXqqUohRLzmyr2MbA6G_Q3JOK-4kVIeblRVo
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: true
-                    - link_url: >-
-                        https://go.postman.com/MDY3LVVNRC05OTEAAAGHHkyvUdVkOVk5QSmg2oqUmx3_aWSmqgu_2rCHiO47nA73LBo93Xr6fLyN6mwIF-PXW-Y1nVQ=
-                      link_status: ''
-                      link_redirected_url: >-
-                        https://blog.postman.com/the-most-popular-collection-in-the-postman-api-network/?utm_source=newsletter&utm_medium=marketo&utm_campaign=email&utm_term=popular_apis_newsletter&utm_content=&mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvUV6foHWqAy-0uPflKD_yrdugfL71VOqtZ6shpooJF9lSWcmOPf-n2xJqWHsLDivFwCHwtBSv_xZyftDGN_bZxw45EUBQgCHKo6mLboM
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: true
-                    - link_url: >-
-                        https://go.postman.com/MDY3LVVNRC05OTEAAAGHHkyvUfXd30x2tqPHORUrnyIUnBSfrLclWMR6EWeQIXyJW0L4dQXCNJmjIaCbcCRdzLFQOio=
-                      link_status: ''
-                      link_redirected_url: >-
-                        https://www.linkedin.com/company/postman-platform?mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvUQumbK9XH1BDFrudsblvF_xfZ6b1iOa4TTAXwhqdc2i8sVqnf5z5Lrhn4oeffpYFsb6Zx-Wqqq_3jILf5pTdiMLTof0CFen8TtA-ULQ
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: true
-                    - link_url: >-
-                        https://go.postman.com/MDY3LVVNRC05OTEAAAGHHkyvUmMN6dvf4n_pR07NdQZswQHNxrVfAhV5jJ4S8NgCLHxJjwlFS1TNbkC-d5nA5h6_gWY=
-                      link_status: ''
-                      link_redirected_url: >-
-                        https://www.postman.com/lp/postman-v10/?utm_source=newsletter&utm_medium=marketo&utm_campaign=email&utm_term=v10_signup&utm_content=&mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvUsalCaGXDvuiHhDP9OMucHjBaUMzjsgeByUJZ20D7EAkb0lziqJ53MGsUKH5Uw44NjuwUNIc9tciVkRwVjrHGHc9rgdhPDd8Rv2pgAo
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: true
-                    - link_url: >-
-                        https://go.postman.com/MDY3LVVNRC05OTEAAAGHHkyvURalAT26IlTTerJZgQtQPbdc2oZ1fPn4JPLP03585Lh21iEGREXfXzNq9sP1vXZFcXo=
-                      link_status: ''
-                      link_redirected_url: >-
-                        https://blog.postman.com/resize-images-add-captions-in-postman-editor/?utm_source=newsletter&utm_medium=marketo&utm_campaign=email&utm_term=captions_newsletter&utm_content=&mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvUQ1_IGohFKzCyQZ3NGvlaOz9IcmS8JEWe4nJ1Cjk13r14hArQTYca11kPnoglQ7r4AXOQ5Ym6Y0z0S8GL3PeeUtZDK84wv2QvR7qh8A
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: true
-                    - link_url: >-
-                        https://go.postman.com/MDY3LVVNRC05OTEAAAGHHkyvURcI-rOfIgojzEVvIhO9FuNY1zNLX7CtiAO8wnpE1azDOHkmI1Lesiov19PDF1SnmhE=
-                      link_status: ''
-                      link_redirected_url: >-
-                        https://www.postman.com/api-first/?utm_source=newsletter&utm_medium=marketo&utm_campaign=email&utm_term=guide_to_api_first&utm_content=&mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvUcev3ww1vzskWPuhUJipqR72sndn1PXJZ7e9Xy0WVx72wvaOvvL_LGgKDZh-RTUZ2jFjuiI9PXo4nGESBASxbM0rTXZgPvc2Cg2XR5U
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: true
-                    - link_url: >-
-                        https://go.postman.com/MDY3LVVNRC05OTEAAAGHHkyvUROuEvXy4_jmIr-WhCrEIrSvcXkw8cQp0QgYprC-LT97jHrBm03hZMir7fgDSq-e9I4=
-                      link_status: ''
-                      link_redirected_url: >-
-                        https://www.twitch.tv/getpostman?mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvUWQnzz02jfNYQumqmP9ZqAhW3_BE-8aJh3dA7gz-Wd0b4HADJ_7KC-c786j6Z1cgGZdwPtYL_Rhuo8uxcBNNLVKfv6-6iX6XDftSpUA
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: true
-                    - link_url: >-
-                        https://go.postman.com/MDY3LVVNRC05OTEAAAGHHkyvUS_3on_KajSH3hg8D7RRi-lLT14Rk52IqQYc_LR9qsrbbrrbex55HJrKXwll9N98qw8=
-                      link_status: ''
-                      link_redirected_url: >-
-                        https://www.postman.com/state-of-api/?utm_source=newsletter&utm_medium=marketo&utm_campaign=email&utm_term=SOTA_2022&utm_content=&mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvUYUNtGYURz5_fjYVnY6bfW-m4IuxJoodm52u3n168s1X1CeMmbn0hQQ_lD__Kaew2OJ3E953EoEgQWY-vz9EIR38CpnU5bJ6PJUTOfA
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: true
-                    - link_url: >-
-                        https://go.postman.com/MDY3LVVNRC05OTEAAAGHHkyvUSIcK5fJkzjIHh7rAjnCBtlAu31wEr8xrNF9fzadho--p4rJKsZifSowmyWolXlJFPY=
-                      link_status: ''
-                      link_redirected_url: >-
-                        https://blog.postman.com/breaking-changes-ngroks-peter-shafton-formerly-twilio-api-stories/?utm_source=newsletter&utm_medium=marketo&utm_campaign=email&utm_term=twilio_newsletter&utm_content=&mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvUVugOCZbTa7icbpIQCND4cyINmiYlvAUbahlXvwK91md1trf1ApgXSuJH136ykH4uXnWL1xOLYiaWhg3EefbL9yb32n-QVwvxFy7KuU
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: true
-                    - link_url: >-
-                        https://go.postman.com/MDY3LVVNRC05OTEAAAGHHkyvUSSCDPnUbLrU2na2pYNODKnCYEWshQboggU-AgWbQH9yHU6B98sv4jG_Pew6elrLJPI=
-                      link_status: ''
-                      link_redirected_url: >-
-                        https://www.postman.com/newsletter-signup/?utm_source=newsletter&utm_medium=marketo&utm_campaign=email&utm_term=newsletter_signup&utm_content=&mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvUbndWoHfIxW1OflXNvAA_50ToGmkkMQVD_RSAVw95X3MNgKNA07E6TAg85lq1MCVDp2-VCetmp4oVciRMhYd-RaCU4uKJpy7FoLESOs
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: true
-                    - link_url: >-
-                        https://go.postman.com/MDY3LVVNRC05OTEAAAGHHkyvUTfF5qwnFk8bhTTcaTcofo64TeLqn7-6vD7VAg2YUWEX6L0kxx6W-IIJCjvTkAyjLkQ=
-                      link_status: ''
-                      link_redirected_url: >-
-                        https://www.postman.com/case-studies/whatsapp/?utm_source=newsletter&utm_medium=marketo&utm_campaign=email&utm_term=whatsapp_newsletter&utm_content=&mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvUe4s_ALsOCScRzLu_Asp7A0EejQBQF1ltuAD911vn6uyU-MZiDmH-ZZ5kXJoSuvLJmC-BpTjcmhB0Zdwb2GXfBf2YhM5hcIE-lPJbPo
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: true
-                    - link_url: >-
-                        https://go.postman.com/MDY3LVVNRC05OTEAAAGHHkyvUTu7NEUQvff-O9I1vDXKu-0afLB4H2iPPA_gJFLf_dTrr_JHM9PVTGcG5Xjn9YVR4X8=
-                      link_status: ''
-                      link_redirected_url: >-
-                        https://blog.postman.com/improving-api-discovery-with-the-redesigned-private-api-network/?utm_source=newsletter&utm_medium=marketo&utm_campaign=email&utm_term=private_api_newsletter&utm_content=&mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvUWAU3csxUjZHjKDwUV8hYAjgUCxFPPcIz1EOEXsUcxDnPSa0L7rr1WrtkpJa5RRYq7_YGwzYJ08DJhklmBNryvPHctspWfA4VBN4NFo
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: true
-                    - link_url: >-
-                        https://go.postman.com/MDY3LVVNRC05OTEAAAGHHkyvUUCWA5PxG1MOa3vTv30sHkaDBNNIsdTKWf00unPl5zxAfSSWV_4rtls403NvRGOqO90=
-                      link_status: ''
-                      link_redirected_url: >-
-                        https://blog.postman.com/introducing-the-postman-cli-to-automate-your-api-testing/?utm_source=marketo&utm_medium=email&utm_campaign=newsletter&utm_term=09_2022_newsletter&utm_content=&mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvUZbQ1Hki8charZDj5DzuodLo1rPJwBgeqecVjlylVwq3ziEmbF10Y3LzhIVxFx83J3VT16D5P7MTpQdypk8y2wLBSyb8hXr11vq6jY0
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: true
-                    - link_url: >-
-                        https://go.postman.com/MDY3LVVNRC05OTEAAAGHHkyvUUjpYBQOppvAmjw7ph6EXD7T9MRXXqZ9Kzmv9oesLscJQtCsMHiIO-dBtUefAPP0WEA=
-                      link_status: ''
-                      link_redirected_url: >-
-                        https://blog.postman.com/introducing-api-security-in-postman-v10/?utm_source=newsletter&utm_medium=marketo&utm_campaign=email&utm_term=api_security_newsletter&utm_content=&mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvUVhEkg2cJDPWcXR0ZNPQMnatA3fFXKkpPuPLVaHmCiXlCSjbdVWmalZehSr84QFccEHyLLvfOy5JJrLl05wdQTFAK7rbWt1g_AIkc9c
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: true
-                    - link_url: >-
-                        https://go.postman.com/MDY3LVVNRC05OTEAAAGHHkyvUUnXbec5SnwSUE-2ahTt0IZZp_AL-Ti2zjULruVGz15vTSU6sgu8NLFF_jUhtfVPmuc=
-                      link_status: ''
-                      link_redirected_url: >-
-                        https://blog.postman.com/empower-your-business-with-these-payments-apis/?utm_source=newsletter&utm_medium=marketo&utm_campaign=email&utm_term=payment_apis_newsletter&utm_content=&mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvUQWzqtMDGPg9gogHB0s-pUWCTtOIB1cTTFKxgprLm634AaQ2dhbXH7h8wRGCuC8vOGuLrImc2jyqX173dDID38s8x0KMo1NnU5j6xu0
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: true
-                    - link_url: >-
-                        https://go.postman.com/MDY3LVVNRC05OTEAAAGHHkyvUVAVQyTdzcDcX4FJ6ujCToocjyAkFwsVn1Pt4Ea1Cj55hgSicekju7IIyu76h8P5Rjc=
-                      link_status: ''
-                      link_redirected_url: >-
-                        https://blog.postman.com/announcing-postmans-redesigned-api-builder-with-native-git-support/?utm_source=newsletter&utm_medium=marketo&utm_campaign=email&utm_term=api_builder_newsletter&utm_content=&mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvUcFz8cVvHoXhor11MxjAT6_g8Pmx8HFrzFOMPlKEnb8lZRWdOhNc76TBuIWrye5Y9yIDyJYK9PFNL_SQxnkWN7yAq1lJL7OUtGcmkGo
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: true
-                    - link_url: >-
-                        https://go.postman.com/MDY3LVVNRC05OTEAAAGHHkyvUWdJ4Jht3s3c4cP1IfVfK1Bdw2y2NWCIOFOmj2ORlxddtDnYuB72dMBvBP0_pz9qu_M=
-                      link_status: ''
-                      link_redirected_url: >-
-                        https://blog.postman.com/new-postman-integration-with-appmap-create-and-manage-always-accurate-collections/?utm_source=newsletter&utm_medium=marketo&utm_campaign=email&utm_term=appmap_newsletter&utm_content=&mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvURlrjSDK2q010Gabxv_Av8M7qXcCp2hBtf3W28Tlo7oXO5iaAWuxRDMM-Fy9_HsdNLYRpBBV1AB0jdCP80dYNlbTTyX0MJICVbF2nNM
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: true
-                    - link_url: >-
-                        https://go.postman.com/MDY3LVVNRC05OTEAAAGHHkyvUWjxyiM4f06t23aaWeb2AeX-_JTTtZZhyRBeLjy-k5MkBQjsnTbvuRsE9_MU1ZgDP6c=
-                      link_status: ''
-                      link_redirected_url: >-
-                        https://www.youtube.com/c/Postman?mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvUbj3PMsBeUt-vFq7APwHCDV3ZT06jL_oBzSusHT9vC_BFieFjs1Xrdrk31DowMMLEOR2HyV3BR8Rk4dKLNq8e9P-gUs-Hpo_hDP_2ss
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: true
-                    - link_url: >-
-                        https://go.postman.com/MDY3LVVNRC05OTEAAAGHHkyvUXgDJJFcpbtyu5krFpEe9qy4L4vEoMlCXNtZ7HJKH1mIiTVbyWQ9Zcv4TSXW3FpCYBk=
-                      link_status: ''
-                      link_redirected_url: >-
-                        https://github.com/postmanlabs?mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvUc4lmuA7bPp5-xU3wyWqgAWfNXirj93_UqijZdZ9NP4iZER4-c8QtXf5ckPnNmlzHb4rc3PuWMLoi3M1C9kw72VOTGMS6JEaVMw0r94
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: true
-                    - link_url: >-
-                        https://go.postman.com/MDY3LVVNRC05OTEAAAGHHkyvUXKlfi1kZgP81E9ULaDtGa-9uDLr6YXH-HPHETY1_tW4lNLO79USUHwCf6YqE52Kxnc=
-                      link_status: ''
-                      link_redirected_url: >-
-                        https://www.postman.com/events/postman-space-camp/unboxing-whats-new/?utm_source=newsletter&utm_medium=marketo&utm_campaign=email&utm_term=unbox_v10_newsletter&utm_content=&mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvUeiMr5NAHPiF-DrWJ8Vk_YSLYVBrZYMMROlP-DqJoLRf1B_mrIl7Hx-o9BQI5CENSmRdes9qNIGkXylJQ4R6bhypkqfOeND4G9_LA6Q
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: true
-                    - link_url: >-
-                        https://go.postman.com/MDY3LVVNRC05OTEAAAGHHkyvUZ8_FzCdYGW039JGw5PgCKh1cN7UGXGwuDpVViT7_qAKS27H9YEsqrWJb5mqSE52Qtk=
-                      link_status: ''
-                      link_redirected_url: >-
-                        https://www.postman.com/?utm_source=&utm_campaign=&utm_con=&utm_medium=email&dcid=&mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvUTwfnHiPCtXtA50naVJ7eLB2EnsFqZsCqJXmMyN87Ja-SdqO0rWHXK9SChm2ZiPVEdp61lPzBQZWY97xNi5ivDwOZWYCFjdV8zhE4ME
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: true
-                    - link_url: >-
-                        https://go.postman.com/MDY3LVVNRC05OTEAAAGHHkyvUZBDXz7pzl6XcLOfeu6fqGkpt7H6kZV7sHutq_E4O7vaOJJA_ojqa5wSYG8ndEtoBJA=
-                      link_status: ''
-                      link_redirected_url: >-
-                        https://blog.postman.com/introducing-postman-open-data-and-research-intelligence-initiative/?utm_source=newsletter&utm_medium=marketo&utm_campaign=email&utm_term=open_data_newsletter&utm_content=&mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvUZc4w8LWjkceEyx_R5lTeBS9UYIFJPGUhNxjaFup4uLqmgY2fFqCIz9QtGsek3o7STlW8CCwe8krU5hhIuu939g5H3RH9GzIKIMiwA0
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: true
-                    - link_url: >-
-                        https://go.postman.com/MDY3LVVNRC05OTEAAAGHHkyvUZFx0MY1NhYp8K8RaKEz67uEgyzs77BmosFq92BKKWWqXC5MCBqmJa4tJwsMsiO8IJE=
-                      link_status: ''
-                      link_redirected_url: >-
-                        https://blog.postman.com/what-developers-say-about-postman/?utm_source=newsletter&utm_medium=marketo&utm_campaign=email&utm_term=devs_37k_newsletter&utm_content=&mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvUR4koHkw0idGCV-l96Hnxy2vNKI-1cuYGx1cjs1TVDFKY6n6A9XFXKKOIxIRiJ1qItqmOhRGad03zpf-PnOQ6zbP89KVMUSBnPyTKTs
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: true
-                    - link_url: >-
-                        https://go.postman.com/MDY3LVVNRC05OTEAAAGHHkyvUZlg-W4RJvfwOIIz2u_yYjUQ-dlblaqG-4bK9c5FE1svf84IshWvCbkKRh2mxgeUlGE=
-                      link_status: ''
-                      link_redirected_url: >-
-                        https://blog.postman.com/understanding-asynchronous-apis/?utm_source=newsletter&utm_medium=marketo&utm_campaign=email&utm_term=async_newsletter&utm_content=&mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvUSUYfxD5IBA1S20Xbmj9CY3FWruV5C4dCozuCDvp9r78wxfEYTRSLBYaffkaK4-2USxluKxyQ15BeLcewACl8NRIkRnAnIw50WEDx6E
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: true
-                    - link_url: >-
-                        https://go.postman.com/MDY3LVVNRC05OTEAAAGHHkyvUZO2fwg4bBrNYfnjyoSVNeHjxYJIe0WGcc7Vl5QBt8ekR3DrRhU_FJGdmMjgygYoGS0=
-                      link_status: ''
-                      link_redirected_url: >-
-                        http://go.postman.com/track?mktoTestLink&mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvUdX_2Si9w4zGTZVMU_omcKkgJ4IrP4unrXcDrM1bEcs_gl8jsqiMybmT6-mAwlcKRt_VgcT9Ou3nBO6XXYVo6GFMaUZwh7GiKHq8hB4
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: true
-                    - link_url: >-
-                        https://go.postman.com/trk?t=1&mid=MDY3LVVNRC05OTE6MDo2MTE1OjYxMTAwOjM3MjY5Mjo4Nzk3Ojk6NDY4Mjk6MTM1Nzg4NjU6dGltbWVzMTk3MUBnbWFpbC5jb20%3D
-                      link_status: '200'
-                      link_redirected_url: https://go.postman.com/images/downloadPicture.gif
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: true
-                    - link_url: >-
-                        https://lp.postman.com/email-preferences.html?mkt_unsubscribe=1&mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvUrWjvaNiHr0A8BlcJf6QCTmEHFUJx9_IGnoEklCc9RfKjUjR9tA-a9TrmSR6GMhQxz61k1iQsHE4SWhCGlYFiSMVwrLrnZMIVO8n4us
-                      link_status: '200'
-                      link_redirected_url: ''
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: true
-                    - link_url: >-
-                        https://lp.postman.com/email-preferences.html?mkt_unsubscribe=1&mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvUrWjvaNiHr0A8BlcJf6QCTmEHFUJx9_IGnoEklCc9RfKjUjR9tA-a9TrmSR6GMhQxz61k1iQsHE4SWhCGlYFiSMVwrLrnZMIVO8n4us
-                      link_status: '200'
-                      link_redirected_url: ''
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: false
-                    - link_url: >-
-                        https://lp.postman.com/index.php/email/emailWebview?mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvUrWjvaNiHr0A8BlcJf6QCTmEHFUJx9_IGnoEklCc9RfKjUjR9tA-a9TrmSR6GMhQxz61k1iQsHE4SWhCGlYFiSMVwrLrnZMIVO8n4us&md_id=8797
-                      link_status: '200'
-                      link_redirected_url: ''
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: true
-                    - link_url: >-
-                        https://lp.postman.com/rs/067-UMD-991/images/Announcement-of-Ecosystem-Partner-Program%402x-100.jpg
-                      link_status: '206'
-                      link_redirected_url: ''
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: true
-                    - link_url: https://lp.postman.com/rs/067-UMD-991/images/events.jpg
-                      link_status: '206'
-                      link_redirected_url: ''
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: true
-                    - link_url: >-
-                        https://lp.postman.com/rs/067-UMD-991/images/guide-to-api-first.png
-                      link_status: '206'
-                      link_redirected_url: ''
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: true
-                    - link_url: >-
-                        https://lp.postman.com/rs/067-UMD-991/images/postman+workspaces+abhinav.jpg
-                      link_status: '206'
-                      link_redirected_url: ''
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: true
-                    - link_url: https://lp.postman.com/rs/067-UMD-991/images/v10+jpg.jpg
-                      link_status: '206'
-                      link_redirected_url: ''
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: true
-                    - link_url: >-
-                        https://lp.postman.com/rs/067-UMD-991/images/whatsapp+-+87kb.jpg
-                      link_status: '206'
-                      link_redirected_url: ''
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: true
-                    - link_url: >-
-                        https://lp.postman.com/UnsubscribePage.html?mkt_unsubscribe=1&mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvUrWjvaNiHr0A8BlcJf6QCTmEHFUJx9_IGnoEklCc9RfKjUjR9tA-a9TrmSR6GMhQxz61k1iQsHE4SWhCGlYFiSMVwrLrnZMIVO8n4us
-                      link_status: '200'
-                      link_redirected_url: >-
-                        https://lp.postman.com/email-preferences.html?mkt_unsubscribe=1&mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvUrWjvaNiHr0A8BlcJf6QCTmEHFUJx9_IGnoEklCc9RfKjUjR9tA-a9TrmSR6GMhQxz61k1iQsHE4SWhCGlYFiSMVwrLrnZMIVO8n4us
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: true
-                    - link_url: >-
-                        https://postman-web-property-assets.s3.amazonaws.com/email/trimmed_postman-logo-horizontal.png
-                      link_status: '206'
-                      link_redirected_url: ''
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: true
-                    - link_url: >-
-                        https://twitter.com/getpostman?mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvUdCpTp-zKvuy8yPvCAqtqjKMU_D_MWLuTDN-VQhTz_bssUXuxkXhcG0l-4_INTaTQmLBXqqUohRLzmyr2MbA6G_Q3JOK-4kVIeblRVo
-                      link_status: '200'
-                      link_redirected_url: ''
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: false
-                    - link_url: >-
-                        https://www.linkedin.com/company/postman-platform?mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvUQumbK9XH1BDFrudsblvF_xfZ6b1iOa4TTAXwhqdc2i8sVqnf5z5Lrhn4oeffpYFsb6Zx-Wqqq_3jILf5pTdiMLTof0CFen8TtA-ULQ
-                      link_status: Protocol Error
-                      link_redirected_url: ''
-                      link_is_image: false
-                      link_is_broken: true
-                      link_initial: false
-                    - link_url: >-
-                        https://www.postman.com/?utm_source=&utm_campaign=&utm_con=&utm_medium=email&dcid=&mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvUTwfnHiPCtXtA50naVJ7eLB2EnsFqZsCqJXmMyN87Ja-SdqO0rWHXK9SChm2ZiPVEdp61lPzBQZWY97xNi5ivDwOZWYCFjdV8zhE4ME
-                      link_status: '206'
-                      link_redirected_url: https://www.postman.com/api-platform/meet-postman
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: false
-                    - link_url: >-
-                        https://www.postman.com/api-first/?utm_source=newsletter&utm_medium=marketo&utm_campaign=email&utm_term=guide_to_api_first&utm_content=&mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvUcev3ww1vzskWPuhUJipqR72sndn1PXJZ7e9Xy0WVx72wvaOvvL_LGgKDZh-RTUZ2jFjuiI9PXo4nGESBASxbM0rTXZgPvc2Cg2XR5U
-                      link_status: '206'
-                      link_redirected_url: ''
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: false
-                    - link_url: https://www.postman.com/api-platform/meet-postman
-                      link_status: '206'
-                      link_redirected_url: ''
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: false
-                    - link_url: >-
-                        https://www.postman.com/case-studies/whatsapp/?utm_source=newsletter&utm_medium=marketo&utm_campaign=email&utm_term=whatsapp_newsletter&utm_content=&mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvUe4s_ALsOCScRzLu_Asp7A0EejQBQF1ltuAD911vn6uyU-MZiDmH-ZZ5kXJoSuvLJmC-BpTjcmhB0Zdwb2GXfBf2YhM5hcIE-lPJbPo
-                      link_status: '206'
-                      link_redirected_url: ''
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: false
-                    - link_url: >-
-                        https://www.postman.com/events/intergalactic/unboxing-whats-new/?utm_source=newsletter&utm_medium=marketo&utm_campaign=email&utm_term=unbox_v10_newsletter&utm_content=&mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvUeiMr5NAHPiF-DrWJ8Vk_YSLYVBrZYMMROlP-DqJoLRf1B_mrIl7Hx-o9BQI5CENSmRdes9qNIGkXylJQ4R6bhypkqfOeND4G9_LA6Q
-                      link_status: '206'
-                      link_redirected_url: ''
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: false
-                    - link_url: >-
-                        https://www.postman.com/events/postman-space-camp/unboxing-whats-new/?utm_source=newsletter&utm_medium=marketo&utm_campaign=email&utm_term=unbox_v10_newsletter&utm_content=&mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvUeiMr5NAHPiF-DrWJ8Vk_YSLYVBrZYMMROlP-DqJoLRf1B_mrIl7Hx-o9BQI5CENSmRdes9qNIGkXylJQ4R6bhypkqfOeND4G9_LA6Q
-                      link_status: '206'
-                      link_redirected_url: >-
-                        https://www.postman.com/events/intergalactic/unboxing-whats-new/?utm_source=newsletter&utm_medium=marketo&utm_campaign=email&utm_term=unbox_v10_newsletter&utm_content=&mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvUeiMr5NAHPiF-DrWJ8Vk_YSLYVBrZYMMROlP-DqJoLRf1B_mrIl7Hx-o9BQI5CENSmRdes9qNIGkXylJQ4R6bhypkqfOeND4G9_LA6Q
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: false
-                    - link_url: https://www.postman.com/legal/privacy-policy/
-                      link_status: '200'
-                      link_redirected_url: ''
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: true
-                    - link_url: >-
-                        https://www.postman.com/lp/postman-v10/?utm_source=newsletter&utm_medium=marketo&utm_campaign=email&utm_term=v10_signup&utm_content=&mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvUsalCaGXDvuiHhDP9OMucHjBaUMzjsgeByUJZ20D7EAkb0lziqJ53MGsUKH5Uw44NjuwUNIc9tciVkRwVjrHGHc9rgdhPDd8Rv2pgAo
-                      link_status: '206'
-                      link_redirected_url: ''
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: false
-                    - link_url: >-
-                        https://www.postman.com/newsletter-signup/?utm_source=newsletter&utm_medium=marketo&utm_campaign=email&utm_term=newsletter_signup&utm_content=&mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvUbndWoHfIxW1OflXNvAA_50ToGmkkMQVD_RSAVw95X3MNgKNA07E6TAg85lq1MCVDp2-VCetmp4oVciRMhYd-RaCU4uKJpy7FoLESOs
-                      link_status: '206'
-                      link_redirected_url: ''
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: false
-                    - link_url: >-
-                        https://www.postman.com/state-of-api/?utm_source=newsletter&utm_medium=marketo&utm_campaign=email&utm_term=SOTA_2022&utm_content=&mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvUYUNtGYURz5_fjYVnY6bfW-m4IuxJoodm52u3n168s1X1CeMmbn0hQQ_lD__Kaew2OJ3E953EoEgQWY-vz9EIR38CpnU5bJ6PJUTOfA
-                      link_status: '206'
-                      link_redirected_url: ''
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: false
-                    - link_url: >-
-                        https://www.twitch.tv/getpostman?mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvUWQnzz02jfNYQumqmP9ZqAhW3_BE-8aJh3dA7gz-Wd0b4HADJ_7KC-c786j6Z1cgGZdwPtYL_Rhuo8uxcBNNLVKfv6-6iX6XDftSpUA
-                      link_status: '200'
-                      link_redirected_url: ''
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: false
-                    - link_url: >-
-                        https://www.youtube.com/c/Postman?mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvUbj3PMsBeUt-vFq7APwHCDV3ZT06jL_oBzSusHT9vC_BFieFjs1Xrdrk31DowMMLEOR2HyV3BR8Rk4dKLNq8e9P-gUs-Hpo_hDP_2ss
-                      link_status: '200'
-                      link_redirected_url: ''
-                      link_is_image: false
-                      link_is_broken: false
-                      link_initial: false
-                  campaign_summary:
-                    - message: CSS was inlined.
-                      count: 0
-                      html_changed: true
-                      apply_count: false
-                    - message: Diacritics characters were replaced.
-                      count: 0
-                      html_changed: true
-                      apply_count: false
-                    - message: spam keywords were found.
-                      count: 24
-                      html_changed: false
-                      apply_count: true
-                    - message: Spam keyword ratio is to high.
-                      count: 0
-                      html_changed: false
-                      apply_count: false
-                    - message: images missing alt tags.
-                      count: 2
-                      html_changed: false
-                      apply_count: true
-                    - message: links missing title tags.
-                      count: 6
-                      html_changed: false
-                      apply_count: true
-                    - message: oversized images were found.
-                      count: 1
-                      html_changed: false
-                      apply_count: true
-                    - message: poor delivery CDNs were found.
-                      count: 2
-                      html_changed: false
-                      apply_count: true
-                    - message: All comments were removed.
-                      count: 0
-                      html_changed: true
-                      apply_count: false
-                    - message: Surrounding DIV was added.
-                      count: 0
-                      html_changed: true
-                      apply_count: false
-                    - message: excessive punctuations was found.
-                      count: 7
-                      html_changed: true
-                      apply_count: true
-  /v1/get_credits:
-    get:
-      tags:
-        - Campaign Cleaner
-      summary: Get Credits
-      description: >-
-        The **get_credits** API will show you how many credits you currently
-        have available. Credits are consumed by calling the **send_campaign**
-        API endpoint.
-
-
-        #### Response:
-
-
-        - **Credits**: The amount of available credits you have on your account.
-         
-
-        In the event of any other error, you will get an "**error**:" response,
-        with a description of the reason.
-      parameters:
-        - name: X-CC-API-Key
-          in: header
-          schema:
-            type: string
-          example: '{{api_key}}'
-      responses:
-        '200':
-          description: OK
-          headers:
-            Content-Type:
-              schema:
-                type: string
-                example: application/json
-          content:
-            application/json:
-              schema:
-                type: object
-              example:
-                credits: 987
-  /v1/get_campaign_pdf_analysis:
-    post:
-      tags:
-        - Campaign Cleaner
-      summary: Get Campaign PDF Analysis
-      description: >-
-        The **get_campaign_pdf_analysis** API allows you to retrieve the analysis report for any of your Saved Campaigns in Campaign Cleaner.
-     
-        #### Header:
-        
-        **X-CC-API-Key**: Your API Key
-        
-        #### Request Body:
-
-        **campaign**:
-
-        - **id**: The campaign id that will be used in other API calls.
-       
-        #### Response:
-
-        An Application/pdf stream.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                campaign:
-                  type: object
-                  properties:
-                    id:
-                      type: string
-              example:
-                campaign:
-                  id: '{{campaign_id}}'
-      parameters:
-        - name: X-CC-API-Key
-          in: header
-          schema:
-            type: string
-          example: '{{api_key}}'
-      responses:
-        '200':
-          description: Returns the file in the PDF format
-          content:
-            application/pdf:
-              schema:
-                type: string
-                format: binary
-              example: 'PDF File Download'
-  /v1/send_campaign:
-    post:
-      tags:
-        - Campaign Cleaner
-      summary: Send Campaign
-      description: >-
-        The **send_campaign** API Endpoint allows you to send in a campaign to
-        be processed and analyzed by [Campaign
-        Cleaner](https://campaigncleaner.com). Below is the list of settings
-        that can be set, all optional settings, if not specified will default to
-        the bold/italicized setting.
-
-
-        All submitted campaigns will be sanitized.
-
-        #### Header:
-        
-        **X-CC-API-Key**: Your API Key
-        
-        #### Request Body:
-
-
-        _Required:_
-
-
-        **send_campaign**:
-
-
-        - **campaign_html** : The full HTML of your campaign
-
-        - **campaign_name**: The name of your campaign - campaign name must pass
-        our sanitization checks.
-         
-
-        Campaigns are normally processed in under 2 minutes, in most instances
-        in a few seconds. But in some cases with very large campaigns with lots
-        of images and links it can take longer to check those links for
-        blacklists, redirects. image sizes and more. Depending on the server
-        where those links resources are located it can take longer. The send
-        campaign, will return a campaign ID once we received it, you can use
-        that campaign ID to check on the status, and retrieve your campaign when
-        it's finished processing or you can supply us a webhook URL and we will
-        send the results to you automatically.
-
-
-        _Optional:_
-
-
-        **send_campaign**:
-
-
-        - **adjust_font_colors**: (_**true**_/false), If true, certain bright
-        colors are spam triggers, like "**red**" or "**#FF0000**", will be
-        adjusted to a slightly different color like "**#FF0101"**, it will look
-        the same, but won't trigger some spam filters.
-
-        - **adjust_font_size**: (_**true**_/false) If true, you will be able to
-        define the min and max font size allowed in pixels. If your newsletter
-        contains larger or small font's it will adjust them to the min/max you
-        define.
-
-        - **convert_h_to_p_tags**: (true/**false**) If true, this will change
-        all the H tags to P tags and set the correct font-size.
-
-        - **convert_tables_to_divs:** (true/**false**) - This is an experimental
-        feature to convert all the tables to divs, in certain instances with a
-        complicated table structure you might need to edit the HTML. We
-        recommend leaving this as false or not setting it.
-
-        - **custom_info:** This field is for you to pass any additional data you
-        want to send us, it will also be passed back to you when you call the
-        get_campaign API. It's limited to 500 characters. - It must pass our
-        sanitization checks.
-
-        - **host_extensionless_images:** (true/**false**) If true, images
-        without extensions will be hosted on our CDN when the
-        **resize_and_host** parameter is set to true. Typically, dynamically
-        generated images lack extensions, though there are exceptions.
-
-        - **inline_css:** (**true**/false) When set to true, CSS styles are directly applied within the style attribute of each HTML element.
-    
-        - **inline_css_important:** (true/**false**) When set to true, the `!important` flag will also be inlined with CSS styles. If you are using media queries, it is generally recommended to keep this set to false.
-    
-        - **media_queries_important:** (**true**/false) When set to true, all media query styles will be marked with the `!important` flag. This ensures they can override any inline CSS without an `!important` flag.
-
-        - **image_max_width:** (int) When this is specified, it will add an
-        max-width style to all images. it is not desirable for the image width
-        to exceed the default campaign width.
-
-        - **min_font_size_allowed**: (_**10**_) (A positive Integer, under 100)
-        The **min_font_size** must be smaller or equal to the **max_font_size**
-        in pixels
-
-        - **max_font_size_allowed**: (_**32**_) (A positive Integer under 100)
-        The **max_font_size** must be larger or equal to the **min_font_size**
-        in pixels
-
-        - **preserve_media_queries**: (_**true**_/false) True, if media queries should be preserved.
-        
-        - **remove_classes_and_ids**: (_**true**_/false) If true, removes all
-        the class and ID attributes after CSS Inlining.
-
-        - **remove_comments**: (_**true**_/false), If true, comments are
-        stripped from both CSS and HTML. Comments are invisible in html and can
-        trigger spam filters.
-
-        - **remove_css_inheritance**: (_**true**_/false) If true, removes all
-        elements of CSS that are inherited. Once CSS is inlined, the inherited
-        CSS will be removed, for example if font-size of a parent tag is 15
-        pixels, there is no need for the font-size of the child tag to be
-        specified as 15 pixels because it's inherited or computed from the
-        parent tag, this reduces the size of your HTML Campaign.
-
-        - **remove_control_non_printable:** (**true**/false) If true, all
-        non-printable and control characters are removed.
-
-        - **remove_image_height:** (true/**false**) If true, the height style is
-        removed from all images, preventing any image distortions. Only the
-        width property should be set on images sent in emails.
-
-        - **remove_large_widths_over**: (integer) Experimental: If sets removes
-        all defined widths over the value set on non images and table tags.
-
-        - **remove_successive_punctuation**: (true/**false**) If true, this will
-        remove succession punctuation like ..., !!!!, $$$ to a single
-        occurrence.
-
-        - **relative_links_base_url**: If set, this needs to be a full base URL
-        like "[https://campaigncleaner.com/"](https://campaigncleaner.com/), if
-        your email campaign has any relative paths, it will be converted to an
-        absolute URL. In most instances, you won't need to set this.
-
-        - **replace_diacritics**: (**true**/false) If true, replaces diacritic
-        characters like á with normal characters equivalent, if you're sending
-        emails in English emails, this is a must.
-
-        - **replace_non_ascii_characters**: (**true**/false) If true, replaces
-        all non-ascii characters with their ascii equivalent. For example, ❝
-        will be replaced with **".** Non-ascii characters is of of the major
-        spam trigger.
-
-        - **resize_and_host**: (true/**false**) If true, we will resize, convert,
-        and host all eligible images on our CDN. Please read our documentation
-        here: [Resizing and
-        Hosting](https://docs.campaigncleaner.com/features-settings/resize-and-host)
-
-        - **surrounding_div:** When you set any parameter of the surrounding
-        div, it will add "div" tag around your html with the styles you set.
-        This is helpful to set default styles and conditions that can affect the
-        look of your html.
-          - **max_width:** The max-width style applied to the surrounding "div" can be specified in pixels as an integer value. It is typically set to the desired maximum width of the campaign, which is commonly either 600 or 900 pixels.
-          - **text_align**: (left, center, right) All content within the surrounding "div" will be aligned according to your specified style. However, you can use the "text-align" property on inner tags within the "div" to customize the appearance of your email.
-          - **font_size:** The pixel size that you want everything in the surrounding div to adhere to, setting this, will add an "_!important"_ to the font-size in the surrounding "div". Font sizes that are set on any tag in the HTML will retain their original size. While all unspecified font sizes to the size you chose.
-          - **center_to_parent:** (true/false) Using this feature will enable the surrounding "div" to be centered in any parent tags in which it is placed. This is particularly helpful when inserting an HTML snippet into a template.
-        
-        - **webhook_url**: An endpoint that you provide us and when your
-        campaign is fully processed we will send the results back that is found
-        in the Get Campaign API. You can utilize the webhook section under API
-        Management to troubleshoot and test your endpoint.
-         
-        #### Header:
-        
-        **X-CC-API-Key**: Your API Key
-        
-        #### Response:
-
-
-        **campaign:**
-
-
-        - **id**: The campaign id that will be used to retrieve your campaign
-        using the get_campaign API.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              example:
-                send_campaign:
-                  remove_css_inheritance: true
-                  adjust_font_colors: true
-                  remove_comments: true
-                  campaign_html: ''
-                  campaign_name: Test Passed
-                  remove_width_over: 400
-                  image_max_width: 600
-                  remove_image_height: true
-                  surrounding_div:
-                    text_align: left
-                    font_size: 15
-                    center_to_parent: true
-      parameters:
-        - name: X-CC-API-Key
-          in: header
-          schema:
-            type: string
-          example: '{{api_key}}'
-      responses:
-        '200':
-          description: OK
-          headers:
-            Content-Type:
-              schema:
-                type: string
-                example: application/json
-          content:
-            application/json:
-              schema:
-                type: object
-              example:
-                campaign:
-                  id: '{{campaign_id}}'
-  /v1/delete_campaign:
-    post:
-      tags:
-        - Campaign Cleaner
-      summary: Delete Campaign
-      description: >-
-        The **delete_campaign** API endpoint allows you to delete any of the
-        campaigns in your saved campaigns in [Campaign
-        Cleaner](https://campaigncleaner.com).
-
-        #### Header:
-        
-        **X-CC-API-Key**: Your API Key
-        
-        #### Request Body:
-
-
-        **campaign**:
-
-
-        - **id**: The campaign id that will be deleted.
-         
-
-        #### Response:
-
-
-        - **status**: _success_ or _failure,_ failures can occur when the
-        **campaign_id** doesn't exists or was deleted.
-         
-
-        In the event of an error, you will get an "**error**:" response, with a
+        In the event of an error, you will get an "**error**:" response with a
         description of the reason.
       requestBody:
         content:
           application/json:
             schema:
               type: object
+              properties:
+                test_name:
+                  type: string
               example:
-                campaign:
-                  id: '{{campaign_id}}'
+                test_name: My Campaign Inbox Test
       parameters:
         - name: X-CC-API-Key
           in: header
@@ -1809,4 +74,144 @@ paths:
               schema:
                 type: object
               example:
-                status: success
+                job_id: '12345'
+                test_name: My Campaign Inbox Test
+                mailtester_address: mailtest+a1b2c3d4@campaigncleaner.com
+                instructions: >-
+                  Send your campaign to ALL addresses in the send_to list.
+                  Results will be available via get_inbox_test_results once
+                  processing is complete.
+                send_to:
+                  - seed1@gmail.com
+                  - seed2@yahoo.com
+                  - seed3@outlook.com
+                  - mailtest+a1b2c3d4@campaigncleaner.com
+
+  /v1/get_inbox_test_results:
+    post:
+      tags:
+        - Campaign Cleaner
+      summary: Get Inbox Test Results
+      description: >-
+        The **get_inbox_test_results** API allows you to retrieve the placement
+        results for an inbox test created via the **create_inbox_test** API.
+        Results are populated as seed mailboxes receive your campaign, so you
+        may call this endpoint multiple times until the **status** is
+        _Completed_.
+
+
+        A **status** of _Processing_ means not all seed mailboxes have received
+        your campaign yet. Check back in a few minutes. If some seeds never
+        receive the email, the **status** will remain _Processing_ — ensure your
+        campaign was sent to all addresses in the **send_to** list.
+
+        #### Header:
+
+        **X-CC-API-Key**: Your API Key
+
+        #### Request Body:
+
+        _Required:_
+
+        - **job_id**: The job ID returned from the **create_inbox_test** API.
+
+        #### Response:
+
+        - **job_id**: The unique ID of the inbox test.
+
+        - **test_name**: The name of the inbox test.
+
+        - **submitted_date**: The date and time the test was created.
+
+        - **submitted_by**: The email address of the account that created the
+        test.
+
+        - **status**: Either _Processing_ or _Completed_.
+
+        - **summary**: A high-level breakdown of results.
+           - **total_seeds**: The total number of seed mailboxes in the test.
+           - **received**: The number of seeds that have received the campaign so far.
+           - **inbox**: The number of seeds where the campaign landed in the inbox.
+           - **spam**: The number of seeds where the campaign landed in spam or junk.
+           - **unknown_placement**: The number of seeds that received the email but placement could not be determined.
+           - **pending**: The number of seeds still waiting to receive the campaign.
+           - **inbox_rate**: The percentage of total seeds where the campaign landed in the inbox.
+           - **spam_rate**: The percentage of total seeds where the campaign landed in spam.
+
+        - **results**: A detailed per-seed breakdown.
+           - **provider**: The email provider name (e.g. Gmail, Outlook, Yahoo).
+           - **seed_address**: The seed email address.
+           - **email_found**: (true/false) Whether the campaign was received by this seed.
+           - **placement**: Where the campaign landed - Inbox, Spam, or Pending.
+           - **spf_status**: The SPF authentication result for this seed.
+           - **sender_ip**: The IP address the campaign was sent from.
+           - **submission_result**: Additional detail about the submission result for this seed.
+
+
+        In the event of an error, you will get an "**error**:" response with a
+        description of the reason.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                job_id:
+                  type: string
+              example:
+                job_id: '12345'
+      parameters:
+        - name: X-CC-API-Key
+          in: header
+          schema:
+            type: string
+          example: '{{api_key}}'
+      responses:
+        '200':
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                job_id: '12345'
+                test_name: My Campaign Inbox Test
+                submitted_date: '2024-04-24T10:30:00'
+                submitted_by: user@example.com
+                status: Completed
+                summary:
+                  total_seeds: 30
+                  received: 28
+                  inbox: 24
+                  spam: 3
+                  unknown_placement: 1
+                  pending: 2
+                  inbox_rate: 80.0
+                  spam_rate: 10.0
+                results:
+                  - provider: Gmail
+                    seed_address: seed1@gmail.com
+                    email_found: true
+                    placement: Inbox
+                    spf_status: pass
+                    sender_ip: 192.168.1.1
+                    submission_result: ''
+                  - provider: Outlook
+                    seed_address: seed2@outlook.com
+                    email_found: true
+                    placement: Spam
+                    spf_status: pass
+                    sender_ip: 192.168.1.1
+                    submission_result: ''
+                  - provider: Yahoo
+                    seed_address: seed3@yahoo.com
+                    email_found: false
+                    placement: Pending
+                    spf_status: ''
+                    sender_ip: ''
+                    submission_result: ''
