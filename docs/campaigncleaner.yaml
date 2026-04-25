@@ -934,7 +934,7 @@ paths:
               example:
                 campaign:
                   id: 8e754ce1-c2df-11ed-9848-003048d8d533
- /v1/get_inbox_test_results:
+  /v1/get_inbox_test_results:
     post:
       tags:
         - Campaign Cleaner
