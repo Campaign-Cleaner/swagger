@@ -39,9 +39,9 @@ paths:
         the results.
 
         #### Header:
-        
+
         **X-CC-API-Key**: Your API Key
-        
+
         #### Request Body:
 
 
@@ -49,7 +49,7 @@ paths:
 
 
         - **id**: The Campaign ID that you want to get the status for.
-         
+
 
         #### Response:
 
@@ -66,7 +66,7 @@ paths:
 
         - **date_added**: The date and time your campaign was saved or submitted
         to [Campaign Cleaner](https://campaigncleaner.com).
-         
+
 
         If the **status** is _completed_, you will be able to retrieve the
         campaign via the **get_campaign** API
@@ -117,9 +117,9 @@ paths:
         Cleaner](https://campaigncleaner.com).
 
         #### Header:
-        
+
         **X-CC-API-Key**: Your API Key
-        
+
 
         #### Response:
 
@@ -136,7 +136,7 @@ paths:
 
         - **date_added**: The date and time your campaign was saved or submitted
         to Campaign Cleaner.
-         
+
 
         If the **status** is _completed_, you will be able to retrieve the
         campaign via the **get_campaign** API
@@ -185,9 +185,9 @@ paths:
         size and a couple of broken links.
 
         #### Header:
-        
+
         **X-CC-API-Key**: Your API Key
-        
+
         #### Request Body:
 
         _Required:_
@@ -196,7 +196,7 @@ paths:
 
 
         - **id**: The campaign id that will be used in other API calls.
-         
+
         _Optional:_
 
         **campaign**:
@@ -307,13 +307,13 @@ paths:
         without extensions will be hosted on our CDN when the
         **resize_and_host** parameter is set to true. Typically, dynamically
         generated images lack extensions, though there are exceptions.
-        
+
         - **inline_css:** (**true**/false) When set to true, CSS styles are directly applied within the style attribute of each HTML element.
-    
+
         - **inline_css_important:** (true/**false**) When set to true, the `!important` flag will also be inlined with CSS styles. If you are using media queries, it is generally recommended to keep this set to false.
-    
+
         - **media_queries_important:** (**true**/false) When set to true, all media query styles will be marked with the `!important` flag. This ensures they can override any inline CSS without an `!important` flag.
-        
+
         - **image_count**: (integer) The total number of images found in your
         campaign including background images.
 
@@ -457,7 +457,7 @@ paths:
 
         - **total_word_count**: (integer) The total number of words found in
         your campaign.
-        
+
 
         #### Additional Information:
 
@@ -495,7 +495,6 @@ paths:
           schema:
             type: string
           example: '{{api_key}}'
-       
       responses:
         '200':
           description: OK
@@ -563,33 +562,32 @@ paths:
                   total_word_count: 728
                   campaign_html: ''
                   spam_keyword_list:
-                  - keyword: "Sign up"
-                    count: 2
-                  - keyword: "Check"
-                    count: 2
-                  - keyword: "Collect"
-                    count: 2
-                  - keyword: "Offer"
-                    count: 1
-                  - keyword: "Get paid"
-                    count: 1
-                  - keyword: "Request"
-                    count: 1
-                  - keyword: "Open"
-                    count: 1
-                  - keyword: "Solution"
-                    count: 1
-                  - keyword: "Subscribe"
-                    count: 1
-                  - keyword: "Cure"
-                    count: 1
-                  - keyword: "Now"
-                    count: 1
-                  - keyword: "Privacy"
-                    count: 1
+                    - keyword: Sign up
+                      count: 2
+                    - keyword: Check
+                      count: 2
+                    - keyword: Collect
+                      count: 2
+                    - keyword: Offer
+                      count: 1
+                    - keyword: Get paid
+                      count: 1
+                    - keyword: Request
+                      count: 1
+                    - keyword: Open
+                      count: 1
+                    - keyword: Solution
+                      count: 1
+                    - keyword: Subscribe
+                      count: 1
+                    - keyword: Cure
+                      count: 1
+                    - keyword: Now
+                      count: 1
+                    - keyword: Privacy
+                      count: 1
                   image_list:
-                    - image_url: >-
-                        https://assets.getpostman.com/email/icon-github-color.png
+                    - image_url: https://assets.getpostman.com/email/icon-github-color.png
                       image_size: 1
                       image_width: 24
                       image_height: 24
@@ -600,15 +598,13 @@ paths:
                       image_height: 24
                       image_background: true
                   os_image_list:
-                    - image_url: >-
-                        https://lp.postman.com/rs/067-UMD-991/images/Announcement-of-Ecosystem-Partner-Program%402x-100.jpg
+                    - image_url: https://lp.postman.com/rs/067-UMD-991/images/Announcement-of-Ecosystem-Partner-Program%402x-100.jpg
                       image_size: 62
                       image_width: 1633
                       image_height: 865
                       image_background: true
                   bg_image_list:
-                    - image_url: >-
-                        https://assets.getpostman.com/email/icon-github-color.png
+                    - image_url: https://assets.getpostman.com/email/icon-github-color.png
                       image_size: 1
                       image_width: 24
                       image_height: 24
@@ -620,16 +616,14 @@ paths:
                     - blog.postman.com
                     - github.com
                   broken_links:
-                    - link_url: >-
-                        http://go.postman.com/track?mktoTestLink&mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvUdX_2Si9w4zGTZVMU_omcKkgJ4IrP4unrXcDrM1bEcs_gl8jsqiMybmT6-mAwlcKRt_VgcT9Ou3nBO6XXYVo6GFMaUZwh7GiKHq8hB4
+                    - link_url: http://go.postman.com/track?mktoTestLink
                       link_status: PNR Falure
                       link_redirected_url: ''
                       link_is_image: false
                       link_is_broken: true
                       link_initial: false
                   all_link_list:
-                    - link_url: >-
-                        https://assets.getpostman.com/email/icon-github-color.png
+                    - link_url: https://assets.getpostman.com/email/icon-github-color.png
                       link_status: '206'
                       link_redirected_url: ''
                       link_is_image: false
@@ -659,7 +653,7 @@ paths:
 
 
         - **Credits**: The amount of available credits you have on your account.
-         
+
 
         In the event of any other error, you will get an "**error**:" response,
         with a description of the reason.
@@ -689,18 +683,19 @@ paths:
         - Campaign Cleaner
       summary: Get Campaign PDF Analysis
       description: >-
-        The **get_campaign_pdf_analysis** API allows you to retrieve the analysis report for any of your Saved Campaigns in Campaign Cleaner.
-     
+        The **get_campaign_pdf_analysis** API allows you to retrieve the
+        analysis report for any of your Saved Campaigns in Campaign Cleaner.
+
         #### Header:
-        
+
         **X-CC-API-Key**: Your API Key
-        
+
         #### Request Body:
 
         **campaign**:
 
         - **id**: The campaign id that will be used in other API calls.
-       
+
         #### Response:
 
         An Application/pdf stream.
@@ -732,7 +727,7 @@ paths:
               schema:
                 type: string
                 format: binary
-              example: 'PDF File Download'
+              example: PDF File Download
   /v1/send_campaign:
     post:
       tags:
@@ -749,9 +744,9 @@ paths:
         All submitted campaigns will be sanitized.
 
         #### Header:
-        
+
         **X-CC-API-Key**: Your API Key
-        
+
         #### Request Body:
 
 
@@ -765,7 +760,7 @@ paths:
 
         - **campaign_name**: The name of your campaign - campaign name must pass
         our sanitization checks.
-         
+
 
         Campaigns are normally processed in under 2 minutes, in most instances
         in a few seconds. But in some cases with very large campaigns with lots
@@ -934,6 +929,98 @@ paths:
               example:
                 campaign:
                   id: 8e754ce1-c2df-11ed-9848-003048d8d533
+  /v1/create_inbox_test:
+    post:
+      tags:
+        - Campaign Cleaner
+      summary: Create Inbox Test
+      description: >-
+        The **create_inbox_test** API allows you to create a new inbox placement
+        test. Once created, you will receive a list of seed email addresses to
+        send your campaign to. After sending your campaign to all addresses in
+        the **send_to** list, you can use the **get_inbox_test_results** API to
+        retrieve the placement results.
+
+
+        This endpoint requires an active Campaign Cleaner subscription or a
+        standalone Inbox Placement Tester subscription. One API credit will be
+        deducted per test created.
+
+        #### Header:
+
+        **X-CC-API-Key**: Your API Key
+
+        #### Request Body:
+
+        _Required:_
+
+        - **test_name**: The name of your inbox test - maximum 255 characters.
+
+        #### Response:
+
+        - **job_id**: The unique ID of the inbox test, used to retrieve results
+        via the **get_inbox_test_results** API.
+
+        - **test_name**: The name you provided for the test.
+
+        - **mailtester_address**: The unique monitoring address that must be
+        included in your send list. This is already included in the **send_to**
+        array.
+
+        - **instructions**: A description of what to do next.
+
+        - **send_to**: An array of all seed email addresses including the
+        **mailtester_address**. Send your campaign to every address in this
+        list.
+
+
+        In the event of an error, you will get an "**error**:" response with a
+        description of the reason.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                test_name:
+                  type: string
+              example:
+                test_name: My Campaign Inbox Test
+      parameters:
+        - name: X-CC-API-Key
+          in: header
+          schema:
+            type: string
+          example: '{{api_key}}'
+      responses:
+        '200':
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                job_id: '187'
+                test_name: My Campaign Inbox Test
+                mailtester_address: mailtest+a1b2c3d4@campaigncleaner.com
+                instructions: Send your campaign to ALL addresses in the send_to list. Results will be available via get_inbox_test_results once processing is complete.
+                send_to:
+                  - cc_seed_01@yahoo.com
+                  - cc.seed.01@gmail.com
+                  - cc.seed.02@yahoo.com
+                  - cc.test.1@outlook.com
+                  - cc.test.1@hotmail.com
+                  - samuelburge12@icloud.com
+                  - cc_seed_01@aol.com
+                  - cc.test.1@365emailtest.com
+                  - cc.test.1@test365delivery.com
+                  - cc.test.1@campaigncleaner.net
+                  - mailtest+a1b2c3d4@campaigncleaner.com
   /v1/get_inbox_test_results:
     post:
       tags:
