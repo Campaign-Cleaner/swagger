@@ -934,95 +934,7 @@ paths:
               example:
                 campaign:
                   id: 8e754ce1-c2df-11ed-9848-003048d8d533
-  /v1/create_inbox_test:
-    post:
-      tags:
-        - Campaign Cleaner
-      summary: Create Inbox Test
-      description: >-
-        The **create_inbox_test** API allows you to create a new inbox placement
-        test. Once created, you will receive a list of seed email addresses to
-        send your campaign to. After sending your campaign to all addresses in
-        the **send_to** list, you can use the **get_inbox_test_results** API to
-        retrieve the placement results.
-
-
-        This endpoint requires an active Campaign Cleaner subscription or a
-        standalone Inbox Placement Tester subscription. One API credit will be
-        deducted per test created.
-
-        #### Header:
-
-        **X-CC-API-Key**: Your API Key
-
-        #### Request Body:
-
-        _Required:_
-
-        - **test_name**: The name of your inbox test - maximum 255 characters.
-
-        #### Response:
-
-        - **job_id**: The unique ID of the inbox test, used to retrieve results
-        via the **get_inbox_test_results** API.
-
-        - **test_name**: The name you provided for the test.
-
-        - **mailtester_address**: The unique monitoring address that must be
-        included in your send list. This is already included in the **send_to**
-        array.
-
-        - **instructions**: A description of what to do next.
-
-        - **send_to**: An array of all seed email addresses including the
-        **mailtester_address**. Send your campaign to every address in this
-        list.
-
-
-        In the event of an error, you will get an "**error**:" response with a
-        description of the reason.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                test_name:
-                  type: string
-              example:
-                test_name: My Campaign Inbox Test
-      parameters:
-        - name: X-CC-API-Key
-          in: header
-          schema:
-            type: string
-          example: '{{api_key}}'
-      responses:
-        '200':
-          description: OK
-          headers:
-            Content-Type:
-              schema:
-                type: string
-                example: application/json
-          content:
-            application/json:
-              schema:
-                type: object
-              example:
-                job_id: '12345'
-                test_name: My Campaign Inbox Test
-                mailtester_address: mailtest+a1b2c3d4@campaigncleaner.com
-                instructions: >-
-                  Send your campaign to ALL addresses in the send_to list.
-                  Results will be available via get_inbox_test_results once
-                  processing is complete.
-                send_to:
-                  - seed1@gmail.com
-                  - seed2@yahoo.com
-                  - seed3@outlook.com
-                  - mailtest+a1b2c3d4@campaigncleaner.com
-  /v1/get_inbox_test_results:
+ /v1/get_inbox_test_results:
     post:
       tags:
         - Campaign Cleaner
@@ -1066,21 +978,22 @@ paths:
         - **summary**: A high-level breakdown of results.
            - **total_seeds**: The total number of seed mailboxes in the test.
            - **received**: The number of seeds that have received the campaign so far.
-           - **inbox**: The number of seeds where the campaign landed in the inbox.
-           - **spam**: The number of seeds where the campaign landed in spam or junk.
-           - **unknown_placement**: The number of seeds that received the email but placement could not be determined.
+           - **inbox**: The number of seeds where the campaign landed in the primary inbox.
+           - **category**: The number of seeds where the campaign landed in a tab or category such as Newsletter, Promotions, Forums, Social, or Updates. These are considered inbox placements but not the primary inbox.
+           - **spam**: The number of seeds where the campaign landed in the spam or junk folder.
            - **pending**: The number of seeds still waiting to receive the campaign.
-           - **inbox_rate**: The percentage of total seeds where the campaign landed in the inbox.
+           - **inbox_rate**: The percentage of total seeds where the campaign landed in the primary inbox.
+           - **category_rate**: The percentage of total seeds where the campaign landed in a tab or category folder.
            - **spam_rate**: The percentage of total seeds where the campaign landed in spam.
 
         - **results**: A detailed per-seed breakdown.
-           - **provider**: The email provider name (e.g. Gmail, Outlook, Yahoo).
+           - **provider**: The email provider name (e.g. Google - Gmail, Microsoft - Hotmail Outlook, Verizon - Yahoo AOL, Apple - iCloud).
            - **seed_address**: The seed email address.
            - **email_found**: (true/false) Whether the campaign was received by this seed.
-           - **placement**: Where the campaign landed - Inbox, Spam, or Pending.
+           - **placement**: Where the campaign landed. Possible values are Inbox, Spam, Inbox - Newsletter, Inbox - Promotions, Inbox - Forums, Inbox - Social, Inbox - Updates, or Pending.
            - **spf_status**: The SPF authentication result for this seed.
            - **sender_ip**: The IP address the campaign was sent from.
-           - **submission_result**: Additional detail about the submission result for this seed.
+           - **submission_result**: Additional detail about the submission result for this seed. Primarily used for Microsoft seeds e.g. Clean - No Threats Found.
 
 
         In the event of an error, you will get an "**error**:" response with a
@@ -1094,7 +1007,7 @@ paths:
                 job_id:
                   type: string
               example:
-                job_id: '12345'
+                job_id: '186'
       parameters:
         - name: X-CC-API-Key
           in: header
@@ -1114,39 +1027,54 @@ paths:
               schema:
                 type: object
               example:
-                job_id: '12345'
+                job_id: '186'
                 test_name: My Campaign Inbox Test
-                submitted_date: '2024-04-24T10:30:00'
+                submitted_date: '4/24/2026 11:30:43 PM'
                 submitted_by: user@example.com
                 status: Completed
                 summary:
-                  total_seeds: 30
-                  received: 28
-                  inbox: 24
-                  spam: 3
-                  unknown_placement: 1
-                  pending: 2
-                  inbox_rate: 80.0
-                  spam_rate: 10.0
+                  total_seeds: 67
+                  received: 67
+                  inbox: 8
+                  category: 5
+                  spam: 54
+                  pending: 0
+                  inbox_rate: 11.9
+                  category_rate: 7.5
+                  spam_rate: 80.6
                 results:
-                  - provider: Gmail
-                    seed_address: seed1@gmail.com
-                    email_found: true
-                    placement: Inbox
-                    spf_status: pass
-                    sender_ip: 192.168.1.1
-                    submission_result: ''
-                  - provider: Outlook
-                    seed_address: seed2@outlook.com
+                  - provider: Apple - iCloud
+                    seed_address: cc.test.01@icloud.com
                     email_found: true
                     placement: Spam
-                    spf_status: pass
-                    sender_ip: 192.168.1.1
+                    spf_status: Pass
+                    sender_ip: 45.45.212.114
                     submission_result: ''
-                  - provider: Yahoo
-                    seed_address: seed3@yahoo.com
-                    email_found: false
-                    placement: Pending
-                    spf_status: ''
-                    sender_ip: ''
+                  - provider: Microsoft - Hotmail, Outlook
+                    seed_address: cc.test.1@outlook.com
+                    email_found: true
+                    placement: Spam
+                    spf_status: Pass
+                    sender_ip: 205.166.50.8
+                    submission_result: Clean - No Threats Found
+                  - provider: Verizon - Yahoo, AOL
+                    seed_address: cc_seed_01@yahoo.com
+                    email_found: true
+                    placement: Inbox
+                    spf_status: Pass
+                    sender_ip: 45.45.212.115
+                    submission_result: ''
+                  - provider: Zoho - Business
+                    seed_address: cc.test.1@campaigncleaner.net
+                    email_found: true
+                    placement: Inbox - Newsletter
+                    spf_status: Pass
+                    sender_ip: 45.45.212.113
+                    submission_result: ''
+                  - provider: Google - Gmail
+                    seed_address: cc.seed.01@gmail.com
+                    email_found: true
+                    placement: Spam
+                    spf_status: Pass
+                    sender_ip: 45.45.212.80
                     submission_result: ''
