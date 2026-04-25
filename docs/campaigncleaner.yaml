@@ -1,4 +1,940 @@
-/v1/create_inbox_test:
+openapi: 3.0.0
+info:
+  title: API DOCUMENTATION
+  description: >-
+
+
+    [Campaign Cleaner](https://campaigncleaner.com) is the leader in ensuring
+    that your campaigns don't affect your IP and Domain reputation, it's the
+    most advanced toolset you'll find that gives you all the tools you need to
+    keep your campaigns within acceptable ratios of many email and spam
+    filtering software and automatically fixes your HTML by sanitizing all
+    non-email friendly attributes and inlines all your CSS to be compatible with
+    every email client.
+
+
+    We offer a robust collection of API's to allow you to integrate its
+    functionality into your email marketing software and tools.
+
+
+    The **{{api_key}}** is located in your account on [Campaign
+    Cleaner](https://campaigncleaner.com) under **API Management API Keys.**
+
+
+    Use the navigation on the left to access the different API Endpoints.
+  version: 1.0.0
+servers:
+  - url: https://api.campaigncleaner.com
+paths:
+  /v1/get_campaign_status:
+    post:
+      tags:
+        - Campaign Cleaner
+      summary: Get Campaign Status
+      description: >-
+        After submitting a campaign to be corrected and analyzed it can take up
+        to a minute to finalize the results. You can check the status of your
+        campaign with the **check_campaign_status** API. When you see a
+        'completed' status, you can call the **get_campaign** API to retrieve
+        the results.
+
+        #### Header:
+        
+        **X-CC-API-Key**: Your API Key
+        
+        #### Request Body:
+
+
+        **campaign**:
+
+
+        - **id**: The Campaign ID that you want to get the status for.
+         
+
+        #### Response:
+
+
+        **campaign_list**:
+
+
+        - **id**: The campaign id that will be used in other API calls.
+
+        - **campaign_name**: The name of the campaign.
+
+        - **status**: The status will be either _processing_, _completed_, or
+        _paused_
+
+        - **date_added**: The date and time your campaign was saved or submitted
+        to [Campaign Cleaner](https://campaigncleaner.com).
+         
+
+        If the **status** is _completed_, you will be able to retrieve the
+        campaign via the **get_campaign** API
+
+
+        In the event of an error, you will get an "**error**:" response, with a
+        description of the reason
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                campaign:
+                  id: '{{campaign_id}}'
+      parameters:
+        - name: X-CC-API-Key
+          in: header
+          schema:
+            type: string
+          example: '{{api_key}}'
+      responses:
+        '200':
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                campaign_status:
+                  id: e8c8af95-c033-11ed-9848-003048d8d536
+                  campaign_name: Test Campaign 1
+                  status: completed
+                  date_added: '2023-02-23T12:02:46-05:00'
+  /v1/get_campaign_list:
+    get:
+      tags:
+        - Campaign Cleaner
+      summary: Get Campaign List
+      description: >-
+        The **get_campaign_list** API endpoint allows you to get the status of
+        all the campaigns you have saved on [Campaign
+        Cleaner](https://campaigncleaner.com).
+
+        #### Header:
+        
+        **X-CC-API-Key**: Your API Key
+        
+
+        #### Response:
+
+
+        **campaign_list**:
+
+
+        - **id**: The campaign id that will be used in other API calls.
+
+        - **campaign_name**: The name of the campaign.
+
+        - **status**: The status will be either _processing_, _completed_, or
+        _paused_
+
+        - **date_added**: The date and time your campaign was saved or submitted
+        to Campaign Cleaner.
+         
+
+        If the **status** is _completed_, you will be able to retrieve the
+        campaign via the **get_campaign** API
+
+
+        In the event of an error, you will get an "**error**:" response, with a
+        description of the reason
+      parameters:
+        - name: X-CC-API-Key
+          in: header
+          schema:
+            type: string
+          example: '{{api_key}}'
+      responses:
+        '200':
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                campaign_list:
+                  - id: e8c8af95-c033-11ed-9848-003048d8d536
+                    campaign_name: Test Campaign 1
+                    status: completed
+                    date_added: '2023-02-23T12:02:46-05:00'
+                  - id: a8c8af95-c033-11ed-9848-003048d8d537
+                    campaign_name: Test Campaign 2
+                    status: completed
+                    date_added: '2023-02-25T22:26:15-05:00'
+  /v1/get_campaign:
+    post:
+      tags:
+        - Campaign Cleaner
+      summary: Get Campaign
+      description: >-
+        The **get_campaign** API allows you to retrieve any of your Saved
+        Campaigns in [Campaign Cleaner](https://campaigncleaner.com). The
+        response below is a real example of a newsletter that "Postman" sent us,
+        overall it's a pretty good newsletter with a few issues, mainly image
+        size and a couple of broken links.
+
+        #### Header:
+        
+        **X-CC-API-Key**: Your API Key
+        
+        #### Request Body:
+
+        _Required:_
+
+        **campaign**:
+
+
+        - **id**: The campaign id that will be used in other API calls.
+         
+        _Optional:_
+
+        **campaign**:
+
+        - **minimize_html**: (true/false) If true (default), removes all whitespace, tabs, etc. Condensing the HTML.
+
+        #### Response:
+
+
+        **campaign:**
+
+
+        - **adjust_font_colors**: (true/false), If true, certain bright colors
+        are spam triggers, like "**red**" or "**#FF0000**", was adjusted to a
+        slightly different color like "**#FF0101"**, it will look the same, but
+        won't trigger some spam filters.
+
+        - **adjust_font_size**: (true/false) If true, The min and max font size
+        defined below in pixels were applied. If your newsletter contains larger
+        or small font's it was adjusted to the min/max you define.
+
+        - **all_capitalized_word_ratio**: (double) The ratio of all capitalized
+        words to total words in your campaign.
+
+        - **all_capitalized_words**: (integer) The number of capitalized words
+        found in your campaign.
+
+        - **all_capitalized_word_max_acceptable_ratio**: (double) The max
+        acceptable ratio of all capitalize words to total words in your
+        campaign.
+
+        - **all_link_list:** (list of links) All the links found in the campaign
+        (images, text, etc.)
+           - **link_url**: (string) The URL or location of the broken link.
+           - **link_status**: (string) The status code of the link, please view the status guide below.
+           - **link_redirected_url**: (string) The location of where the link was redirected to, empty string, if it wasn't redirected.
+           - **link_is_image**: (true/false) True, if the link is used as an image.
+           - **link_is_broken**: (true/false) True, if the link was non-functional at the time of the scan.
+           - **link_initial**: (true/false) True, if the link was the initial link in the campaign, not an intermediate or final link, if redirected.
+           - **link_count**: (integer) The number of times this link was found.
+           - **link_secure:** (true/false) true, if the link is HTTPS.
+           - **link_tel:** (true/false) true, if the link is tel:
+           - **link_mailto:** (true/false) tru, if the link is mailto:
+        - **bg_images_found**: (integer) The number of background images found,
+        some major email clients don't support background images.
+
+        - **bg_image_list**: (List of images) All the background images found
+          - **image_url**: (string) The URL of where the image is located.
+          - **image_size** (long) The size of the image in Kilobytes (KB)
+          - **image_width**: (integer) The width of the image.
+          - **image_height**: (integer) The height of the image.
+          - **image_rendered_width**: (integer) The rendered width of the image.
+          - **image_rendered_height**: (integer) The rendered height of the image.
+          - **image_background**: (true/false) Will always be true, since this is a background image.
+          - **image_type**: (Integer) 1=png, 2=jpeg, 3=gif, 4=bmp, 5=svg, 6=avif, 7=tif, 8=webp, 9=apng, 10=heic, 11=icon, 12=base64, -1=Unknown
+        - **blacklisted_links**: (list of blacklisted links) Links that are on
+        blacklists and their properties.
+          - **bl_url**: (string) The web address where the blacklist is located.
+          - **bl_name**: (string) The name of the blacklist
+          - **link_url**: (string) The link in the campaign that is on a blacklist, can be a redirected link.
+        - **blacklisted_links_found**: (integer) The total number of blacklisted
+        links found.
+
+        - **broken_links**: (list of links) All the broken links found in the
+        campaign.
+          - **link_url**: (string) The URL or location of the broken link.
+          - **link_status**: (string) The reason why the link was considered broken, please view the status guide below.
+          - **link_redirected_url**: (string) The location of where the link was redirected to, empty string, if it wasn't redirected.
+          - **link_is_image**: (true/false) true, if the link is used as an image.
+          - **link_is_broken**: (true/false) true, if the link was non-functional at the time of the scan.
+          - **link_initial**: (true/false) true, if the link was the initial link in the campaign, not an intermediate or final link, if redirected.
+          - **link_count**: (integer) The number of times this link was found.
+          - **link_secure:** (true/false) true, if the link is HTTPS.
+          - **link_tel:** (true/false) true, if the link is tel:
+          - **link_mailto:** (true/false) tru, if the link is mailto:
+        - **campaign_id**: The campaign id that will be used in other API calls.
+
+        - **campaign_html:** (string) The adjusted HTML of the campaign, with
+        all the fixes that were selected.
+
+        - **campaign_name**: (string) The name the campaign was saved with.
+
+        - **campaign_summary**: (list of messages) A quick summary of some of
+        the changes that were applied and some analysis highlights.
+         - **apply_count**: (true/false) If true, the count column apples to the message as the number of occurrences found. If false, the count will be zero, and the message is a statement of what happened.
+         - **count**: (integer) The total occurrences that was found or corrected.
+         - **html_changed**: (true/false) Indicates if the Campaign HTML was changed to correct the issue.
+         - **message**: (string) The change or analysis that took place that indicating something change or something should be looked into further.
+        - **convert_h_to_p_tags**: (true/false) If true, this will change all
+        the H tags to P tags and set the correct font-size.
+
+        - **convert_tables_to_divs:** (true/false) **\-** This is an
+        experimental feature to convert all the tables to divs, in certain
+        instances with a complicated table structure you might need to edit the
+        HTML. We recommend leaving this as false or not setting it.
+
+        - **custom_info**: The values you passed us when calling the
+        **send_campaign** API
+
+        - **domains_scanned**: (array of strings) The domains that were scanned
+        at different blacklists.
+
+        - **header_tags_count**: (integer) The number of header tags found in
+        the campaign, header tags displays are not consistent across email
+        clients, use "**div**" or "**p**" tags styled correctly instead.
+
+        - **host_extensionless_images:** (true/**false**) If true, images
+        without extensions will be hosted on our CDN when the
+        **resize_and_host** parameter is set to true. Typically, dynamically
+        generated images lack extensions, though there are exceptions.
+        
+        - **inline_css:** (**true**/false) When set to true, CSS styles are directly applied within the style attribute of each HTML element.
+    
+        - **inline_css_important:** (true/**false**) When set to true, the `!important` flag will also be inlined with CSS styles. If you are using media queries, it is generally recommended to keep this set to false.
+    
+        - **media_queries_important:** (**true**/false) When set to true, all media query styles will be marked with the `!important` flag. This ensures they can override any inline CSS without an `!important` flag.
+        
+        - **image_count**: (integer) The total number of images found in your
+        campaign including background images.
+
+        - **image_max_width**: (integer): The max-width style applied to all
+        images in pixels.
+
+        - **images_missing_alt_attribute:** (integer) The number of images
+        missing or have an empty **"alt"** attribute.
+
+        - **image_list**: (list of images) A list of all images found and their
+        properties.
+          - **image_url**: (string) The URL of where the image is located.
+          - **image_size** (long) The size of the image in Kilobytes (KB)
+          - **image_width**: (integer) The width of the image.
+          - **image_height**: (integer) The height of the image.
+          - **image_background**: (true/false) True, if this is a background image, otherwise
+          - **image_type**: (Integer) 1=png, 2=jpeg, 3=gif, 4=bmp, 5=svg, 6=avif, 7=tif, 8=webp, 9=apng, 10=heic, 11=icon, 12=base64, -1=Unknown
+          - **image_rendered_width**: (integer) The rendered width of the image.
+          - **image_rendered_height**: (integer) The rendered height of the image.
+          - **links_missing_title_attribute** : (integer) The number of links
+        missing the **"title"** attribute.
+
+        - **links_scanned**: (integer) The total number of links scanned,
+        images, text, and redirects.
+
+        - **os_images_found**: (integer) The number of oversized images found in
+        your campaign, slowing down the loading of your campaign.
+
+        - **pd_cdn_list**: (List of links on Poor delivery CDNs) Links that
+        point to CDNs that are known to affect delivery.
+           - **pd_cdn_name**: (string) The name of the CDN that can affect delivery.
+           - **pd_cdn_url**: (string) The URL or Location the CDN uses to host content.
+        - **min_font_size_allowed**: (A positive Integer, under 100) in pixels.
+
+        - **max_font_size_allowed**: (A positive Integer under 100) in pixels.
+
+        - **os_image_list**:(list of images) All the oversized images in the
+        campaign
+          - **image_url**: (string) The URL of where the image is located.
+          - **image_size** (long) The size of the image in Kilobytes (KB)
+          - **image_width**: (integer) The width of the image.
+          - **image_height**: (integer) The height of the image.
+          - **image_background**: (true/false) True, if this is a background image, otherwise false.
+          - **image_type**: (Integer) 1=png, 2=jpeg, 3=gif, 4=bmp, 5=svg, 6=avif, 7=tif, 8=webp, 9=apng, 10=heic, 11=icon, 12=base64, -1=Unknown
+          - **image_rendered_width**: (integer) The rendered width of the image.
+          - **image_rendered_height**: (integer) The rendered height of the image.
+        - **pd_cdns_found**: (integer) The number of content delivery networks
+        found, known to cause adverse delivery issues.
+
+        - **pd_cdns_link_count**: (integer) The total number of links pointed to
+        content delivery networks know to cause adverse delivery issues.
+
+        - **preserve_media_queries**: (true/false) True, if all media queries were preserved.
+
+        - **relative_links_base_url**: If set, this needs to be a full base URL
+        like "[https://campaigncleaner.com/"](https://campaigncleaner.com/), if
+        your email campaign has any relative paths, it will be converted to an
+        absolute URL. In most instances, you won't need to set this.
+
+        - **remove_successive_punctuation**: (true/false) if true, this will
+        remove succession punctuation like ..., !!!!, $$$ to a single
+        occurrence.
+
+        - **remove_css_inheritance**: (true/false) If true, removes all elements
+        of CSS that are inherited. Once CSS is inlined, the inherited CSS will
+        be removed, for example if font-size of a parent tag is 15 pixels, there
+        is no need for the font-size of the child tag to be specified as 15
+        pixels because it's inherited or computed from the parent tag, this
+        reduces the size of your HTML Campaign.
+
+        - **remove_classes_and_ids**: (_true_/false) If true, all the class and
+        ID attributes after CSS Inlining was removed.
+
+        - **remove_comments**: (true/false) If true, comments were stripped from
+        both CSS and HTML. Comments are invisible in HTML and can trigger spam
+        filters.
+
+        - **remove_control_non_printable:** (true/false) If True, call
+        non-printable and control characters are removed.
+
+        - **remove_image_height:** (true/false) if true, the height style was
+        removed from all images, preventing any image distortions.
+
+        - **remove_large_widths_over**: (integer) Experimental: If sets removes
+        all defined widths over the value set on non images and table tags.
+
+        - **replace_diacritics**: (true/false) If true, diacritic characters
+        like á were replaced with a normal characters equivalent.
+
+        - **replace_non_ascii_characters**: (true/false) If true, all non-ascii
+        characters were replaced with their ascii equivalent. For example, ❝ was
+        replaced with **".** Non-ascii characters is of of the major spam
+        trigger.
+
+        - **resize_and_host**: (true/false) If true, all eligible images were
+        resized, converted, and hosted on our CDN. Read more about this here:
+        [Resize And Host](https://docs.campaigncleaner.com/features-settings/resize-and-host)
+
+        - **spam_words_count**: (integer) The total number of spam words found
+        in your campaign.
+
+        - **spam_keyword_list**: (List of Spam Keywords) (keyword (string), count (integer)
+        Array of all spam keywords found and the number of times they were
+        found.
+          - **keyword**: The spam Keyword or phrase.
+          - **count**: The number of occurrences of the spam keyword.
+        - **spam_keyword_ratio**: (double) The spam keyword ratio of the
+        campaign.
+
+        - **spam_keyword_max_acceptable_ratio**: (double) The max acceptable
+        ratio for spam keywords for any campaign.
+
+        - **successive_currency_marks**: (integer) The number of successive
+        currency marks found "$$".
+
+        - **successive_exclaimations**: (integer) The number of successive
+        exclamation points found "!!".
+
+        - **successive_question_marks**: (integer) The number of successive
+        question marks found "??".
+
+        - **successive_periods**: (integer) The number of successive periods
+        found "..".
+
+        - **surrounding_div**: A surrounding "div" added to your html with the
+        following styles added.
+           - **max_width**: The max-width style in pixels applied to the surrounding "div".
+           - **text_align**: (left, center, right) All content within the surrounding "div" will be aligned according to the specified style. However, this can be over-written but setting "text-align" property on inner tags within the "div" to customize the appearance of your email.
+           - **font_size**: The pixel size that set in the surrounding div to adhere to, this adds an "!important" to all font-sizes that are set on any tag in the HTML to maintain the font you want. While setting all unspecified font sizes to the size you choose.
+           - **center_to_parent**: (true/false) If true, this will enable the surrounding "div" to be centered in any parent tags in which it is placed. This is particularly helpful when inserting an HTML snippet into a template
+          - **text_link_max_acceptable_ratio**: (double) the max acceptable text
+        to link ratio for any campaign.
+
+        - **text_link_ratio**: (double) The text to link ratio of your campaign.
+
+        - **text_image_max_acceptable_ratio**: (double) the max acceptable text
+        to image ratio for any campaign.
+
+        - **text_image_ratio**: (double) The text to image ratio of your
+        campaign.
+
+        - **total_word_count**: (integer) The total number of words found in
+        your campaign.
+        
+
+        #### Additional Information:
+
+
+        **HTTP Status Codes:**
+        [https://developer.mozilla.org/en-US/docs/Web/HTTP/Status](https://developer.mozilla.org/en-US/docs/Web/HTTP/StatusIn)
+
+
+        In addition to status codes listed in the document above.
+
+
+        | **Status Code** | **Description** |
+
+        | --- | --- |
+
+        | 97 | Telephone Links start with tel: |
+
+        | 98 | Email links, starts with mailto: |
+
+        | 99 | Invalid URL - The provided website address is not valid. It may
+        be a partial address, missing the necessary protocols (http or https),
+        or has an incorrect format. |
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                campaign:
+                  id: '{{campaign_id}}'
+                  minimize_html: true
+      parameters:
+        - name: X-CC-API-Key
+          in: header
+          schema:
+            type: string
+          example: '{{api_key}}'
+       
+      responses:
+        '200':
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                campaign:
+                  adjust_font_colors: true
+                  adjust_font_size: false
+                  all_capitalized_words: 52
+                  all_capitalized_word_ratio: 7.14
+                  all_capitalized_word_max_acceptable_ratio: 10
+                  blacklisted_links_found: 0
+                  bg_images_found: 0
+                  broken_links_found: 2
+                  campaign_id: 8e754ce1-c2df-11ed-9848-003048d8d533
+                  campaign_name: CC Postman Newsletter Analysis
+                  convert_h_to_p_tags: false
+                  convert_tables_to_divs: false
+                  custom_info: ''
+                  header_tags_count: 19
+                  image_count: 13
+                  image_max_width: null
+                  images_missing_alt_attribute: 10
+                  links_missing_title_attribute: 5
+                  links_scanned: 36
+                  min_font_size_allowed: 10
+                  max_font_size_allowed: 32
+                  os_images_found: 6
+                  pd_cdns_found: 0
+                  pd_cdns_link_count: 0
+                  preserve_media_queries: true
+                  relative_links_base_url: null
+                  remove_inherited_css: true
+                  remove_classes_and_ids: true
+                  remove_control_non_printable: false
+                  remove_comments: true
+                  remove_image_height: true
+                  replace_non_ascii_characters: true
+                  remove_successive_punctuation: false
+                  results_time: '2023-03-14T23:14:26-04:00'
+                  spam_keyword_ratio: 2.06
+                  spam_keyword_max_acceptable_ratio: 5
+                  spam_words_count: 15
+                  successive_exclaimations: 0
+                  successive_question_marks: 0
+                  successive_currency_marks: 0
+                  successive_periods: 0
+                  surrounding_div:
+                    max_width: 600
+                    text_align: left
+                    font_size: 15
+                    center_to_parent: true
+                  text_image_ratio: 1.79
+                  text_image_max_acceptable_ratio: 10
+                  text_link_ratio: 1.79
+                  text_link_max_acceptable_ratio: 10
+                  total_word_count: 728
+                  campaign_html: ''
+                  spam_keyword_list:
+                  - keyword: "Sign up"
+                    count: 2
+                  - keyword: "Check"
+                    count: 2
+                  - keyword: "Collect"
+                    count: 2
+                  - keyword: "Offer"
+                    count: 1
+                  - keyword: "Get paid"
+                    count: 1
+                  - keyword: "Request"
+                    count: 1
+                  - keyword: "Open"
+                    count: 1
+                  - keyword: "Solution"
+                    count: 1
+                  - keyword: "Subscribe"
+                    count: 1
+                  - keyword: "Cure"
+                    count: 1
+                  - keyword: "Now"
+                    count: 1
+                  - keyword: "Privacy"
+                    count: 1
+                  image_list:
+                    - image_url: >-
+                        https://assets.getpostman.com/email/icon-github-color.png
+                      image_size: 1
+                      image_width: 24
+                      image_height: 24
+                      image_background: true
+                    - image_url: https://assets.getpostman.com/email/icon-li-color.png
+                      image_size: 1
+                      image_width: 24
+                      image_height: 24
+                      image_background: true
+                  os_image_list:
+                    - image_url: >-
+                        https://lp.postman.com/rs/067-UMD-991/images/Announcement-of-Ecosystem-Partner-Program%402x-100.jpg
+                      image_size: 62
+                      image_width: 1633
+                      image_height: 865
+                      image_background: true
+                  bg_image_list:
+                    - image_url: >-
+                        https://assets.getpostman.com/email/icon-github-color.png
+                      image_size: 1
+                      image_width: 24
+                      image_height: 24
+                      image_background: true
+                  pd_cdn_list: []
+                  blacklisted_links: []
+                  domains_scanned:
+                    - assets.getpostman.com
+                    - blog.postman.com
+                    - github.com
+                  broken_links:
+                    - link_url: >-
+                        http://go.postman.com/track?mktoTestLink&mkt_tok=MDY3LVVNRC05OTEAAAGHHkyvUdX_2Si9w4zGTZVMU_omcKkgJ4IrP4unrXcDrM1bEcs_gl8jsqiMybmT6-mAwlcKRt_VgcT9Ou3nBO6XXYVo6GFMaUZwh7GiKHq8hB4
+                      link_status: PNR Falure
+                      link_redirected_url: ''
+                      link_is_image: false
+                      link_is_broken: true
+                      link_initial: false
+                  all_link_list:
+                    - link_url: >-
+                        https://assets.getpostman.com/email/icon-github-color.png
+                      link_status: '206'
+                      link_redirected_url: ''
+                      link_is_image: false
+                      link_is_broken: false
+                      link_initial: true
+                  campaign_summary:
+                    - message: CSS was inlined.
+                      count: 0
+                      html_changed: true
+                      apply_count: false
+                    - message: spam keywords were found.
+                      count: 24
+                      html_changed: false
+                      apply_count: true
+  /v1/get_credits:
+    get:
+      tags:
+        - Campaign Cleaner
+      summary: Get Credits
+      description: >-
+        The **get_credits** API will show you how many credits you currently
+        have available. Credits are consumed by calling the **send_campaign**
+        API endpoint.
+
+
+        #### Response:
+
+
+        - **Credits**: The amount of available credits you have on your account.
+         
+
+        In the event of any other error, you will get an "**error**:" response,
+        with a description of the reason.
+      parameters:
+        - name: X-CC-API-Key
+          in: header
+          schema:
+            type: string
+          example: '{{api_key}}'
+      responses:
+        '200':
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                credits: 987
+  /v1/get_campaign_pdf_analysis:
+    post:
+      tags:
+        - Campaign Cleaner
+      summary: Get Campaign PDF Analysis
+      description: >-
+        The **get_campaign_pdf_analysis** API allows you to retrieve the analysis report for any of your Saved Campaigns in Campaign Cleaner.
+     
+        #### Header:
+        
+        **X-CC-API-Key**: Your API Key
+        
+        #### Request Body:
+
+        **campaign**:
+
+        - **id**: The campaign id that will be used in other API calls.
+       
+        #### Response:
+
+        An Application/pdf stream.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                campaign:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+              example:
+                campaign:
+                  id: '{{campaign_id}}'
+      parameters:
+        - name: X-CC-API-Key
+          in: header
+          schema:
+            type: string
+          example: '{{api_key}}'
+      responses:
+        '200':
+          description: Returns the file in the PDF format
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+              example: 'PDF File Download'
+  /v1/send_campaign:
+    post:
+      tags:
+        - Campaign Cleaner
+      summary: Send Campaign
+      description: >-
+        The **send_campaign** API Endpoint allows you to send in a campaign to
+        be processed and analyzed by [Campaign
+        Cleaner](https://campaigncleaner.com). Below is the list of settings
+        that can be set, all optional settings, if not specified will default to
+        the bold/italicized setting.
+
+
+        All submitted campaigns will be sanitized.
+
+        #### Header:
+        
+        **X-CC-API-Key**: Your API Key
+        
+        #### Request Body:
+
+
+        _Required:_
+
+
+        **send_campaign**:
+
+
+        - **campaign_html** : The full HTML of your campaign
+
+        - **campaign_name**: The name of your campaign - campaign name must pass
+        our sanitization checks.
+         
+
+        Campaigns are normally processed in under 2 minutes, in most instances
+        in a few seconds. But in some cases with very large campaigns with lots
+        of images and links it can take longer to check those links for
+        blacklists, redirects. image sizes and more. Depending on the server
+        where those links resources are located it can take longer. The send
+        campaign, will return a campaign ID once we received it, you can use
+        that campaign ID to check on the status, and retrieve your campaign when
+        it's finished processing or you can supply us a webhook URL and we will
+        send the results to you automatically.
+
+
+        _Optional:_
+
+
+        **send_campaign**:
+
+
+        - **adjust_font_colors**: (_**true**_/false), If true, certain bright
+        colors are spam triggers, like "**red**" or "**#FF0000**", will be
+        adjusted to a slightly different color like "**#FF0101"**, it will look
+        the same, but won't trigger some spam filters.
+
+        - **adjust_font_size**: (_**true**_/false) If true, you will be able to
+        define the min and max font size allowed in pixels. If your newsletter
+        contains larger or small font's it will adjust them to the min/max you
+        define.
+
+        - **convert_h_to_p_tags**: (true/**false**) If true, this will change
+        all the H tags to P tags and set the correct font-size.
+
+        - **convert_tables_to_divs:** (true/**false**) - This is an experimental
+        feature to convert all the tables to divs, in certain instances with a
+        complicated table structure you might need to edit the HTML. We
+        recommend leaving this as false or not setting it.
+
+        - **custom_info:** This field is for you to pass any additional data you
+        want to send us, it will also be passed back to you when you call the
+        get_campaign API. It's limited to 500 characters. - It must pass our
+        sanitization checks.
+
+        - **host_extensionless_images:** (true/**false**) If true, images
+        without extensions will be hosted on our CDN when the resize_and_host
+        parameter is set to true.
+
+        - **inline_css:** (**true**/false) When set to true, CSS styles are
+        directly applied within the style attribute of each HTML element.
+
+        - **inline_css_important:** (true/**false**) When set to true, the
+        !important flag will also be inlined with CSS styles.
+
+        - **max_font_size_allowed**: (A positive Integer under 100) in pixels,
+        default is 32.
+
+        - **media_queries_important:** (**true**/false) When set to true, all
+        media query styles will be marked with the !important flag.
+
+        - **min_font_size_allowed**: (A positive Integer, under 100) in pixels,
+        default is 10.
+
+        - **preserve_media_queries**: (**true**/false) If true, all media
+        queries will be preserved.
+
+        - **relative_links_base_url**: If set, this needs to be a full base URL,
+        if your email campaign has any relative paths, it will be converted to
+        an absolute URL.
+
+        - **remove_classes_and_ids**: (_**true**_/false) If true, all the class
+        and ID attributes after CSS Inlining will be removed.
+
+        - **remove_comments**: (**true**/false) If true, comments will be
+        stripped from both CSS and HTML.
+
+        - **remove_control_non_printable:** (true/**false**) If True, all
+        non-printable and control characters are removed.
+
+        - **remove_css_inheritance**: (**true**/false) If true, removes all
+        elements of CSS that are inherited.
+
+        - **remove_image_height:** (**true**/false) if true, the height style
+        will be removed from all images.
+
+        - **remove_large_widths_over**: (integer) Experimental: If set, removes
+        all defined widths over the value set on non images and table tags.
+
+        - **remove_successive_punctuation**: (**true**/false) if true, this will
+        remove successive punctuation like ..., !!!!, $$$ to a single
+        occurrence.
+
+        - **replace_diacritics**: (**true**/false) If true, diacritic characters
+        like á will be replaced with normal character equivalents.
+
+        - **replace_non_ascii_characters**: (**true**/false) If true, all
+        non-ascii characters will be replaced with their ascii equivalent.
+
+        - **resize_and_host**: (**true**/false) If true, all eligible images
+        will be resized, converted, and hosted on our CDN.
+
+        - **set_image_max_width**: (integer) If set, applies a max-width style
+        to all images in pixels.
+
+        - **surrounding_div**: A surrounding div added to your html.
+           - **max_width**: The max-width style in pixels applied to the surrounding div.
+           - **text_align**: (left, center, right) Alignment of content within the div.
+           - **font_size**: The pixel size set in the surrounding div.
+           - **center_to_parent**: (true/false) If true, centers the div in any parent tags.
+
+        - **webhook_url**: If provided, the results will be posted to this URL
+        when processing is complete. Must be an absolute URL with no query
+        string.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                send_campaign:
+                  campaign_html: <html><body>Your Campaign HTML</body></html>
+                  campaign_name: My Campaign
+                  adjust_font_colors: true
+                  adjust_font_size: true
+                  min_font_size_allowed: 10
+                  max_font_size_allowed: 32
+                  convert_h_to_p_tags: false
+                  convert_tables_to_divs: false
+                  custom_info: ''
+                  host_extensionless_images: false
+                  inline_css: true
+                  inline_css_important: false
+                  media_queries_important: true
+                  preserve_media_queries: true
+                  relative_links_base_url: ''
+                  remove_classes_and_ids: true
+                  remove_comments: true
+                  remove_control_non_printable: false
+                  remove_css_inheritance: true
+                  remove_image_height: true
+                  remove_successive_punctuation: true
+                  replace_diacritics: true
+                  replace_non_ascii_characters: true
+                  resize_and_host: true
+                  webhook_url: ''
+                  surrounding_div:
+                    max_width: 600
+                    text_align: left
+                    font_size: 15
+                    center_to_parent: true
+      parameters:
+        - name: X-CC-API-Key
+          in: header
+          schema:
+            type: string
+          example: '{{api_key}}'
+      responses:
+        '200':
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                campaign:
+                  id: 8e754ce1-c2df-11ed-9848-003048d8d533
+  /v1/create_inbox_test:
     post:
       tags:
         - Campaign Cleaner
@@ -23,7 +959,7 @@
 
         _Required:_
 
-        **test_name**: The name of your inbox test - maximum 255 characters.
+        - **test_name**: The name of your inbox test - maximum 255 characters.
 
         #### Response:
 
@@ -86,7 +1022,6 @@
                   - seed2@yahoo.com
                   - seed3@outlook.com
                   - mailtest+a1b2c3d4@campaigncleaner.com
-
   /v1/get_inbox_test_results:
     post:
       tags:
